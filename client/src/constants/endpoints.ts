@@ -1,0 +1,26 @@
+const API_BASE_URL = process.env.NODE_ENV === 'production' ? '/api/' : 'http://localhost:3001/api/'
+
+export const  Endpoints =  {
+  LOGIN : API_BASE_URL + 'auth/login',
+  REFRESH_TOKEN : API_BASE_URL + 'auth/refresh-token',
+  USER : API_BASE_URL + 'users',
+  EDIT_USER : API_BASE_URL + 'user/edit/',
+  DELETE_USER : API_BASE_URL + 'user/delete/',
+  CAMPAIGN : API_BASE_URL + 'campaign/',
+  ADMIN_LEADS : API_BASE_URL + 'leads',
+  ASSIGN_LEAD_ADVISOR : API_BASE_URL + 'leads/assign/advisor/',
+  ASSIGN_LEAD_CAMPAIGN : API_BASE_URL + 'leads/assign/campaign/',
+  REJECTED_BANK : API_BASE_URL + 'leads/rejected-banks/',
+  ADVISOR_LEADS : API_BASE_URL + 'leads/advisor/',
+  MANAGER_LEADS : API_BASE_URL + 'leads/manager/',
+  BANK_MANAGER_LEADS : API_BASE_URL + 'leads/bank-manager/',
+  RECEPTIONIST_LEADS : API_BASE_URL + 'leads/receptionist/without-advisor/',
+  LEAD : API_BASE_URL + 'leads/',
+  LEAD_STATUS : API_BASE_URL + 'leads/status/',
+  NOTIFICATIONS : API_BASE_URL + 'notifications/',
+  BANK : API_BASE_URL + 'banks',
+  PROJECTS: API_BASE_URL + 'projects/',
+  PROJECTS_AVAILABLE: API_BASE_URL + 'projects/available',
+  LOTS : API_BASE_URL + 'lots/',
+  LOTS_BY_PROJECT: API_BASE_URL + 'lots/project/',
+}
