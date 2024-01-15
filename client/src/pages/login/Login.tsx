@@ -95,7 +95,7 @@ function Login() {
       const data = await login({ email, password });
       setLoading(false);
       if (!data) return setError("Usuario o contraseña incorrectos");
-      dispatch(setSocket(io("http://api.crm.sigurban.com:82")));
+      dispatch(setSocket(io("https://api.crm.sigurban.com/socket")));
       dispatch(setAuth(data));
       navigate(
         data.user.role === "BANK_MANAGER"
