@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { Layout } from "../Layout";
 import { useEffect, useState } from "react";
-import { Card, Chip, Input, Switch, Textarea } from "@material-tailwind/react";
+import { Card, Chip, Switch, Textarea } from "@material-tailwind/react";
 import {
   CalendarDaysIcon,
   IdentificationIcon,
@@ -10,6 +10,7 @@ import {
 import { isError, validateID } from "../../utils/redirects";
 import { getCampaignByID, updateCampaignByID } from "../../services/campaign";
 import { getFormattedDate } from "../../utils";
+import { Input } from "../../component/inputs/input";
 
 export const CampaignById = () => {
   const { id } = useParams<{ id: string }>();
@@ -143,8 +144,6 @@ export const CampaignById = () => {
                   name="name"
                   onChange={handleUpdateCampaignChange}
                   label="Nombre del banco"
-                  crossOrigin={undefined}
-                  size="md"
                   value={updateCampaign.name}
                   disabled={edit}
                 />
@@ -157,7 +156,6 @@ export const CampaignById = () => {
                   name="description"
                   disabled={edit}
                   label="Descripcion"
-                  size="md"
                   value={updateCampaign.description}
                 />
               </div>
@@ -170,8 +168,6 @@ export const CampaignById = () => {
                   name="startDate"
                   onChange={handleUpdateCampaignChange}
                   label="Fecha de inicio"
-                  crossOrigin={undefined}
-                  size="md"
                   type="date"
                   value={getFormattedDate(updateCampaign.startDate ?? "")}
                   disabled={edit}
@@ -187,8 +183,6 @@ export const CampaignById = () => {
                   name="endDate"
                   onChange={handleUpdateCampaignChange}
                   label="Fecha de finalizacion"
-                  crossOrigin={undefined}
-                  size="md"
                   type="date"
                   value={getFormattedDate(updateCampaign.endDate ?? "")}
                   disabled={edit}

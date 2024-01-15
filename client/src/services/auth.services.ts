@@ -2,7 +2,6 @@ import { Endpoints, LocalStorageKeys } from '../constants'
 import {  AuthCredentials, AuthResponse } from '../interfaces'
 import axios from 'axios'
 import { getLocalStorage, getLocalStorageToken, setLocalStorage } from '../utils'
-import Swal from 'sweetalert2'
 import { useSelector } from 'react-redux'
 
 // Envia una solicitud para iniciar sesión
@@ -62,19 +61,7 @@ export const validateUser = async (): Promise<AuthResponse | undefined> => {
   }
 }
 
-export const tokenExpired = async () => {
-  Swal.fire({
-    title: 'Su sesión ha expirado',
-    text: 'Por favor inicie sesión de nuevo',
-    icon: 'warning',
-    confirmButtonText: 'Ok'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      logout()
-      window.location.reload()
-    }
-  })
-}
+
 export const logout = () => {
   try {
     const userData = getLocalStorage<AuthResponse | undefined>(LocalStorageKeys.DATA)

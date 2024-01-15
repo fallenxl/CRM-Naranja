@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { Layout } from "../Layout";
 import { useEffect, useState } from "react";
-import { Avatar, Card, Chip, Input } from "@material-tailwind/react";
+import { Avatar, Card, Chip } from "@material-tailwind/react";
 import {
   AtSymbolIcon,
   BriefcaseIcon,
@@ -44,14 +44,22 @@ import {
 } from "../../services/lead.services.ts";
 import Swal from "sweetalert2";
 import { currencyFormatToLempiras } from "../../utils/currencyFormat.ts";
+import { Input } from "../../component/inputs/input.tsx";
 
 export const LeadById = () => {
   const { id } = useParams<{ id: string }>();
   validateID(id ?? "");
   const { user } = useSelector((state: AppStore) => state.auth);
 
-  const { advisorList, campaignList, lead, setLead, error, isLoading, setSocketTrigger } =
-    useLeadData(id);
+  const {
+    advisorList,
+    campaignList,
+    lead,
+    setLead,
+    error,
+    isLoading,
+    setSocketTrigger,
+  } = useLeadData(id);
   isError(error);
   const {
     edit,
@@ -123,7 +131,6 @@ export const LeadById = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         deleteBankRejected(id, bankId).then((res) => {
-         
           if (typeof res === "string") {
             errorAlertWithTimer("Error", res, 3000);
           }
@@ -148,7 +155,7 @@ export const LeadById = () => {
             open={open}
             handleOpen={handleOpen}
             updateLead={updateLead}
-            setSocketTrigger={setSocketTrigger} 
+            setSocketTrigger={setSocketTrigger}
             lead={lead}
           />
         )}
@@ -201,7 +208,7 @@ export const LeadById = () => {
                   className="w-full flex flex-col gap-y-2 p-0 md:p-4"
                 >
                   <label className="text-gray-700 text-xs ml-7">
-                    Nombre completo 
+                    Nombre completo
                   </label>
                   <div className="flex items-center gap-x-2  w-full">
                     <IdentificationIcon className="w-5 h-5" />
@@ -209,8 +216,6 @@ export const LeadById = () => {
                       name="name"
                       onChange={handleUpdateLeadChange}
                       label="Nombre completo"
-                      crossOrigin={undefined}
-                      size="md"
                       value={updateLead.name}
                       disabled={edit}
                     />
@@ -224,8 +229,6 @@ export const LeadById = () => {
                       name="dni"
                       onChange={handleUpdateLeadChange}
                       label="Tarjeta de identidad"
-                      crossOrigin={undefined}
-                      size="md"
                       value={updateLead.dni}
                       disabled={edit}
                     />
@@ -239,8 +242,6 @@ export const LeadById = () => {
                       name="phone"
                       onChange={handleUpdateLeadChange}
                       label="Numero de telefono"
-                      crossOrigin={undefined}
-                      size="md"
                       value={updateLead.phone}
                       disabled={edit}
                     />
@@ -254,21 +255,19 @@ export const LeadById = () => {
                       name="email"
                       onChange={handleUpdateLeadChange}
                       label="Correo electronico"
-                      crossOrigin={undefined}
-                      size="md"
                       value={updateLead.email}
                       disabled={edit}
                     />
                   </div>
-                  <label className="text-gray-700 text-xs ml-7">Direccion</label>
+                  <label className="text-gray-700 text-xs ml-7">
+                    Direccion
+                  </label>
                   <div className="flex items-center gap-x-2  w-full">
                     <MapIcon className="w-5 h-5" />
                     <Input
                       name="address"
                       onChange={handleUpdateLeadChange}
                       label="Direccion"
-                      crossOrigin={undefined}
-                      size="md"
                       value={updateLead.address}
                       disabled={edit}
                     />
@@ -282,8 +281,6 @@ export const LeadById = () => {
                       name="department"
                       onChange={handleUpdateLeadChange}
                       label="Departamento"
-                      crossOrigin={undefined}
-                      size="md"
                       value={updateLead.department}
                       disabled={edit}
                     />
@@ -295,21 +292,19 @@ export const LeadById = () => {
                       name="country"
                       onChange={handleUpdateLeadChange}
                       label="Pais"
-                      crossOrigin={undefined}
-                      size="md"
                       value={updateLead.country}
                       disabled={edit}
                     />
                   </div>
-                  <label className="text-gray-700 text-xs ml-7">Interesado en</label>
+                  <label className="text-gray-700 text-xs ml-7">
+                    Interesado en
+                  </label>
                   <div className="flex items-center gap-x-2  w-full">
                     <BriefcaseIcon className="w-5 h-5" />
                     <Input
                       name="interestedIn"
                       onChange={handleUpdateLeadChange}
                       label="Interesado en"
-                      crossOrigin={undefined}
-                      size="md"
                       value={updateLead.interestedIn}
                       disabled={edit}
                     />
@@ -336,15 +331,15 @@ export const LeadById = () => {
                       <option value="Otro">Otro</option>
                     </select>
                   </div>
-                  <label className="text-gray-700 text-xs ml-7">Comentarios</label>
+                  <label className="text-gray-700 text-xs ml-7">
+                    Comentarios
+                  </label>
                   <div className="flex items-center gap-x-2  w-full">
                     <ChatBubbleBottomCenterIcon className="w-5 h-5" />
                     <Input
                       name="comment"
                       onChange={handleUpdateLeadChange}
                       label="Comentarios"
-                      crossOrigin={undefined}
-                      size="md"
                       value={updateLead.comment}
                       disabled={edit}
                     />
@@ -355,42 +350,43 @@ export const LeadById = () => {
                       Detalles laborales
                     </span>
                     <hr className="w-full mb-4" />
-                    <label className="text-gray-700 text-xs ml-7">Lugar de trabajo</label>
+                    <label className="text-gray-700 text-xs ml-7">
+                      Lugar de trabajo
+                    </label>
                     <div className="flex items-center gap-x-2  w-full">
                       <BriefcaseIcon className="w-5 h-5" />
                       <Input
                         name="workAddress"
                         onChange={handleUpdateLeadChange}
                         label="Lugar de trabajo"
-                        crossOrigin={undefined}
-                        size="md"
                         value={updateLead.workAddress}
                         disabled={edit}
                       />
                     </div>
-                    <label className="text-gray-700 text-xs ml-7">Posicion</label>
+                    <label className="text-gray-700 text-xs ml-7">
+                      Posicion
+                    </label>
                     <div className="flex items-center gap-x-2  w-full">
                       <UserCircleIcon className="w-5 h-5" />
                       <Input
                         name="workPosition"
                         onChange={handleUpdateLeadChange}
                         label="Posicion"
-                        crossOrigin={undefined}
-                        size="md"
                         value={updateLead.workPosition}
                         disabled={edit}
                       />
                     </div>
 
-                    <label className="text-gray-700 text-xs ml-7">Salario</label>
+                    <label className="text-gray-700 text-xs ml-7">
+                      Salario
+                    </label>
                     <div className="flex items-center gap-x-2  w-full">
                       <CurrencyDollarIcon className="w-5 h-5" />
                       <Input
+                    
                         name="salary"
                         onChange={handleUpdateLeadChange}
                         label="Salario"
-                        crossOrigin={undefined}
-                        size="md"
                         value={
                           !edit
                             ? updateLead.salary
@@ -405,20 +401,22 @@ export const LeadById = () => {
                         step={0.01}
                       />
                     </div>
-                    <label className="text-gray-700 text-xs ml-7">Antiguedad</label>
+                    <label className="text-gray-700 text-xs ml-7">
+                      Antiguedad
+                    </label>
                     <div className="flex items-center gap-x-2  w-full">
                       <ClockIcon className="w-5 h-5" />
                       <Input
                         name="workTime"
                         onChange={handleUpdateLeadChange}
                         label="Antiguedad"
-                        crossOrigin={undefined}
-                        size="md"
                         value={updateLead.workTime}
                         disabled={edit}
                       />
                     </div>
-                    <label className="text-gray-700 text-xs ml-7">Metodo de pago</label>
+                    <label className="text-gray-700 text-xs ml-7">
+                      Metodo de pago
+                    </label>
                     <div className="flex items-center gap-x-2  w-full">
                       <CreditCardIcon className="w-5 h-5" />
                       <select
@@ -605,12 +603,13 @@ export const LeadById = () => {
                     <span className="text-sm text-gray-600  ">
                       Bancos rechazados:
                     </span>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex items-center flex-wrap gap-2">
                       {lead.rejectedBanks.map((item: any) => {
                         return (
                           <Chip
                             value={item.name}
                             color="red"
+                            className="flex items-center "
                             icon={
                               (user.role === "ADMIN" ||
                                 user.role === "BANK_MANAGER") && (

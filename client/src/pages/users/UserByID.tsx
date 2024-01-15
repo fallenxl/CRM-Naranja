@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { Layout } from "../Layout";
 import { useEffect, useState } from "react";
-import { Avatar, Card, Chip, Input } from "@material-tailwind/react";
+import { Avatar, Card, Chip } from "@material-tailwind/react";
 import {
   AtSymbolIcon,
   BriefcaseIcon,
@@ -22,7 +22,7 @@ import { useEditUser } from "../../hooks/user/useEditUser.tsx";
 import { Roles, RolesArray } from "../../constants/roles.ts";
 import { getDays } from "../../utils/time.utils.ts";
 import { getLeadsByRole } from "../../services/lead.services.ts";
-import { PasswordInput } from "../../component/inputs/PasswordInput.tsx";
+import { Input } from "../../component/inputs/input.tsx";
 import {
   updateUserByID,
   updateUserPassword,
@@ -195,8 +195,6 @@ export const UserByID = () => {
                       name="name"
                       onChange={handleUpdateUserChange}
                       label="Nombre completo"
-                      crossOrigin={undefined}
-                      size="md"
                       value={updateUser.name}
                       disabled={edit}
                     />
@@ -225,8 +223,6 @@ export const UserByID = () => {
                       name="phone"
                       onChange={handleUpdateUserChange}
                       label="Numero de telefono"
-                      crossOrigin={undefined}
-                      size="md"
                       value={updateUser.phone}
                       disabled={edit}
                     />
@@ -238,21 +234,19 @@ export const UserByID = () => {
                       name="email"
                       onChange={handleUpdateUserChange}
                       label="Correo electronico"
-                      crossOrigin={undefined}
-                      size="md"
                       value={updateUser.email}
                       disabled={edit}
                     />
                   </div>
-                  <label className="text-gray-600 text-xs ml-6">Direccion</label>
+                  <label className="text-gray-600 text-xs ml-6">
+                    Direccion
+                  </label>
                   <div className="flex items-center gap-x-2  w-full">
                     <MapIcon className="w-5 h-5" />
                     <Input
                       name="address"
                       onChange={handleUpdateUserChange}
                       label="Direccion"
-                      crossOrigin={undefined}
-                      size="md"
                       value={updateUser.address}
                       disabled={edit}
                     />
@@ -264,22 +258,19 @@ export const UserByID = () => {
                       name="city"
                       onChange={handleUpdateUserChange}
                       label="Pais"
-                      crossOrigin={undefined}
-                      size="md"
                       value={updateUser.city}
                       disabled={edit}
                     />
                   </div>
-                  <label className="text-gray-600 text-xs ml-6">Departamento</label>
+                  <label className="text-gray-600 text-xs ml-6">
+                    Departamento
+                  </label>
                   <div className="flex items-center gap-x-2  w-full">
-                      
                     <MapIcon className="w-5 h-5" />
                     <Input
                       name="department"
                       onChange={handleUpdateUserChange}
                       label="Departamento"
-                      crossOrigin={undefined}
-                      size="md"
                       value={updateUser.department}
                       disabled={edit}
                     />
@@ -426,7 +417,7 @@ export const UserByID = () => {
                         <div className="w-full flex justify-between items-center gap-4 py-2">
                           <KeyIcon className="w-5 h-5" />
                           <div className={"w-full flex items-center gap-4"}>
-                            <PasswordInput
+                            <Input
                               className="w-full placeholder:text-gray-600"
                               name="password"
                               value={password.password}
@@ -448,7 +439,7 @@ export const UserByID = () => {
                         <div className="w-full flex items-center gap-4 py-2">
                           <KeyIcon className="w-5 h-5" />
                           <div className={"w-full flex items-center gap-4"}>
-                            <PasswordInput
+                            <Input
                               className="w-full placeholder:text-gray-600"
                               name="passwordConfirm"
                               value={password.passwordConfirm}

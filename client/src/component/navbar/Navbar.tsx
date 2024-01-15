@@ -117,9 +117,10 @@ export function NavbarWithSearch({ setOpenSidebar }: Props) {
             <MenuList
               id="notificationsList"
               onScroll={handleLoadMore}
-              className="max-h-[19rem]"
+              className="max-h-[30rem] w-auto relative p-0 "
             >
-              <div className="flex justify-between outline-none px-4 py-2">
+             
+              <div className="sticky top-0 bg-white flex w-full   justify-between outline-none px-4 py-4 border-b z-10">
                 <span className="text-sm font-medium">Notificaciones</span>
                 <Tooltip
                   placement="top"
