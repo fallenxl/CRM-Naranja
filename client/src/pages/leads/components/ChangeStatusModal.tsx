@@ -209,6 +209,9 @@ export const ChangeStatusModal = ({
         setFinancingProgramSelected("");
         handleOpen();
         socket.emit("updateLeads");
+        if(status.selected === "Pendiente de llamar") {
+          navigate("/prospectos/lista", { replace: true });
+        }
       });
     } catch (error) {
       console.log(error);

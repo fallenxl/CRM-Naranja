@@ -64,6 +64,9 @@ export const useLeadData = (id: string | undefined) => {
         setIsLoading(false);
         if(typeof res === "string") return setError(true);
         setLead(res?.data);
+        if(!lead){
+          window.location.href = "/404";
+        }
       });
       socket.on("leadUpdated", (_data: any) => {
         getLeadById(id).then((res) => {
