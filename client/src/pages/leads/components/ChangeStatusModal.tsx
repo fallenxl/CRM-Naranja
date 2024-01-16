@@ -209,7 +209,7 @@ export const ChangeStatusModal = ({
         setFinancingProgramSelected("");
         handleOpen();
         socket.emit("updateLeads");
-        if (status.selected === "Contactado") {
+        if (status.type === "Pendiente de llamar") {
           navigate(`/prospectos/lista`, { replace: true });
         }
       });
