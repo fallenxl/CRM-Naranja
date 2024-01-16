@@ -26,6 +26,7 @@ import { ToAssignProject } from "./status/ToAssignProject";
 import { hasEmptyPropertiesExcept } from "../../../utils";
 import { ToAssignModel } from "./status/ToAssignModel";
 import { AppStore } from "../../../redux/store";
+import { useNavigate } from "react-router-dom";
 interface ChangeStatusModalProps {
   open: boolean;
   handleOpen: () => void;
@@ -39,14 +40,14 @@ export const ChangeStatusModal = ({
   open,
   handleOpen,
   updateLead,
-  lead
+  lead,
 }: ChangeStatusModalProps) => {
   const [status, setStatus] = useState({
     type: "",
     enum: [],
     selected: "",
   });
-
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [userSelected, setUserSelected] = useState("");
   const [date, setDate] = useState("");
@@ -201,7 +202,7 @@ export const ChangeStatusModal = ({
       updateLeadStatus(lead._id, payload).then((res) => {
         setIsLoading(false);
         if (typeof res === "string") {
-          return setError(res);
+          navigate("/prospectos/lista");
         }
         dispatch(setStatusChange(true));
         setBankSelected("");
@@ -372,9 +373,9 @@ export const ChangeStatusModal = ({
                 </>
               )}
 
-            {(status.selected === "Precalifica en Buró" &&
+            {status.selected === "Precalifica en Buró" &&
               !lead.bankManagerID &&
-              banksAvailable) && (
+              banksAvailable && (
                 <>
                   <label
                     htmlFor="selectAdvisor"
