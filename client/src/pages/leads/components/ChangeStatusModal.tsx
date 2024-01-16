@@ -210,7 +210,7 @@ export const ChangeStatusModal = ({
         handleOpen();
         socket.emit("updateLeads");
         if (status.type === "Pendiente de llamar") {
-          navigate(`/prospectos/lista`, { replace: true });
+          window.location.href = `/prospectos/lista`;
         }
       });
     } catch (error) {
