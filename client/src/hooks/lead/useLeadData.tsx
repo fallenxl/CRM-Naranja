@@ -63,10 +63,9 @@ export const useLeadData = (id: string | undefined) => {
       getLeadById(id).then((res) => {
         setIsLoading(false);
         if(typeof res === "string") return setError(true);
+        if(!res?.data) return setError(true);
         setLead(res?.data);
-        if(!lead){
-          window.location.href = "/404";
-        }
+       
       }).catch(() => {
         window.location.href = "/prospectos/lista";
       });

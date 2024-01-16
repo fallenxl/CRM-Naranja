@@ -60,7 +60,7 @@ export const LeadById = () => {
     isLoading,
     setSocketTrigger,
   } = useLeadData(id);
-  isError(error);
+isError(error);
   const {
     edit,
     handleEdit,
