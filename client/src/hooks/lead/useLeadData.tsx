@@ -63,12 +63,10 @@ export const useLeadData = (id: string | undefined) => {
       getLeadById(id).then((res) => {
         setIsLoading(false);
         if(typeof res === "string") return setError(true);
-        if(!res?.data) return setError(true);
+        if(res?.data.message) return setError(true);
         setLead(res?.data);
        
-      }).catch(() => {
-        window.location.href = "/prospectos/lista";
-      });
+      })
       socket.on("leadUpdated", (_data: any) => {
         getLeadById(id).then((res) => {
           setLead(res?.data);

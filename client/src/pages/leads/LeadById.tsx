@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { Layout } from "../Layout";
 import { useEffect, useState } from "react";
 import { Avatar, Card, Chip } from "@material-tailwind/react";
@@ -60,7 +60,7 @@ export const LeadById = () => {
     isLoading,
     setSocketTrigger,
   } = useLeadData(id);
-isError(error);
+  isError(error, '/prospectos/lista');
   const {
     edit,
     handleEdit,

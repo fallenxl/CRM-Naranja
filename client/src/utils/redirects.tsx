@@ -7,9 +7,9 @@ export const validateID = (id: string) => {
   }
 };
 
-export const isError = (response: boolean) => {
+export const isError = (response: boolean, path: string = '/404') => {
     const navigate = useNavigate();
     if(response){
-        navigate("/404");
+        navigate(path);
     }
 };
