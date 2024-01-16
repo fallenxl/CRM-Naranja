@@ -182,7 +182,7 @@ export function Table({
                                         ? "bg-orange-400"
                                         : item[value] === "Por Asignar Proyecto"
                                         ? "bg-[#9EB384]"
-                                        : item[value] === "Liquidado" || item[value] === "Inactiva"
+                                        : item[value] === "Liquidado" || item[value] === "Inactiva" || item[value] === false
                                         ? "bg-red-400"
                                         : item[value] === "Potencial"
                                         ? "bg-orange-400"
