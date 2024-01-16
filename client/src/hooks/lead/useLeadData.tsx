@@ -67,6 +67,8 @@ export const useLeadData = (id: string | undefined) => {
         if(!lead){
           window.location.href = "/404";
         }
+      }).catch(() => {
+        window.location.href = "/prospectos/lista";
       });
       socket.on("leadUpdated", (_data: any) => {
         getLeadById(id).then((res) => {
