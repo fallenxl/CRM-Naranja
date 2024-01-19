@@ -1,4 +1,4 @@
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Layout } from "../Layout";
 import { useEffect, useState } from "react";
 import { Avatar, Card, Chip } from "@material-tailwind/react";
@@ -60,7 +60,7 @@ export const LeadById = () => {
     isLoading,
     setSocketTrigger,
   } = useLeadData(id);
-  isError(error, '/prospectos/lista');
+  isError(error, "/prospectos/lista");
   const {
     edit,
     handleEdit,
@@ -316,7 +316,7 @@ export const LeadById = () => {
                       name="source"
                       value={updateLead.source}
                       onChange={handleUpdateLeadChange}
-                      className={`w-full border border-gray-300 rounded-md p-2 text-sm ${
+                      className={`w-full border border-gray-300 bg-gray-50 rounded-md py-[.7em] px-3 text-sm ${
                         edit && "bg-blue-gray-50"
                       } text-black`}
                       disabled={edit}
@@ -328,6 +328,12 @@ export const LeadById = () => {
                       <option value="Instagram">Instagram</option>
                       <option value="Whatsapp">Whatsapp</option>
                       <option value="Referido">Referido</option>
+                      <option value="Valla publicitaria">
+                        Valla publicitaria
+                      </option>
+                      <option value="TV">TV</option>
+                      <option value="Radio">Radio</option>
+                      <option value="periodico">Periodico</option>
                       <option value="Otro">Otro</option>
                     </select>
                   </div>
@@ -383,7 +389,6 @@ export const LeadById = () => {
                     <div className="flex items-center gap-x-2  w-full">
                       <CurrencyDollarIcon className="w-5 h-5" />
                       <Input
-                    
                         name="salary"
                         onChange={handleUpdateLeadChange}
                         label="Salario"
@@ -423,12 +428,12 @@ export const LeadById = () => {
                         name="paymentMethod"
                         value={updateLead.paymentMethod}
                         onChange={handleUpdateLeadChange}
-                        className={`w-full border border-gray-300 rounded-md p-2 text-sm ${
+                        className={`w-full border border-gray-300 bg-gray-50 rounded-md py-[.7em] px-3 text-sm ${
                           edit && "bg-blue-gray-50"
                         } text-black`}
                         disabled={edit}
                       >
-                        <option value="">Forma de pago</option>
+                        <option value="">Seleccionar forma de pago</option>
                         <option value="Efectivo">Pago en Efectivo</option>
                         <option value={"Transferencia Bancaria"}>
                           Transferencia Bancaria

@@ -19,7 +19,7 @@ export const banksModule = (): RoleRoute => {
       },
       {
         path: "/bancos/lista",
-        label: "Lista de Bancos",
+        label: "Bancos",
         component: <ListBanks />,
       },
       {

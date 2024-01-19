@@ -14,7 +14,7 @@ export const projectsModule = (): RoleRoute => {
     sub: [
       {
         path: "/proyectos/lista",
-        label: "Lista de Proyectos",
+        label: "Proyectos",
         component: <ProjectsList />,
       },
       {

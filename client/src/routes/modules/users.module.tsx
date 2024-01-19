@@ -19,7 +19,7 @@ export const usersModule = (): RoleRoute => {
       },
       {
         path: "/usuarios/lista",
-        label: "Lista de Usuarios",
+        label: "Usuarios",
         component: <UsersList />,
       },
       {

@@ -19,7 +19,7 @@ export const  campaignsModule = (): RoleRoute => {
           },
           {
             path: "/campañas/lista",
-            label: "Lista de Campañas",
+            label: "Campañas",
             component: <CampaignsList />,
           },
           {

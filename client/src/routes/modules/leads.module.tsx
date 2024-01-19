@@ -19,37 +19,37 @@ export const leadsModule = (): RoleRoute => {
       },
       {
         path: "/prospectos/lista",
-        label: "Lista de Prospectos",
+        label: "Prospectos",
         component: <LeadList />,
       },
       {
         path: "/prospectos/lista-prospectos-definidos",
-        label: "Lista de Prospectos Definidos",
+        label: "Prospectos Definidos",
         component: <LeadList status="Prospecto Definido" />,
       },
       {
         path: "/prospectos/lista-precalificar-buro",
-        label: "Lista de Prospectos Precalificar Buró",
+        label: "Prospectos Precalificar Buró",
         component: <LeadList status="Precalificar Buró" />,
       },
       {
         path: "/prospectos/lista-precalifcar-banco",
-        label: "Lista de Prospectos Precalificar Banco",
+        label: "Prospectos Precalificar Banco",
         component: <LeadList status="Precalificar Banco" />,
       },
       {
         path: "/prospectos/lista-oportunidad-ventas-futuras",
-        label: "Lista de Prospectos Oportunidad Ventas Futuras",
+        label: "Prospectos Oportunidad Ventas Futuras",
         component: <LeadList status="Oportunidad de venta futura" />,
       },
       {
         path: "/prospectos/lista-aprobados",
-        label: "Lista de Prospectos Aprobados",
+        label: "Prospectos Aprobados",
         component: <LeadList status="Por Asignar Proyecto" />,
       },
       {
         path: "/prospectos/lista-por-llamar",
-        label: "Lista de Prospectos Por Llamar",
+        label: "Prospectos Por Llamar",
         component: <LeadList status="Por Llamar" />,
       },
       {
