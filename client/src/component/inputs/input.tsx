@@ -33,7 +33,7 @@ export const Input = ({
   return (
     <div className="relative w-full">
       <input
-        minLength={8}
+        {...(type === "password" && { minLength: 8 })}
         type={type === "password" && seePassword ? "text" : type}
         name={name}
         value={value}
