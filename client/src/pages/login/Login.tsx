@@ -99,9 +99,9 @@ function Login() {
       dispatch(setAuth(data));
       navigate(
         data.user.role === "BANK_MANAGER"
-          ? "/prospectos/lista-precalificar-banco"
+          ? "/prospectos/lista?status=Precalificar+Banco"
           : data.user.role === "MANAGER"
-          ? "/prospectos/lista-precalificar-buro"
+          ? "/prospectos/lista?status=Precalificar+Buró"
           : "/prospectos/lista",
         { replace: true }
       );

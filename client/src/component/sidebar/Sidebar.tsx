@@ -17,9 +17,9 @@ export function Sidebar({ openSidebar, handleOpenSidebar }: Props) {
 
 
   return (
-    <aside className={`fixed h-screen bg-white z-30 top-0 ${openSidebar ? 'w-72' : ' w-20 -left-[100px]'} md:left-0 md:sticky border-r shadow-sm duration-300`}>
+    <aside className={`fixed h-screen bg-white z-30 top-0 ${openSidebar ? 'w-72' : ' w-20 -left-[100px]'} lg:left-0 lg:sticky border-r shadow-sm duration-300`}>
       {/* Toggle sidebar button */}
-      <div onClick={() => handleOpenSidebar(!openSidebar)} className={`${openSidebar ? 'block' : 'hidden'} md:block absolute top-[4.7em] -right-5 bg-white border-2 rounded-full p-2 cursor-pointer hover:bg-blue-gray-50`}>
+      <div onClick={() => handleOpenSidebar(!openSidebar)} className={`${openSidebar ? 'block' : 'hidden'} lg:block absolute top-[4.7em] -right-5 bg-white border-2 rounded-full p-2 cursor-pointer hover:bg-blue-gray-50`}>
         <ChevronRightIcon className={`h-5 w-5 ${openSidebar && 'rotate-180'} text-gray-700`} />
       </div>
 

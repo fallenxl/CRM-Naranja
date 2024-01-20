@@ -18,7 +18,7 @@ import {
 import { getDays, getLocalStorage, getTimeOfDay } from "../../utils";
 import { LocalStorageKeys, PublicRoutes } from "../../constants";
 import { AuthResponse } from "../../interfaces";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { logout } from "../../services";
 import { useEffect, useState } from "react";
 import {
@@ -39,6 +39,8 @@ interface Props {
   setOpenSidebar: () => void;
   openSidebar: boolean;
 }
+
+
 export function NavbarWithSearch({ setOpenSidebar }: Props) {
   const navigate = useNavigate();
   // Get user data from local storage
@@ -89,10 +91,10 @@ export function NavbarWithSearch({ setOpenSidebar }: Props) {
   return (
     <Navbar
       fullWidth={false}
-      className={` px-8 py-3 max-w-[30rem] shadow-sm mb-4 rounded-xl z-10 overflow-auto md:mr-4`}
+      className={` px-8 py-3 max-w-[45rem] shadow-sm mb-4 rounded-xl z-10 overflow-auto md:mr-4`}
     >
       <div className="flex flex-wrap items-center justify-between gap-y-4 text-blue-gray-900 ">
-        <div className="flex md:hidden items-center gap-2 mr-4">
+        <div className="flex lg:hidden items-center gap-2 mr-4">
           <IconButton onClick={setOpenSidebar} variant="text" color="blue-gray">
             <Bars2Icon className="h-7 w-7" />
           </IconButton>

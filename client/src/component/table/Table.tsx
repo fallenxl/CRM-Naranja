@@ -6,7 +6,6 @@ import {
   Chip,
   CardFooter,
   IconButton,
-  Input,
 } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -19,6 +18,7 @@ import {
 import { SkeletonRow } from "./SkeletonRow";
 import { useEffect, useState } from "react";
 import { paginateArray } from "../../utils";
+import { Input } from "../inputs/input";
 
 interface Props {
   title: string;
@@ -29,6 +29,7 @@ interface Props {
   path: string;
   handleDelete?: (id: string) => void;
   isLoading?: boolean;
+  children?: React.ReactNode;
 }
 export function Table({
   title,
@@ -38,6 +39,7 @@ export function Table({
   handleDelete,
   path,
   isLoading,
+  children,
 }: Props) {
   const { user } = useSelector((state: AppStore) => state.auth);
   const [search, setSearch] = useState("");
@@ -51,7 +53,6 @@ export function Table({
   const handleSearch = (e: any) => {
     setSearch(e.target.value);
   };
-
 
   const handleNext = () => {
     setCurrentPage((prev) => prev + 1);
@@ -99,20 +100,40 @@ export function Table({
     }
   }, [search, tableRows, currentPage, rowsPerPage]);
   return (
-    <Card className="h-full w-full p-4 w-[2em]:">
-      <CardHeader floated={false} shadow={false} className="rounded-none">
+    <Card className="h-full mx-auto w-full p-4 m-0 ">
+      <CardHeader floated={false} shadow={false} className="rounded-none" >
         <div className="mb-8 flex items-center justify-between gap-4">
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-5">
             <span className="font-bold text-xl">{title}</span>
             <small color="gray" className="mt-1 font-normal">
               {description}
             </small>
           </div>
           {/* search */}
-          <div className="flex items-center gap-4">
+        </div>
+        <div className="flex flex-col-reverse md:flex-row items-center justify-between  w-full gap-5">
+          <div className="flex  items-center gap-4">
+            <select
+              onChange={(e) => {
+                setRowsPerPage(parseInt(e.target.value));
+                setCurrentPage(1);
+              }}
+              className="rounded-md bg-gray-100 text-sm text-gray-700 ml-4 p-3 flex justify-end"
+            >
+              <option className="p-2" value="10">
+                10 por página
+              </option>
+              <option value="25">25 por página</option>
+              <option value="50">50 por página</option>
+              <option value="100">100 por página</option>
+            </select>
+            {children}
+          </div>
+          <div className="w-full md:w-2/3 flex flex-row-reverse">
             <Input
+              className="w-full md:w-1/2 "
               onChange={handleSearch}
-              crossOrigin={undefined}
+              placeholder="Buscar por nombre"
               label="Buscar por nombre"
               value={search}
             />
@@ -120,16 +141,7 @@ export function Table({
         </div>
       </CardHeader>
       <CardBody className="overflow-x-scroll md:overflow-auto px-0">
-        <select onChange={(e) => {
-          setRowsPerPage(parseInt(e.target.value))
-          setCurrentPage(1)
-        }} className=" rounded-md bg-gray-100 text-sm text-gray-700 ml-4 p-3 flex justify-end">
-          <option className="p-2" value="10">10 por página</option>
-          <option value="25">25 por página</option>
-          <option value="50">50 por página</option>
-          <option value="100">100 por página</option>
-        </select>
-        <table className="mt-4 w-full min-w-max table-auto text-left border">
+        <table className="mt-4 w-full  table-auto text-left border">
           <thead>
             <tr>
               {tableHead.map((head) => (
@@ -182,11 +194,13 @@ export function Table({
                                         ? "bg-orange-400"
                                         : item[value] === "Por Asignar Proyecto"
                                         ? "bg-[#9EB384]"
-                                        : item[value] === "Liquidado" || item[value] === "Inactiva" || item[value] === false
+                                        : item[value] === "Liquidado" ||
+                                          item[value] === "Inactiva" ||
+                                          item[value] === false
                                         ? "bg-red-400"
                                         : item[value] === "Potencial"
                                         ? "bg-orange-400"
-                                        :  "bg-green-500"
+                                        : "bg-green-500"
                                     }
                                   />
                                 ) : value === "date" ? (
@@ -255,16 +269,26 @@ export function Table({
         </table>
       </CardBody>
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-        <span className="font-normal text-sm">{`Pagina ${currentPage} de ${totalPages}`}</span>
+        <span className="font-normal text-sm">{`Pagina ${currentPage} de ${totalPages == 0? 1 : totalPages}`}</span>
         <div className="flex gap-2 text-sm">
-         {hasPrevious && <button onClick={handlePrevious} className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-100">
-            <ChevronLeftIcon className="w-4 h-4 inline-block ml-1" />
-            Anterior
-          </button>}
-          {hasNext && <button onClick={handleNext} className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-100">
-            Siguiente
-            <ChevronRightIcon className="w-4 h-4 inline-block ml-1" />
-          </button>}
+          {hasPrevious && (
+            <button
+              onClick={handlePrevious}
+              className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-100"
+            >
+              <ChevronLeftIcon className="w-4 h-4 inline-block ml-1" />
+              Anterior
+            </button>
+          )}
+          {hasNext && (
+            <button
+              onClick={handleNext}
+              className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-100"
+            >
+              Siguiente
+              <ChevronRightIcon className="w-4 h-4 inline-block ml-1" />
+            </button>
+          )}
         </div>
       </CardFooter>
     </Card>
