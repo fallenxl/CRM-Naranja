@@ -27,8 +27,6 @@ function App() {
             <Route path={PublicRoutes.LOGIN} element={<Login />} />
             <Route element={<AuthGuard />}>
               <Route path={"prospectos/lista"} element={<LeadList />} />
-              <Route path={"prospectos/lista-precalificar-banco"} element={<LeadList status="Precalificar Banco" />} />
-              <Route path={"prospectos/lista-precalificar-buro"} element={<LeadList status="Precalificar Buró" />} />
               {renderRoutesByRole()}
               <Route path="*" element={<NotFound />} />
             </Route>
