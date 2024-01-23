@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Layout } from "../Layout";
 import { Input, Textarea } from "@material-tailwind/react";
-import {  getAllCampaignsByStatus } from "../../services/campaign";
+import { getAllCampaignsByStatus } from "../../services/campaign";
 import {
   getAllAdvisor,
   getLastAdvisor,
@@ -16,6 +16,7 @@ import {
 } from "../../component/alerts/Alerts";
 import { Loading } from "../../component";
 import { capitalizeFirtsLetterByWord, clearDNIMask } from "../../utils";
+import { channels } from "../../constants/general";
 
 interface Campaign {
   _id: string;
@@ -212,7 +213,8 @@ export const CreateLead = () => {
                     {autoAssign && (
                       <div className="flex flex-col items-center">
                         <small className="text-gray-600">
-                          Configuracion automatica <span className="font-bold">activada</span>
+                          Configuracion automatica{" "}
+                          <span className="font-bold">activada</span>
                         </small>
                         <div className="flex items-center gap-2">
                           <small className="text-gray-600">
@@ -310,13 +312,13 @@ export const CreateLead = () => {
                 className="border p-2 text-gray-700 rounded-md border-blue-gray-300"
                 placeholder="Seleccione una fuente"
               >
-                <option value="Facebook">Facebook</option>
-                <option value="Sitio web">Sitio web</option>
-                <option value="Llamada">Llamada</option>
-                <option value="Instagram">Instagram</option>
-                <option value="Whatsapp">Whatsapp</option>
-                <option value="Referido">Referido</option>
-                <option value="Otro">Otro</option>
+                {channels.map((channel) => {
+                  return (
+                    <option value={channel} key={channel}>
+                      {channel}
+                    </option>
+                  );
+                })}
               </select>
             </div>
             <Textarea

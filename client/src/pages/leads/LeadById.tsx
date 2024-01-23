@@ -45,7 +45,7 @@ import {
 import Swal from "sweetalert2";
 import { currencyFormatToLempiras } from "../../utils/currencyFormat.ts";
 import { Input } from "../../component/inputs/input.tsx";
-
+import { channels } from "../../constants/general.ts";
 export const LeadById = () => {
   const { id } = useParams<{ id: string }>();
   validateID(id ?? "");
@@ -322,19 +322,13 @@ export const LeadById = () => {
                       disabled={edit}
                     >
                       <option value="">Canal</option>
-                      <option value="Facebook">Facebook</option>
-                      <option value="Sitio web">Sitio web</option>
-                      <option value="Llamada">Llamada</option>
-                      <option value="Instagram">Instagram</option>
-                      <option value="Whatsapp">Whatsapp</option>
-                      <option value="Referido">Referido</option>
-                      <option value="Valla publicitaria">
-                        Valla publicitaria
-                      </option>
-                      <option value="TV">TV</option>
-                      <option value="Radio">Radio</option>
-                      <option value="periodico">Periodico</option>
-                      <option value="Otro">Otro</option>
+                      {channels.map((channel, index) => {
+                        return (
+                          <option key={index} value={channel}>
+                            {channel}
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
                   <label className="text-gray-700 text-xs ml-7">

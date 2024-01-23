@@ -19,7 +19,7 @@ export const Layout = ({ children, title }: Props) => {
   const handleOpenSidebar = () => setOpenSidebar(!openSidebar);
   return (
     <>
-      <div className="flex w-full min-h-screen relative overflow-x-hidden">
+      <div className="flex w-full min-h-screen relative">
       <div className="absolute inset-0 -z-10 h-full w-full bg-gray-100 bg-[radial-gradient(rgba(0,0,0,0.09)_1px,transparent_1px)] [background-size:16px_16px]"></div>
         <Sidebar openSidebar={openSidebar} handleOpenSidebar={setOpenSidebar} />
         <div className=" w-full px-2 md:px-7 py-5 ">
@@ -37,7 +37,7 @@ export const Layout = ({ children, title }: Props) => {
               openSidebar={openSidebar}
             />
           </div>
-          <main className="p-4 relative w-auto ">{children}</main>
+          <main className="p-4 relative w-auto overflow-x-hidden">{children}</main>
         </div>
       </div>
       
