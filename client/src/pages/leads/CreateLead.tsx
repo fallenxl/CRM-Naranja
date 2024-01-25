@@ -152,13 +152,15 @@ export const CreateLead = () => {
                     user.role !== "COMMUNITY_MANAGER" && (
                       <div className="flex flex-col">
                         <small className="text-gray-600">
-                          Asigna un asesor (Opcional):
+                          <strong className="text-red-500 text-sm">*</strong>
+                          Asigna un asesor:
                         </small>
                         <select
                           placeholder="Seleccione un asesor"
                           className="border p-2 text-gray-700 rounded-md border-blue-gray-300"
                           onChange={handleAdvisorSelected}
                           value={advisorSelected}
+                          required
                         >
                           <option value="" defaultChecked>
                             Sin asignar
@@ -181,8 +183,8 @@ export const CreateLead = () => {
 
                   <div className="flex flex-col">
                     <small className="text-gray-600">
-                      Selecciona una campaña:
                       <strong className="text-red-500 text-sm">*</strong>
+                      Selecciona una campaña:
                     </small>
                     <select
                       placeholder="Seleccione un asesor"
