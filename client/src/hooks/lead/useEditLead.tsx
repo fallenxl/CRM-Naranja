@@ -2,79 +2,89 @@ import { useEffect, useState } from "react";
 import { updateLeadService } from "../../services/lead.services";
 import { useSelector } from "react-redux";
 
-export const useEditLead = (id: string | undefined, lead:any) => {
-    const [updateLead, setUpdateLead] = useState({
-        name:'',
-        dni: '',
-        phone: '',
-        address: '',
-        email: '',
-        department: '',
-        country: '',
-        interestedIn: '',
-        comment: '',
-        source: '',
-        salary: '',
-        workAddress: '',
-        workTime: '',
-        paymentMethod : '',
-        workPosition: '',
+export const useEditLead = (id: string | undefined, lead: any) => {
+  const [updateLead, setUpdateLead] = useState<any>({
+    name: "",
+    dni: "",
+    phone: "",
+    address: "",
+    email: "",
+    department: "",
+    country: "",
+    interestedIn: "",
+    comment: "",
+    source: "",
+    salary: "",
+    workAddress: "",
+    workTime: "",
+    paymentMethod: "",
+    workPosition: "",
+  });
+  const [updatedColumns, setUpdatedColumns] = useState<any>([]);
+  const [edit, setEdit] = useState(true);
+  const socket = useSelector((state: any) => state.socket.socket);
+  useEffect(() => {
+    setUpdateLead({
+      name: lead.name,
+      dni: lead.dni,
+      phone: lead.phone,
+      address: lead.address,
+      department: lead.department,
+      country: lead.country,
+      email: lead.email,
+      interestedIn: lead.interestedIn,
+      comment: lead.comment,
+      source: lead.source,
+      salary: lead.salary,
+      workAddress: lead.workAddress,
+      workTime: lead.workTime,
+      paymentMethod: lead.paymentMethod,
+      workPosition: lead.workPosition,
     });
-    const [edit, setEdit] = useState(true);
-    const socket = useSelector((state:any) => state.socket.socket);
-    useEffect(() => {
-            setUpdateLead({
-                name: lead.name,
-                dni: lead.dni,
-                phone: lead.phone,
-                address: lead.address,
-                department: lead.department,
-                country: lead.country,
-                email: lead.email,
-                interestedIn: lead.interestedIn,
-                comment: lead.comment,
-                source: lead.source,
-                salary: lead.salary,
-                workAddress: lead.workAddress,
-                workTime: lead.workTime,
-                paymentMethod : lead.paymentMethod,
-                workPosition: lead.workPosition,
+  }, [lead, id]);
 
-            })
-    }, [lead, id]);
+  const handleUpdateLeadChange = (e: any) => {
+    // add only once the column to the array and remove it if the value is the same as the original
 
-    const handleUpdateLeadChange = (e:any) => {
-        setUpdateLead({
-            ...updateLead,
-            [e.target.name]: e.target.value,
-        });
-    }
+    setUpdateLead({
+      ...updateLead,
+      [e.target.name]: e.target.value,
+    });
 
-    const handleEdit = () => {
-        setEdit(!edit);
-    }
+    setUpdatedColumns((prev: any) => {
+      if (!prev.includes(e.target.name)) {
+        return [...prev, e.target.name];
+      } else if (lead[e.target.name] === e.target.value) {
+        return prev.filter((column: any) => column !== e.target.name);
+      }
+      return prev;
+    });
+  };
 
-    const handleCancelEdit = () => {
-        setUpdateLead(lead)
+  const handleEdit = () => {
+    setEdit(!edit);
+  };
+
+  const handleCancelEdit = () => {
+    setUpdateLead(lead);
+    setEdit(true);
+  };
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    updateLeadService(id, { ...updateLead, updatedColumns }).then((res) => {
+      if (res) {
         setEdit(true);
+        socket.emit("leadUpdated");
+      }
+    });
+  };
 
-    }
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-        updateLeadService(id, updateLead).then((res) => {
-            if(res){
-                setEdit(true);
-                socket.emit("leadUpdated");
-            }
-        });
-    };
-
-    return {
-        updateLead,
-        edit,
-        handleUpdateLeadChange,
-        handleEdit,
-        handleCancelEdit,
-        handleSubmit
-    }
+  return {
+    updateLead,
+    edit,
+    handleUpdateLeadChange,
+    handleEdit,
+    handleCancelEdit,
+    handleSubmit,
+  };
 };
