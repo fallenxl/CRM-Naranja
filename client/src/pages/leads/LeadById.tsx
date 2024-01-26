@@ -482,19 +482,14 @@ export const LeadById = () => {
                       </option>
                     )}
                     {advisorList.length > 0 &&
-                      advisorList.map((item: any) => {
-                        return (
-                          <>
-                            {item._id === lead.advisorID?._id ? (
-                              <option value={item._id} selected={true}>
-                                {item.name}
-                              </option>
-                            ) : (
-                              <option value={item._id}>{item.name}</option>
-                            )}
-                          </>
-                        );
-                      })}
+                      advisorList.map((item: any) => (
+                        <option
+                          value={item._id}
+                          selected={item._id === lead.advisorID?._id}
+                        >
+                          {item.name}
+                        </option>
+                      ))}
                   </select>
                 </div>
                 {user.role === "ADMIN" && (

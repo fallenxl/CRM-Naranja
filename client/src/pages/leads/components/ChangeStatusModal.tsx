@@ -47,6 +47,8 @@ export const ChangeStatusModal = ({
     enum: [],
     selected: "",
   });
+
+  const user = useSelector((state: AppStore) => state.auth.user);
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [userSelected, setUserSelected] = useState("");
@@ -93,7 +95,6 @@ export const ChangeStatusModal = ({
         } else if (res?.data.type === "Precalificar Buró") {
           getUsersByRole("BANK_MANAGER").then((res) => {
             setUsers(res);
-            console.log(res);
           });
         }
       });
@@ -209,7 +210,7 @@ export const ChangeStatusModal = ({
         setFinancingProgramSelected("");
         handleOpen();
         socket.emit("updateLeads");
-        if (status.type === "Pendiente de llamar") {
+        if (status.type === "Pendiente de llamar" && user.role !== "ADMIN") {
           window.location.href = `/prospectos/lista`;
         }
       });
@@ -498,7 +499,7 @@ export const ChangeStatusModal = ({
 
             {/* Contactarlo */}
             {(status.selected === "No dio informacion" ||
-              status.selected === "No precalificado Buró" ||
+              status.selected === "No Precalifica en Buró" ||
               status.selected === "Oportunidad de venta futura" ||
               status.selected === "No contesto") && (
               <>
