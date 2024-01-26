@@ -139,7 +139,7 @@ export const CreateLead = () => {
             <div className="flex flex-col xl:flex-row items-center justify-between mb-4 gap-4">
               <div>
                 <h1 className="text-xl text-gray-700">
-                  Registrar un nuevo prospecto 🚀
+                  Registrar un nuevo prospecto 
                 </h1>
                 <small className="text-gray-500 mb-6">
                   Llena de forma correcta los campos del prospecto
@@ -165,6 +165,7 @@ export const CreateLead = () => {
                           <option value="" defaultChecked>
                             Sin asignar
                           </option>
+                          <hr />
                           {advisors.length > 0 &&
                             advisors.map((advisor) => {
                               return (
@@ -196,6 +197,7 @@ export const CreateLead = () => {
                       <option value="" defaultChecked>
                         Sin asignar
                       </option>
+                      <hr />
                       {campaigns.map((campaign) => {
                         return (
                           <option

@@ -365,6 +365,7 @@ export const ChangeStatusModal = ({
                     <option value="" defaultChecked disabled>
                       Seleccionar encargado
                     </option>
+                    <hr />
                     {users.length > 0 &&
                       users.map((item: any) => {
                         return (
@@ -396,6 +397,7 @@ export const ChangeStatusModal = ({
                     <option value="" defaultChecked disabled>
                       Seleccionar encargado
                     </option>
+                    <hr />
                     {users &&
                       users.map((item: any) => {
                         return (
@@ -422,6 +424,7 @@ export const ChangeStatusModal = ({
                   <option value="" defaultChecked disabled>
                     Seleccionar banco
                   </option>
+                  <hr />
                   {banks &&
                     banks.map((item: any) => {
                       return (
@@ -457,6 +460,7 @@ export const ChangeStatusModal = ({
                       <option value="" defaultChecked disabled>
                         Seleccionar programa de financiamiento
                       </option>
+                      <hr />
                       {bank.financingPrograms?.map((item, index) => {
                         return (
                           <option
