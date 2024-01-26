@@ -165,14 +165,14 @@ export const CreateLead = () => {
                           <option value="" defaultChecked>
                             Sin asignar
                           </option>
-                          <hr />
+                          
                           {advisors.length > 0 &&
                             advisors.map((advisor) => {
                               return (
                                 <option
                                   value={advisor._id}
                                   key={advisor._id}
-                                  className="mb-1"
+                                  className="mb-1 p-4"
                                 >
                                   {advisor.name}
                                 </option>
@@ -197,7 +197,7 @@ export const CreateLead = () => {
                       <option value="" defaultChecked>
                         Sin asignar
                       </option>
-                      <hr />
+                     
                       {campaigns.map((campaign) => {
                         return (
                           <option

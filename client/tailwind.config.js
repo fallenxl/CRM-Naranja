@@ -19,5 +19,8 @@ export default withMt({
       }
     },
   },
-  plugins: [],
+  plugins: [
+    // Nested CSS
+    require('tailwindcss/nesting'),
+  ],
 })

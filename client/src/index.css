@@ -51,14 +51,10 @@ textarea::placeholder {
   color: rgba(0, 0, 0, 0.5);
 }
 
-select {
-  font-family: "Inter", sans-serif;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.6);
-}
 
 label {
   font-family: "Inter", sans-serif;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.6) ;
 }
+
