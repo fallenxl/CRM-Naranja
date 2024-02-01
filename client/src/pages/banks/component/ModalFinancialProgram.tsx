@@ -99,17 +99,17 @@ export const ModalFinancialProgram = ({
               placeholder="Programa de financiamiento"
               className="border border-gray-300 px-4 py-2 rounded-md"
             />
-            <label htmlFor="description">Descripcion</label>
+            <label htmlFor="description">Descripción</label>
             <textarea
               name="description"
-              placeholder="Descripcion"
+              placeholder="Descripción"
               value={formData.description}
               onChange={handleInputChange}
               className="border border-gray-300 px-4 py-2 rounded-md resize-none"
             />
-            <label htmlFor="minAmount">Tasa de interes</label>
+            <label htmlFor="minAmount">Tasa de interés</label>
             <small className="text-gray-500">
-              Agrega un porcentaje de interes entre 0 y 100
+              Agrega un porcentaje de interés entre 0 y 100
             </small>
             <input
               type="number"
@@ -119,7 +119,7 @@ export const ModalFinancialProgram = ({
               min={0}
               max={100}
               name="interestRate"
-              placeholder="Tasa de interes"
+              placeholder="Tasa de interés"
               prefix="%"
               className="border border-gray-300 px-4 py-2 rounded-md"
             />

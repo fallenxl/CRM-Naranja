@@ -14,12 +14,12 @@ export const ListBanks = () => {
       setBanks(res);
     });
   }, []);
-  const tableHead = ["Nombre", "Descripcion"];
+  const tableHead = ["Nombre", "Descripción"];
   const tableRows = banks.map((bank: any) => {
     return {
       id: bank._id,
       name: bank.name,
-      description: bank.description ?? "Sin descripcion",
+      description: bank.description ?? "Sin descripción",
     };
   });
   const handleDelete = (id: string) => {

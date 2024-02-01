@@ -27,9 +27,9 @@ export function UsersList() {
   const tableHead = [
     "Nombre Completo",
     "Email",
-    "Telefono",
+    "Teléfono",
     "Rol",
-    "Posicion",
+    "Posición",
     "Estado",
   ];
   const tableRows = users.map((user: any) => {

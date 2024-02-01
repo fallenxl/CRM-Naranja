@@ -21,7 +21,7 @@ export const CreateProject = () => {
       alert(JSON.stringify(res));
       if(typeof res === "string") return errorAlert('Oops...',res);
 
-      successAlertWithRedirect('Exito!','Se ha creado el proyecto correctamente', '/proyectos/lista');
+      successAlertWithRedirect('Éxito!','Se ha creado el proyecto correctamente', '/proyectos/lista');
     });
   };
   const handleInputChange = (e: any) => {
@@ -69,10 +69,10 @@ export const CreateProject = () => {
             name="description"
             value={formData.description}
             onChange={handleInputChange}
-            label="Descripcion"
+            label="Descripción"
           />
           <Textarea
-            label="Direccion"
+            label="Dirección"
             value={formData.address}
             onChange={handleInputChange}
             name="address"

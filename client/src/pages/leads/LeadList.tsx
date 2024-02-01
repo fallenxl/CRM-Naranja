@@ -58,7 +58,7 @@ export function LeadList() {
   const handleDelete = (id: string) => {
     Swal.fire({
       title: "¿Estas seguro?",
-      text: "No podras revertir esta accion",
+      text: "No podrás revertir esta acción",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -93,7 +93,7 @@ export function LeadList() {
     "Fecha",
     "Nombre Completo",
     "DNI",
-    "Telefono",
+    "Teléfono",
     "Estado",
     "Asesor",
   ];

@@ -104,14 +104,14 @@ export const CreateUser = () => {
             onChange={handleInputChange}
             crossOrigin={undefined}
             type="text"
-            label="Telefono"
+            label="Teléfono"
             required
           />
           <Textarea
             name="address"
             value={formData.address}
             onChange={handleInputChange}
-            label="Direccion"
+            label="Dirección"
             required
           />
           <Input
@@ -139,7 +139,7 @@ export const CreateUser = () => {
             className="border border-blue-gray-300 rounded-md p-3"
           >
             <option value="" selected disabled>
-              Posicion
+              Posición
             </option>
             {POSITIONS.map((position) => (
               <option value={position}>

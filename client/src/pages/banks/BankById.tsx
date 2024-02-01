@@ -59,7 +59,7 @@ export const BankById = () => {
         return errorAlertWithTimer("Error", response);
       }
       setBank(response?.data as Bank);
-      successAlertWithTimer("Exito", "Banco actualizado correctamente");
+      successAlertWithTimer("Éxito", "Banco actualizado correctamente");
       setEdit(true);
     });
   };
@@ -113,7 +113,7 @@ export const BankById = () => {
           {/* Lead info */}
           <div className="w-full col-start-1 col-end-13 flex flex-col items-center p-4">
             <div className="w-full flex justify-between py-2">
-              <span>Informacion</span>
+              <span>Información</span>
               <button
                 onClick={handleEdit}
                 className="flex gap-x-2 items-center"
@@ -144,14 +144,14 @@ export const BankById = () => {
                   disabled={edit}
                 />
               </div>
-              <label className="text-gray-700 text-xs ml-7">Descripcion</label>
+              <label className="text-gray-700 text-xs ml-7">Descripción</label>
               <div className="flex items-center gap-x-2  w-full">
                 <IdentificationIcon className="w-5 h-5" />
                 <Textarea
                   onChange={handleChange}
                   name="description"
                   disabled={edit}
-                  label="Descripcion"
+                  label="Descripción"
                   size="md"
                   value={updateBank.description}
                 />

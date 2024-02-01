@@ -19,7 +19,7 @@ export function CampaignsList() {
   const handleDelete = (id: string) => {
     Swal.fire({
       title: "¿Estas seguro?",
-      text: "No podras revertir esta accion",
+      text: "No podrás revertir esta acción",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Si, eliminar",
@@ -47,22 +47,22 @@ export function CampaignsList() {
 
   const tableHead = [
     "Nombre de la campaña",
-    "Descripcion",
+    "Descripción",
     "Inicio",
-    "Finalizacion",
+    "Finalización",
     "Estado",
   ];
   const tableRows = campaigns.map((campaign: any) => {
     return {
       id: campaign._id,
       name: campaign.name,
-      description: campaign.description ?? "Sin descripcion",
+      description: campaign.description ?? "Sin descripción",
       startDate: campaign.startDate
         ? getFormattedDate(campaign.startDate)
         : "Sin fecha de inicio",
       endDate: campaign.endDate
         ? getFormattedDate(campaign.endDate)
-        : "Sin fecha de finalizacion",
+        : "Sin fecha de finalización",
       status: campaign.status? "Activa" : "Inactiva",
     };
   });

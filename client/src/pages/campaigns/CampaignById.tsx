@@ -102,7 +102,7 @@ export const CampaignById = () => {
           {/* Lead info */}
           <div className="w-full col-start-1 col-end-13 flex flex-col items-center p-4">
             <div className="w-full flex justify-between py-2">
-              <span>Informacion</span>
+              <span>Información</span>
               <button
                 onClick={handleEdit}
                 className="flex gap-x-2 items-center"
@@ -148,14 +148,14 @@ export const CampaignById = () => {
                   disabled={edit}
                 />
               </div>
-              <label className="text-gray-700 text-xs ml-7">Descripcion</label>
+              <label className="text-gray-700 text-xs ml-7">Descripción</label>
               <div className="flex items-center gap-x-2  w-full">
                 <IdentificationIcon className="w-5 h-5" />
                 <Textarea
                   onChange={handleUpdateCampaignChange}
                   name="description"
                   disabled={edit}
-                  label="Descripcion"
+                  label="Descripción"
                   value={updateCampaign.description}
                 />
               </div>
@@ -174,7 +174,7 @@ export const CampaignById = () => {
                 />
               </div>
               <label className="text-gray-700 text-xs ml-7">
-                Fecha de finalizacion
+                Fecha de finalización
               </label>
 
               <div className="flex items-center gap-x-2  w-full">
@@ -182,7 +182,7 @@ export const CampaignById = () => {
                 <Input
                   name="endDate"
                   onChange={handleUpdateCampaignChange}
-                  label="Fecha de finalizacion"
+                  label="Fecha de finalización"
                   type="date"
                   value={getFormattedDate(updateCampaign.endDate ?? "")}
                   disabled={edit}

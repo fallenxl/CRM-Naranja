@@ -20,7 +20,7 @@ export const LeadTimeline = ({ lead }: Props) => {
         <ClockIcon className="w-5 h-5" />
         <h4 className="font-bold  text-gray-700 ">Lead Timeline</h4>
       </div>
-      <Timeline className="max-h-[70.7em] overflow-auto px-4">
+      <Timeline className="max-h-[43.2em] overflow-auto px-4">
         {lead.timeline
           .sort((a: any, b: any) => {
             return new Date(b.date).getTime() - new Date(a.date).getTime();

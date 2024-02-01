@@ -105,7 +105,8 @@ export const LeadById = () => {
     if (!lead.status.role) return true;
     if (role === "ADMIN") return true;
     if (lead.status.role === role) return true;
-    if(Array.isArray(lead.status.role) && lead.status.role.includes(role)) return true;
+    if (Array.isArray(lead.status.role) && lead.status.role.includes(role))
+      return true;
   };
 
   const statusChange = useSelector(
@@ -189,7 +190,7 @@ export const LeadById = () => {
                   </div>
                 </div>
                 <div className="w-full flex justify-between py-2">
-                  <span className="font-bold text-gray-600">Informacion</span>
+                  <span className="font-bold text-gray-600">Información</span>
                   <button
                     onClick={handleEdit}
                     className="flex gap-x-2 items-center"
@@ -234,40 +235,40 @@ export const LeadById = () => {
                     />
                   </div>
                   <label className="text-gray-700 text-xs ml-7">
-                    Numero de telefono
+                    Numero de teléfono
                   </label>
                   <div className="flex items-center gap-x-2  w-full">
                     <PhoneIcon className="w-5 h-5" />
                     <Input
                       name="phone"
                       onChange={handleUpdateLeadChange}
-                      label="Numero de telefono"
+                      label="Numero de teléfono"
                       value={updateLead.phone}
                       disabled={edit}
                     />
                   </div>
                   <label className="text-gray-700 text-xs ml-7">
-                    Correo electronico
+                    Correo electrónico
                   </label>
                   <div className="flex items-center gap-x-2  w-full">
                     <AtSymbolIcon className="w-5 h-5" />
                     <Input
                       name="email"
                       onChange={handleUpdateLeadChange}
-                      label="Correo electronico"
+                      label="Correo electrónico"
                       value={updateLead.email}
                       disabled={edit}
                     />
                   </div>
                   <label className="text-gray-700 text-xs ml-7">
-                    Direccion
+                    Dirección
                   </label>
                   <div className="flex items-center gap-x-2  w-full">
                     <MapIcon className="w-5 h-5" />
                     <Input
                       name="address"
                       onChange={handleUpdateLeadChange}
-                      label="Direccion"
+                      label="Dirección"
                       value={updateLead.address}
                       disabled={edit}
                     />
@@ -285,13 +286,13 @@ export const LeadById = () => {
                       disabled={edit}
                     />
                   </div>
-                  <label className="text-gray-700 text-xs ml-7">Pais</label>
+                  <label className="text-gray-700 text-xs ml-7">País</label>
                   <div className="flex items-center gap-x-2  w-full">
                     <MapIcon className="w-5 h-5" />
                     <Input
                       name="country"
                       onChange={handleUpdateLeadChange}
-                      label="Pais"
+                      label="País"
                       value={updateLead.country}
                       disabled={edit}
                     />
@@ -364,14 +365,14 @@ export const LeadById = () => {
                       />
                     </div>
                     <label className="text-gray-700 text-xs ml-7">
-                      Posicion
+                      Posición
                     </label>
                     <div className="flex items-center gap-x-2  w-full">
                       <UserCircleIcon className="w-5 h-5" />
                       <Input
                         name="workPosition"
                         onChange={handleUpdateLeadChange}
-                        label="Posicion"
+                        label="Posición"
                         value={updateLead.workPosition}
                         disabled={edit}
                       />
@@ -401,20 +402,20 @@ export const LeadById = () => {
                       />
                     </div>
                     <label className="text-gray-700 text-xs ml-7">
-                      Antiguedad
+                      Antigüedad
                     </label>
                     <div className="flex items-center gap-x-2  w-full">
                       <ClockIcon className="w-5 h-5" />
                       <Input
                         name="workTime"
                         onChange={handleUpdateLeadChange}
-                        label="Antiguedad"
+                        label="Antigüedad"
                         value={updateLead.workTime}
                         disabled={edit}
                       />
                     </div>
                     <label className="text-gray-700 text-xs ml-7">
-                      Metodo de pago
+                      Método de pago
                     </label>
                     <div className="flex items-center gap-x-2  w-full">
                       <CreditCardIcon className="w-5 h-5" />
@@ -689,6 +690,45 @@ export const LeadById = () => {
                       )}
                     </>
                   )}
+                </>
+              )}
+              {lead.projectDetails?.houseModel && (
+                <>
+                  <div className="flex items-center p-2 border-b gap-2">
+                    <h4 className="font-bold  text-gray-700 ">
+                      Detalles Modelo de Casa
+                    </h4>
+                  </div>
+                  <div className="flex items-center gap-2 py-2 w-full">
+                    <HomeIcon className="w-4 h-4" />
+                    <span className="text-sm text-gray-600  ">Modelo:</span>
+                    <span className="text-sm">
+                      {lead.projectDetails.houseModel.model}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 py-2 w-full">
+                    <HomeIcon className="w-4 h-4" />
+                    <span className="text-sm text-gray-600  ">Area:</span>
+                    <span className="text-sm">
+                      {lead.projectDetails.houseModel.area} v²
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 py-2 w-full">
+                    <HomeIcon className="w-4 h-4" />
+                    <span className="text-sm text-gray-600  ">Precio:</span>
+                    <span className="text-sm">
+                      {lead.projectDetails.houseModel.price?.toString()}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 py-2 w-full">
+                    <HomeIcon className="w-4 h-4" />
+                    <span className="text-sm text-gray-600  ">
+                      Precio con descuento:
+                    </span>
+                    <span className="text-sm">
+                      {lead.projectDetails.houseModel.priceWithDiscount}
+                    </span>
+                  </div>
                 </>
               )}
             </Card>

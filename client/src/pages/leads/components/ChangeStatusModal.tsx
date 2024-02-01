@@ -267,7 +267,7 @@ export const ChangeStatusModal = ({
               className="flex items-center bg-yellow-700"
               icon={<ExclamationTriangleIcon className="w-5 h-5" />}
             >
-              {`El prospecto ya ha sido rechazado por todos los bancos disponibles, por favor envielo a oportunidad de venta futura`}
+              {`El prospecto ya ha sido rechazado por todos los bancos disponibles, por favor envíelo a oportunidad de venta futura`}
             </Alert>
           )}
           <div className="flex gap-2 items-center">
@@ -424,7 +424,7 @@ export const ChangeStatusModal = ({
                   </select>
                 </>
               )}
-            {/* Precalificar buro */}
+            {/* Precalificar Buró */}
             {status.selected === "Precalifica en Buró" && banksAvailable && (
               <>
                 <label htmlFor="selectBank" className="text-gray-600 font-bold">
@@ -491,7 +491,7 @@ export const ChangeStatusModal = ({
                     </select>
                     {financingProgramSelected && (
                       <span className="text-gray-600">
-                        Descripcion:{" "}
+                        Descripción:{" "}
                         {
                           bank.financingPrograms?.find(
                             (program) =>
@@ -519,7 +519,7 @@ export const ChangeStatusModal = ({
             )}
 
             {/* Contactarlo */}
-            {(status.selected === "No dio informacion" ||
+            {(status.selected === "No dio información" ||
               status.selected === "No Precalifica en Buró" ||
               status.selected === "Oportunidad de venta futura" ||
               status.selected === "No contesto") && (
@@ -549,7 +549,7 @@ export const ChangeStatusModal = ({
           <button
             type="button"
             onClick={handleOpen}
-            className="btn btn-outlin bg-gray-400 p-2 rounded-md hover:bg-red-400 text-white"
+            className="btn btn-outline bg-gray-400 p-2 rounded-md hover:bg-red-400 text-white"
           >
             Cancelar
           </button>

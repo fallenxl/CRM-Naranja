@@ -117,16 +117,7 @@ function Login() {
       <div className="hidden xl:block absolute inset-0 -z-10 h-full w-full bg-gray-50 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]"></div>
       {/* CONTAINER */}
       <div className="w-full flex items-center justify-center gap-x-10 p-0 md:p-10">
-        {/* Information content (LEFT) */}
-        {/* <div className="hidden w-3/6 lg:flex flex-col items-center justify-center">
-          <h2 className="font-bold text-xl text-[var(--primary)] ">
-            CRM Sig-Urban
-          </h2>
-          <small className="dark:text-white">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet,
-            iste!
-          </small>
-        </div> */}
+        
         {/* Login container (RIGHT) */}
         <div className="w-5/6 lg:w-3/6 gap-y-8 py-10  h-auto border-none xl:border xl:bg-white rounded-md">
           <div className="p-0   xl:px-[80px] ">
@@ -143,7 +134,7 @@ function Login() {
                     Iniciar sesión
                   </h2>
                   <small className="dark:text-white">
-                    Inicio de sesión rapido, ultima cuenta utilizada:
+                    Inicio de sesión rápido, ultima cuenta utilizada:
                   </small>
                 </div>
                 {error && (

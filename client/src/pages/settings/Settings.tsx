@@ -34,7 +34,7 @@ export const Settings = () => {
       <div className="w-3/4 flex flex-col gap-10 mx-auto mb-10">
         <div className="w-full border-b-2 border-gray-300 py-4">
           <h2 className="text-2xl font-bold text-gray-800 ">
-            Configuracion de prospectos
+            Configuración de prospectos
           </h2>
         </div>
         <div className="flex justify-between h-4">
@@ -52,7 +52,7 @@ export const Settings = () => {
         {user.role === "ADMIN" && 
         <div className="flex justify-between h-4">
           <label className=" text-gray-800 w-3/4">
-            Dias maximos para contactar a un prospecto
+            Dias máximos para contactar a un prospecto
           </label>
           <Input
           crossOrigin={undefined}

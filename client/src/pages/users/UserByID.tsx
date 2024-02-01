@@ -95,7 +95,7 @@ export const UserByID = () => {
         password: "",
         passwordConfirm: "",
       });
-      successAlert("Exito", "Contraseña actualizada");
+      successAlert("Éxito", "Contraseña actualizada");
     });
   };
 
@@ -127,7 +127,7 @@ export const UserByID = () => {
       if (typeof res === "string") {
         return setError(res);
       }
-      successAlert("Exito", "Estado actualizado");
+      successAlert("Éxito", "Estado actualizado");
       setUser({ ...user, status: updateUser.status });
       setEditStatus(false);
     });
@@ -138,7 +138,7 @@ export const UserByID = () => {
       if (typeof res === "string") {
         return setError(res);
       }
-      successAlert("Exito", "Rol actualizado");
+      successAlert("Éxito", "Rol actualizado");
       setUser({ ...user, role: updateUser.role });
       setEditRole(false);
     });
@@ -170,7 +170,7 @@ export const UserByID = () => {
                   </div>
                 </div>
                 <div className="w-full flex justify-between py-2">
-                  <span className="font-bold text-gray-600">Informacion</span>
+                  <span className="font-bold text-gray-600">Información</span>
                   <button
                     onClick={handleEdit}
                     className="flex gap-x-2 items-center"
@@ -216,13 +216,13 @@ export const UserByID = () => {
                       })}
                     </select>
                   </div>
-                  <label className="text-gray-600 text-xs ml-6">Telefono</label>
+                  <label className="text-gray-600 text-xs ml-6">Teléfono</label>
                   <div className="flex items-center gap-x-2  w-full">
                     <PhoneIcon className="w-5 h-5" />
                     <Input
                       name="phone"
                       onChange={handleUpdateUserChange}
-                      label="Numero de telefono"
+                      label="Numero de teléfono"
                       value={updateUser.phone}
                       disabled={edit}
                     />
@@ -233,31 +233,31 @@ export const UserByID = () => {
                     <Input
                       name="email"
                       onChange={handleUpdateUserChange}
-                      label="Correo electronico"
+                      label="Correo electrónico"
                       value={updateUser.email}
                       disabled={edit}
                     />
                   </div>
                   <label className="text-gray-600 text-xs ml-6">
-                    Direccion
+                    Dirección
                   </label>
                   <div className="flex items-center gap-x-2  w-full">
                     <MapIcon className="w-5 h-5" />
                     <Input
                       name="address"
                       onChange={handleUpdateUserChange}
-                      label="Direccion"
+                      label="Dirección"
                       value={updateUser.address}
                       disabled={edit}
                     />
                   </div>
-                  <label className="text-gray-600 text-xs ml-6">Pais</label>
+                  <label className="text-gray-600 text-xs ml-6">País</label>
                   <div className="flex items-center gap-x-2  w-full">
                     <MapIcon className="w-5 h-5" />
                     <Input
                       name="city"
                       onChange={handleUpdateUserChange}
-                      label="Pais"
+                      label="País"
                       value={updateUser.city}
                       disabled={edit}
                     />

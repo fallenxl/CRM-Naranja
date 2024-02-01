@@ -69,7 +69,7 @@ export const CreateCampaign = () => {
             name="description"
             value={formData.description}
             onChange={handleInputChange}
-            label="Descripcion"
+            label="Descripción"
           />
           {/* Start date */}
           <Input
@@ -87,7 +87,7 @@ export const CreateCampaign = () => {
             value={formData.endDate}
             crossOrigin={undefined}
             type="date"
-            label="Fecha de finalizacion"
+            label="Fecha de finalización"
           />
 
           <div className="flex justify-end">

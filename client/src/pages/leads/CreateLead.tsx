@@ -3,7 +3,7 @@ import { Layout } from "../Layout";
 import { Input, Textarea } from "@material-tailwind/react";
 import { getAllCampaignsByStatus } from "../../services/campaign";
 import {
-  getAdvisorsIncludingManagers,
+getAdvisorsIncludingManagers,
   getLastAdvisor,
   getSettingsAutoAssign,
 } from "../../services/user.services";
@@ -217,7 +217,7 @@ export const CreateLead = () => {
                     {autoAssign && (
                       <div className="flex flex-col items-center">
                         <small className="text-gray-600">
-                          Configuracion automatica{" "}
+                          Configuración automática{" "}
                           <span className="font-bold">activada</span>
                         </small>
                         <div className="flex items-center gap-2">
@@ -267,7 +267,7 @@ export const CreateLead = () => {
                 onChange={handleInputChange}
                 crossOrigin={undefined}
                 type="text"
-                label="Direccion"
+                label="Dirección"
               />
               <Input
                 name="phone"
@@ -275,7 +275,7 @@ export const CreateLead = () => {
                 onChange={handleInputChange}
                 crossOrigin={undefined}
                 type="tel"
-                label="Numero de telefono"
+                label="Numero de teléfono"
                 required
               />
             </div>
@@ -286,7 +286,7 @@ export const CreateLead = () => {
                 onChange={handleInputChange}
                 crossOrigin={undefined}
                 type="text"
-                label="Pais"
+                label="País"
               />
               <Input
                 name="department"
@@ -303,7 +303,7 @@ export const CreateLead = () => {
               onChange={handleInputChange}
               crossOrigin={undefined}
               type="email"
-              label="Correo electronico"
+              label="Correo electrónico"
             />
             <div className="flex flex-col">
               <label htmlFor="source" className="text-gray-700 mb-2">
@@ -373,7 +373,7 @@ export const CreateLead = () => {
                 onChange={handleInputChange}
                 crossOrigin={undefined}
                 type="text"
-                label="Antiguedad"
+                label="Antigüedad"
               />
             </div>
             <span className="text-gray-500 text-sm">Detalles de pago:</span>
@@ -385,7 +385,7 @@ export const CreateLead = () => {
                 className="border p-2 text-gray-700 rounded-md border-blue-gray-300"
               >
                 <option value="" defaultChecked>
-                  Seleccione un metodo de pago
+                  Seleccione un método de pago
                 </option>
                 <option value="Efectivo">Pago en Efectivo</option>
                 <option value="Transferencia Bancaria">

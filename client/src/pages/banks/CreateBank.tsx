@@ -86,7 +86,7 @@ export const CreateBank = () => {
             name="description"
             value={formData.description}
             onChange={handleInputChange}
-            label="Descripcion"
+            label="Descripción"
           />
           {/* add financial program */}
           <span
