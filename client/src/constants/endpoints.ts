@@ -17,6 +17,7 @@ export const  Endpoints =  {
   RECEPTIONIST_LEADS : API_BASE_URL + 'leads/receptionist/without-advisor/',
   LEAD : API_BASE_URL + 'leads/',
   LEAD_STATUS : API_BASE_URL + 'leads/status/',
+  LEAD_BY_USER : API_BASE_URL + 'leads/user/',
   NOTIFICATIONS : API_BASE_URL + 'notifications/',
   BANK : API_BASE_URL + 'banks',
   PROJECTS: API_BASE_URL + 'projects/',

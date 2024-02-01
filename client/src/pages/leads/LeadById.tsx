@@ -103,8 +103,9 @@ export const LeadById = () => {
 
   const verifyPermissions = (role: Roles) => {
     if (!lead.status.role) return true;
-    if (user.role === "ADMIN") return true;
+    if (role === "ADMIN") return true;
     if (lead.status.role === role) return true;
+    if(Array.isArray(lead.status.role) && lead.status.role.includes(role)) return true;
   };
 
   const statusChange = useSelector(
@@ -119,7 +120,6 @@ export const LeadById = () => {
     }
   }, [statusChange]);
 
-  const socket = useSelector((state: AppStore) => state.socket.socket);
   const handleDeleteBankRejected = (bankId: string) => {
     Swal.fire({
       title: "¿Estas seguro?",
@@ -144,7 +144,7 @@ export const LeadById = () => {
         });
       }
     });
-    socket.emit("leadUpdated");
+    // socket.emit("leadUpdated");
   };
   return (
     <Layout title={"Prospecto " + lead.name}>
@@ -568,7 +568,7 @@ export const LeadById = () => {
                 <>
                   <div className="flex items-center p-2 border-b gap-2">
                     <h4 className="font-bold  text-gray-700 ">
-                      Detalles bancarios
+                      Detalles Bancarios
                     </h4>
                   </div>
                   {lead.bankID && (

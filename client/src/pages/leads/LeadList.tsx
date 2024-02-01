@@ -10,20 +10,24 @@ import {
   errorAlertWithTimer,
   successAlertWithTimer,
 } from "../../component/alerts/Alerts";
+import { Roles } from "../../constants";
 
 export function LeadList() {
-const query = new URLSearchParams(window.location.search);
+  const query = new URLSearchParams(window.location.search);
   const [isLoading, setIsLoading] = useState(false);
   const [leads, setLeads] = useState([]);
   const { user } = useSelector((state: AppStore) => state.auth);
   const [filter, setFilter] = useState("");
   const handleFilter = (e: any) => {
-    query.set("status", e.target.value)
-    window.history.replaceState({}, '', `${window.location.pathname}?${query.toString()}`)
+    query.set("status", e.target.value);
+    window.history.replaceState(
+      {},
+      "",
+      `${window.location.pathname}?${query.toString()}`
+    );
     setFilter(e.target.value);
-    
   };
-  
+  const socket = useSelector((state: AppStore) => state.socket.socket);
 
   useEffect(() => {
     setIsLoading(true);
@@ -34,10 +38,21 @@ const query = new URLSearchParams(window.location.search);
           filter ? res.filter((lead: any) => lead.status.type === filter) : res
         );
       });
-    }
 
-    if(query.get("status")){
-      setFilter(query.get("status")!)
+      
+    }
+    socket.on("leadUpdated", (_data: any) => {
+      getLeadsByRole(user.role as Roles, user.id).then((res) => {
+        setLeads(
+          filter
+            ? res.filter((lead: any) => lead.status.type === filter)
+            : res
+        );
+      });
+    });
+
+    if (query.get("status")) {
+      setFilter(query.get("status")!);
     }
   }, [filter]);
   const handleDelete = (id: string) => {
@@ -71,8 +86,9 @@ const query = new URLSearchParams(window.location.search);
     "Precalificar Banco",
     "Oportunidad de venta futura",
     "Por Asignar Proyecto",
-    "Por Llamar",
+    "Pendiente de Llamar",
   ];
+  
   const tableHead = [
     "Fecha",
     "Nombre Completo",
@@ -113,7 +129,6 @@ const query = new URLSearchParams(window.location.search);
             Filtrar por estado
           </option>
           {statusList.map((status, index) => {
-        
             return (
               <option key={index} className="p-2" value={status}>
                 {status}

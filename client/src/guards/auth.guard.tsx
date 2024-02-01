@@ -18,7 +18,7 @@ export const AuthGuard = () => {
         const data = await validateUser();
         if (data) {
           dispatch(setAuth(data));
-          dispatch(setSocket(io("https://api.crm.sigurban.com/")));
+          dispatch(setSocket(io(process.env.NODE_ENV === 'production'? "wss://api.crm.sigurban.com/" : 'http://localhost:8282', {transports: ['websocket']})));
           setIsAuth(true);
         } else {
           logout();

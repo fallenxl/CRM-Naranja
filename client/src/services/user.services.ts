@@ -38,6 +38,15 @@ export const getUsersByRole = async (role: string) => {
   }
 };
 
+export const getAdvisorsIncludingManagers = async () => {
+  try {
+    const { data } = await axios.get(Endpoints.USER + "/advisors/all");
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export const getAllAdvisor = async () => {
   try {
     const { data } = await axios.get(Endpoints.USER + "/advisors");

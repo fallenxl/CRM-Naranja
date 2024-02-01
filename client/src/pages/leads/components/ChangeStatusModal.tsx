@@ -193,12 +193,24 @@ export const ChangeStatusModal = ({
       }
 
       if (
-        hasEmptyPropertiesExcept(updateLead, ["comment"]) &&
+        hasEmptyPropertiesExcept(updateLead, [
+          "comment",
+          "workPosition",
+          "paymentMethod",
+          "workTime",
+          "workAddress",
+          "salary",
+        ]) &&
         status.selected === "Contactado" &&
         status.type === "A Contactar"
       ) {
         return setError("Debe llenar toda la ficha");
       }
+
+      if(hasEmptyPropertiesExcept(updateLead, ["comment"]) && status.selected === "Precalifica en Buró" && status.type === "Precalificar Buró") {
+        return setError("Debe llenar toda la ficha");
+      }
+
       setIsLoading(true);
       updateLeadStatus(lead._id, payload).then((res) => {
         setIsLoading(false);
@@ -331,6 +343,7 @@ export const ChangeStatusModal = ({
                   className="border border-gray-300 rounded-md p-2"
                   onChange={handleUserChange}
                   value={userSelected}
+                  required
                 >
                   <option value="" defaultChecked disabled>
                     Seleccionar encargado
@@ -361,15 +374,16 @@ export const ChangeStatusModal = ({
                     className="border border-gray-300 rounded-md p-2"
                     onChange={handleUserChange}
                     value={userSelected}
+                    required
                   >
                     <option value="" defaultChecked disabled>
                       Seleccionar encargado
                     </option>
-                 
+
                     {users.length > 0 &&
                       users.map((item: any) => {
                         return (
-                          <option key={item._id} value={item._id}>
+                          <option key={item._id} value={item._id} defaultChecked={users.length === 1}>
                             {item.name}
                           </option>
                         );
@@ -393,15 +407,16 @@ export const ChangeStatusModal = ({
                     className="border border-gray-300 rounded-md p-2"
                     onChange={handleUserChange}
                     value={userSelected}
+                    required
                   >
                     <option value="" defaultChecked disabled>
                       Seleccionar encargado
                     </option>
-                   
+
                     {users &&
                       users.map((item: any) => {
                         return (
-                          <option key={item._id} value={item._id}>
+                          <option key={item._id} value={item._id} defaultChecked={users.length === 1}>
                             {item.name}
                           </option>
                         );
@@ -420,11 +435,12 @@ export const ChangeStatusModal = ({
                   className="border border-gray-300 rounded-md p-2"
                   onChange={handleBankChange}
                   value={bankSelected}
+                  required
                 >
                   <option value="" defaultChecked disabled>
                     Seleccionar banco
                   </option>
-                
+
                   {banks &&
                     banks.map((item: any) => {
                       return (
@@ -456,11 +472,12 @@ export const ChangeStatusModal = ({
                       className="border border-gray-300 rounded-md p-2"
                       onChange={handleFinancingProgramChange}
                       value={financingProgramSelected}
+                      required
                     >
                       <option value="" defaultChecked disabled>
                         Seleccionar programa de financiamiento
                       </option>
-                     
+
                       {bank.financingPrograms?.map((item, index) => {
                         return (
                           <option
@@ -516,6 +533,7 @@ export const ChangeStatusModal = ({
                   type="date"
                   name="date"
                   className="border border-gray-300 rounded-md p-2 text-gray-600"
+                  required
                 />
               </>
             )}

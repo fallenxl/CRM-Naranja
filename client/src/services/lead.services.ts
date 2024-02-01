@@ -17,21 +17,8 @@ export const getLeadsByRole = async (role: Roles, id?: string) => {
       return data;
     }
 
-    if (role === Roles.ADVISOR) {
-      const { data } = await axios.get(Endpoints.ADVISOR_LEADS + id);
-      return data;
-    }
-
-    if (role === Roles.MANAGER) {
-      const { data } = await axios.get(Endpoints.MANAGER_LEADS + id);
-      return data;
-    }
-
-    if (role === Roles.BANK_MANAGER) {
-      const { data } = await axios.get(Endpoints.BANK_MANAGER_LEADS + id);
-      return data;
-    }
-    return [];
+    const { data } = await axios.get(Endpoints.LEAD_BY_USER + id);
+    return data || [];
   } catch (error) {
     console.log(error);
   }

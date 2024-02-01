@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getLeadById } from "../../services/lead.services";
-import { getAllAdvisor } from "../../services/user.services";
+import { getAdvisorsIncludingManagers } from "../../services/user.services";
 import { getAllCampaigns } from "../../services/campaign";
 import { useSelector } from "react-redux";
 import { AppStore } from "../../redux/store";
@@ -14,7 +14,7 @@ export const useLeadData = (id: string | undefined) => {
       type: "",
       enum: [],
       selected: "",
-      role: "",
+      role: [] as string[] | string,
     },
     advisorID: {
       _id: "",
@@ -49,40 +49,48 @@ export const useLeadData = (id: string | undefined) => {
     rejectedBanks: [],
     timeline: [],
   });
-  const[error, setError] = useState(false);
+  const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [advisorList, setAdvisorsList] = useState([]);
   const [campaignList, setCampaignList] = useState([]);
   const [socketTrigger, setSocketTrigger] = useState(false);
-  const statusChange = useSelector((state:AppStore) => state.status.statusChange)
-  const socket = useSelector((state:any) => state.socket.socket);
+  const statusChange = useSelector(
+    (state: AppStore) => state.status.statusChange
+  );
+  const socket = useSelector((state: any) => state.socket.socket);
 
   useEffect(() => {
     if (id) {
-    setIsLoading(true);
+      setIsLoading(true);
       getLeadById(id).then((res) => {
         setIsLoading(false);
-        if(typeof res === "string") return setError(true);
-        if(res?.data.message) return setError(true);
+        if (typeof res === "string") return setError(true);
+        if (res?.data.message) return setError(true);
         setLead(res?.data);
-       
-      })
+      });
       socket.on("leadUpdated", (_data: any) => {
         getLeadById(id).then((res) => {
           setLead(res?.data);
         });
       });
 
-      getAllAdvisor().then((res) => {
+      getAdvisorsIncludingManagers().then((res) => {
         setAdvisorsList(res);
       });
 
       getAllCampaigns().then((res) => {
         setCampaignList(res);
       });
-
     }
   }, [statusChange, id, socketTrigger]);
 
-  return { lead, advisorList, campaignList, error, isLoading, setLead, setSocketTrigger };
+  return {
+    lead,
+    advisorList,
+    campaignList,
+    error,
+    isLoading,
+    setLead,
+    setSocketTrigger,
+  };
 };

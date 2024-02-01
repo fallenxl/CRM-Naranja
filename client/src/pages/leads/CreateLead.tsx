@@ -3,7 +3,7 @@ import { Layout } from "../Layout";
 import { Input, Textarea } from "@material-tailwind/react";
 import { getAllCampaignsByStatus } from "../../services/campaign";
 import {
-  getAllAdvisor,
+  getAdvisorsIncludingManagers,
   getLastAdvisor,
   getSettingsAutoAssign,
 } from "../../services/user.services";
@@ -103,7 +103,7 @@ export const CreateLead = () => {
       setCampaigns(res?.data);
     });
 
-    getAllAdvisor().then((res) => {
+    getAdvisorsIncludingManagers().then((res) => {
       setAdvisors(res);
     });
 
