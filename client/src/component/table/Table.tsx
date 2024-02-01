@@ -168,10 +168,10 @@ export function Table({
                 const isLast = index === tableRows.length - 1;
                 const classes = isLast
                   ? "p-4"
-                  : "p-4 border-b border-blue-gray-50";
+                  : "p-4 ";
 
                 return (
-                  <tr key={item._id}>
+                  <tr key={item._id} className="border-b border-blue-gray-50">
                     {Object.keys(item).map((value, _index) => {
                       return (
                         <>
