@@ -131,10 +131,8 @@ export function Table({
           </div>
           <div className="w-full md:w-2/3 flex flex-row-reverse">
             <Input
-              className="w-full md:w-1/2 "
               onChange={handleSearch}
               placeholder="Buscar por nombre"
-              label="Buscar por nombre"
               value={search}
             />
           </div>

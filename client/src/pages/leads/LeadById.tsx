@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { Layout } from "../Layout";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Avatar, Card, Chip } from "@material-tailwind/react";
 import {
   AtSymbolIcon,
@@ -24,7 +24,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 import { Roles } from "../../constants";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { AppStore } from "../../redux/store";
 import { ChangeStatusModal } from "./components/ChangeStatusModal.tsx";
 import {
@@ -35,7 +35,6 @@ import { useLeadData } from "../../hooks/lead/useLeadData.tsx";
 import { useEditLead } from "../../hooks/lead/useEditLead.tsx";
 import { LeadTimeline } from "./components/LeadTimeline.tsx";
 import { isError, validateID } from "../../utils/redirects.tsx";
-import { setStatusChange } from "../../redux/states/status.state.ts";
 import { Loading } from "../../component/index.ts";
 import {
   assignLeadAdvisor,
@@ -102,29 +101,22 @@ export const LeadById = () => {
   const handleOpen = () => setOpen(!open);
 
   const verifyPermissions = (role: Roles) => {
-    if (!lead.status.role) return true;
-    if (role === "ADMIN") return true;
-    if (lead.status.role === role) return true;
-    if (Array.isArray(lead.status.role) && lead.status.role.includes(role))
-      return true;
-  };
+    if (!lead.status.role) return false;
 
-  const statusChange = useSelector(
-    (state: AppStore) => state.status.statusChange
-  );
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (statusChange) {
-      setTimeout(() => {
-        dispatch(setStatusChange(false));
-      }, 10000);
-    }
-  }, [statusChange]);
+    if (role === "ADMIN") return true;
+
+    if (lead.status.role.includes(role)) return true;
+
+    if (lead.status.role.includes("ADVISOR") && user.id === lead.advisorID?._id)
+      return true;
+
+    return false;
+  };
 
   const handleDeleteBankRejected = (bankId: string) => {
     Swal.fire({
       title: "¿Estas seguro?",
-      text: "No podras revertir esta accion",
+      text: "No podrás revertir esta acción",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Si, eliminar",
@@ -145,7 +137,6 @@ export const LeadById = () => {
         });
       }
     });
-    // socket.emit("leadUpdated");
   };
   return (
     <Layout title={"Prospecto " + lead.name}>
@@ -208,9 +199,6 @@ export const LeadById = () => {
                   action=""
                   className="w-full flex flex-col gap-y-2 p-0 md:p-4"
                 >
-                  <label className="text-gray-700 text-xs ml-7">
-                    Nombre completo
-                  </label>
                   <div className="flex items-center gap-x-2  w-full">
                     <IdentificationIcon className="w-5 h-5" />
                     <Input
@@ -221,9 +209,7 @@ export const LeadById = () => {
                       disabled={edit}
                     />
                   </div>
-                  <label className="text-gray-700 text-xs ml-7">
-                    Tarjeta de identidad
-                  </label>
+
                   <div className="flex items-center gap-x-2  w-full">
                     <IdentificationIcon className="w-5 h-5" />
                     <Input
@@ -234,9 +220,7 @@ export const LeadById = () => {
                       disabled={edit}
                     />
                   </div>
-                  <label className="text-gray-700 text-xs ml-7">
-                    Numero de teléfono
-                  </label>
+
                   <div className="flex items-center gap-x-2  w-full">
                     <PhoneIcon className="w-5 h-5" />
                     <Input
@@ -247,9 +231,7 @@ export const LeadById = () => {
                       disabled={edit}
                     />
                   </div>
-                  <label className="text-gray-700 text-xs ml-7">
-                    Correo electrónico
-                  </label>
+
                   <div className="flex items-center gap-x-2  w-full">
                     <AtSymbolIcon className="w-5 h-5" />
                     <Input
@@ -260,9 +242,7 @@ export const LeadById = () => {
                       disabled={edit}
                     />
                   </div>
-                  <label className="text-gray-700 text-xs ml-7">
-                    Dirección
-                  </label>
+
                   <div className="flex items-center gap-x-2  w-full">
                     <MapIcon className="w-5 h-5" />
                     <Input
@@ -273,9 +253,7 @@ export const LeadById = () => {
                       disabled={edit}
                     />
                   </div>
-                  <label className="text-gray-700 text-xs ml-7">
-                    Departamento
-                  </label>
+
                   <div className="flex items-center gap-x-2  w-full">
                     <MapIcon className="w-5 h-5" />
                     <Input
@@ -286,7 +264,7 @@ export const LeadById = () => {
                       disabled={edit}
                     />
                   </div>
-                  <label className="text-gray-700 text-xs ml-7">País</label>
+
                   <div className="flex items-center gap-x-2  w-full">
                     <MapIcon className="w-5 h-5" />
                     <Input
@@ -297,9 +275,7 @@ export const LeadById = () => {
                       disabled={edit}
                     />
                   </div>
-                  <label className="text-gray-700 text-xs ml-7">
-                    Interesado en
-                  </label>
+
                   <div className="flex items-center gap-x-2  w-full">
                     <BriefcaseIcon className="w-5 h-5" />
                     <Input
@@ -310,6 +286,7 @@ export const LeadById = () => {
                       disabled={edit}
                     />
                   </div>
+
                   <label className="text-gray-700 text-xs ml-7">Canal</label>
                   <div className="flex items-center gap-x-2  w-full">
                     <MegaphoneIcon className="w-5 h-5" />
@@ -332,9 +309,7 @@ export const LeadById = () => {
                       })}
                     </select>
                   </div>
-                  <label className="text-gray-700 text-xs ml-7">
-                    Comentarios
-                  </label>
+
                   <div className="flex items-center gap-x-2  w-full">
                     <ChatBubbleBottomCenterIcon className="w-5 h-5" />
                     <Input
@@ -351,9 +326,7 @@ export const LeadById = () => {
                       Detalles laborales
                     </span>
                     <hr className="w-full mb-4" />
-                    <label className="text-gray-700 text-xs ml-7">
-                      Lugar de trabajo
-                    </label>
+
                     <div className="flex items-center gap-x-2  w-full">
                       <BriefcaseIcon className="w-5 h-5" />
                       <Input
@@ -364,9 +337,7 @@ export const LeadById = () => {
                         disabled={edit}
                       />
                     </div>
-                    <label className="text-gray-700 text-xs ml-7">
-                      Posición
-                    </label>
+
                     <div className="flex items-center gap-x-2  w-full">
                       <UserCircleIcon className="w-5 h-5" />
                       <Input
@@ -378,9 +349,6 @@ export const LeadById = () => {
                       />
                     </div>
 
-                    <label className="text-gray-700 text-xs ml-7">
-                      Salario
-                    </label>
                     <div className="flex items-center gap-x-2  w-full">
                       <CurrencyDollarIcon className="w-5 h-5" />
                       <Input
@@ -401,9 +369,7 @@ export const LeadById = () => {
                         step={0.01}
                       />
                     </div>
-                    <label className="text-gray-700 text-xs ml-7">
-                      Antigüedad
-                    </label>
+
                     <div className="flex items-center gap-x-2  w-full">
                       <ClockIcon className="w-5 h-5" />
                       <Input
@@ -737,14 +703,6 @@ export const LeadById = () => {
           </div>
         </div>
       </div>
-      {statusChange && (
-        <div className="fixed bg-white shadow-xl border w-5/6 bottom-2 right-10 lg:w-[37.5%] lg:bottom-6 lg:right-9 z-20 rounded-md px-10 py-5">
-          <span className="text-gray-800 mb-4 text-sm font-bold">
-            El usuario cambio de estado a {lead.status.type}
-          </span>
-          <div className="bg-gradient-to-r from-gray-500 to-orange-500 w-full h-1 rounded-sm mt-4 animate-pulse duration-200"></div>
-        </div>
-      )}
     </Layout>
   );
 };

@@ -81,6 +81,7 @@ export function LeadList() {
     });
   };
   const statusList = [
+    "Por Asignar",
     "Prospecto Definido",
     "Precalificar Buró",
     "Precalificar Banco",

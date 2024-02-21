@@ -7,14 +7,14 @@ import {
   successAlertWithTimer,
 } from "../../component/alerts/Alerts";
 import { Bank, FinancialProgram } from "../../interfaces";
-import { Card, Input, Textarea } from "@material-tailwind/react";
+import { Card } from "@material-tailwind/react";
 import {
   ClipboardDocumentCheckIcon,
-  IdentificationIcon,
   PencilSquareIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { ModalFinancialProgram } from "./component/ModalFinancialProgram";
+import { Input } from "../../component/inputs/input";
 
 export const BankById = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,12 +24,14 @@ export const BankById = () => {
     description: "",
     createdAt: "",
     financingPrograms: [],
+    requirements: [],
   });
   const [updateBank, setUpdateBank] = useState<Partial<Bank>>({
     name: "",
     description: "",
     createdAt: "",
     financingPrograms: [],
+    requirements: [],
   });
 
   const handleChange = (e: any) => {
@@ -79,9 +81,10 @@ export const BankById = () => {
     });
   };
 
-  const [selectedProgram, setSelectedProgram] = useState<FinancialProgram | null>(null);
+  const [selectedProgram, setSelectedProgram] =
+    useState<FinancialProgram | null>(null);
   const handleSelectProgram = (program: FinancialProgram) => {
-    if(edit) return;
+    if (edit) return;
     setSelectedProgram(program);
     setOpenModal(true);
   };
@@ -91,11 +94,13 @@ export const BankById = () => {
     setUpdateBank({
       ...updateBank,
       financingPrograms: updateBank.financingPrograms?.map((p, index) =>
-        index === updateBank.financingPrograms?.indexOf(selectedProgram??program) ? program : p
+        index ===
+        updateBank.financingPrograms?.indexOf(selectedProgram ?? program)
+          ? program
+          : p
       ),
     });
   };
-
 
   return (
     <Layout title={bank.name ?? "Bank"}>
@@ -126,35 +131,82 @@ export const BankById = () => {
             </div>
             <hr className="w-full mb-2" />
             {/* Lead details form */}
-            <form
-              onSubmit={handleSubmit}
-              action=""
+            <div
               className="w-full flex flex-col gap-y-2 p-4"
             >
-              <label className="text-gray-700 text-xs ml-7">Nombre del banco</label>
               <div className="flex items-center gap-x-2  w-full">
-                <IdentificationIcon className="w-5 h-5" />
                 <Input
                   name="name"
                   onChange={handleChange}
                   label="Nombre del banco"
-                  crossOrigin={undefined}
-                  size="md"
+                
+               
                   value={updateBank.name}
                   disabled={edit}
                 />
               </div>
-              <label className="text-gray-700 text-xs ml-7">Descripción</label>
               <div className="flex items-center gap-x-2  w-full">
-                <IdentificationIcon className="w-5 h-5" />
-                <Textarea
+                <Input
                   onChange={handleChange}
                   name="description"
                   disabled={edit}
                   label="Descripción"
-                  size="md"
+                  className="h-16"
                   value={updateBank.description}
                 />
+              </div>
+              <div className="flex flex-col  gap-x-2  w-full">
+                <div className="flex items-center gap-x-2  w-full mb-2">
+                  <span className="text-gray-700">Requisitos</span>
+              
+                </div>
+                {!edit && (
+                  <Input
+                    placeholder="Escribe el requisito y presiona [Enter] para agregarlo"
+                    type="text"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        setUpdateBank({
+                          ...updateBank,
+                          requirements: [
+                            ...updateBank.requirements?? [],
+                            e.currentTarget.value,
+                          ],
+                        });
+                        e.currentTarget.value = "";
+                      }
+                    }}
+                    className="mb-2"
+                  />
+                )}
+                <ul className="flex flex-wrap gap-2 ">
+                  {updateBank.requirements?.length === 0 && (
+                    <li className="flex items-center gap-x-2 rounded-md  p-2 text-xs">
+                      <span>No hay requisitos</span>
+                    </li>
+                  )}
+                  {updateBank.requirements?.map((req) => (
+                    <li className="flex items-center gap-x-2 bg-teal-600 rounded-md text-white p-2 text-xs">
+                      {edit ? (
+                        <ClipboardDocumentCheckIcon className="w-4 h-4" />
+                      ) : (
+                        <XMarkIcon
+                          className="w-4 h-4 cursor-pointer"
+                          onClick={() =>
+                            setUpdateBank({
+                              ...updateBank,
+                              requirements: updateBank.requirements?.filter(
+                                (r) => r !== req
+                              ),
+                            })
+                          }
+                        />
+                      )}
+
+                      <span>{req}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
               <div className="flex flex-col  gap-x-2  w-full">
                 <div className="flex items-center gap-x-2  w-full mb-4">
@@ -186,7 +238,9 @@ export const BankById = () => {
                                   updateBank.financingPrograms?.filter(
                                     (_p, index) =>
                                       index !==
-                                      updateBank.financingPrograms?.indexOf(program)
+                                      updateBank.financingPrograms?.indexOf(
+                                        program
+                                      )
                                   ),
                               })
                             }
@@ -196,7 +250,9 @@ export const BankById = () => {
                         <span
                           onClick={() => handleSelectProgram(program)}
                           className={`${
-                            !edit ? "hover:text-gray-200 hover:underline cursor-pointer " : ""
+                            !edit
+                              ? "hover:text-gray-200 hover:underline cursor-pointer "
+                              : ""
                           }`}
                         >{`${program.name} - ${program.interestRate}%`}</span>
                       </div>
@@ -209,7 +265,7 @@ export const BankById = () => {
                 <>
                   <div className="flex items-center gap-2 flex-row-reverse">
                     <div className="flex flex-row-reverse">
-                      <button className="bg-blue-500 px-4 py-2 rounded-md  text-white">
+                      <button type="submit" onClick={handleSubmit} className="bg-blue-500 px-4 py-2 rounded-md  text-white">
                         Guardar
                       </button>
                     </div>
@@ -224,7 +280,7 @@ export const BankById = () => {
                   </div>
                 </>
               )}
-            </form>
+            </div>
           </div>
         </div>
       </Card>

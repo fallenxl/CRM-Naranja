@@ -15,6 +15,7 @@ interface PasswordInputProps {
   min?: number;
   accept?: string;
   step?: number;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 export const Input = ({
   name,
@@ -25,38 +26,46 @@ export const Input = ({
   disabled,
   required,
   type,
-  step
+  step,
+  label,
+  onKeyDown
 }: PasswordInputProps) => {
   const [seePassword, setSeePassword] = useState(false);
   const toggleSeePassword = () => setSeePassword(!seePassword);
 
   return (
-    <div className={`relative w-full ${className}`}>
-      <input
-        {...(type === "password" && { minLength: 8 })}
-        type={type === "password" && seePassword ? "text" : type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        className={`w-full px-3 py-[.7em] border border-gray-300 outline-none rounded-md  placeholder-gray-400 sm:text-sm`}
-        placeholder={placeholder}
-        disabled={disabled}
-        required={required}
-        min={type === "number" ? 0 : undefined}
-        step={step}
-      />
-      {type === "password" &&
-        (seePassword ? (
-          <EyeIcon
-            onClick={toggleSeePassword}
-            className="w-5 h-5 absolute right-3 top-3 text-blue-gray-400 cursor-pointer"
-          />
-        ) : (
-          <EyeSlashIcon
-            onClick={toggleSeePassword}
-            className="w-5 h-5 absolute right-3 top-3 text-blue-gray-400 cursor-pointer"
-          />
-        ))}
-    </div>
+    <>
+      <div className={`relative w-full`}>
+      {label && (
+        <label className="text-gray-700 text-xs  ">{label}</label>
+      )}
+        <input
+          {...(type === "password" && { minLength: 8 })}
+          type={type === "password" && seePassword ? "text" : type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          className={`w-full mt-2 px-3 py-[.7em] border border-gray-300 outline-none rounded-md  placeholder-gray-400 sm:text-sm ${className}`}
+          placeholder={placeholder}
+          disabled={disabled}
+          required={required}
+          min={type === "number" ? 0 : undefined}
+          step={step}
+          onKeyDown={onKeyDown}
+        />
+        {type === "password" &&
+          (seePassword ? (
+            <EyeIcon
+              onClick={toggleSeePassword}
+              className="w-5 h-5 absolute right-3 top-3 text-blue-gray-400 cursor-pointer"
+            />
+          ) : (
+            <EyeSlashIcon
+              onClick={toggleSeePassword}
+              className="w-5 h-5 absolute right-3 top-3 text-blue-gray-400 cursor-pointer"
+            />
+          ))}
+      </div>
+    </>
   );
 };

@@ -3,6 +3,7 @@ export interface Bank {
     name : string;
     description : string;
     financingPrograms : FinancialProgram[]; 
+    requirements? : string[];
     createdAt : string;
 }
 export interface FinancialProgram {

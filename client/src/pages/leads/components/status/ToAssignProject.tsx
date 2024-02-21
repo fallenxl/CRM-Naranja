@@ -82,7 +82,7 @@ export const ToAssignProject = ({ setProjectSelected }: Props) => {
         <option value="" defaultChecked disabled>
           Seleccionar proyecto
         </option>
-        {projects.map((project) => {
+        {projects?.map((project) => {
           return (
             <option key={project._id} value={project._id}>
               {project.name}

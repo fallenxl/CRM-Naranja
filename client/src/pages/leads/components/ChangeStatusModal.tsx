@@ -27,6 +27,7 @@ import { hasEmptyPropertiesExcept } from "../../../utils";
 import { ToAssignModel } from "./status/ToAssignModel";
 import { AppStore } from "../../../redux/store";
 import { useNavigate } from "react-router-dom";
+import { DocumentationState } from "./status/Documentation";
 interface ChangeStatusModalProps {
   open: boolean;
   handleOpen: () => void;
@@ -147,7 +148,7 @@ export const ChangeStatusModal = ({
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
-  const handleSumit = async (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
       const payload =
@@ -211,6 +212,10 @@ export const ChangeStatusModal = ({
         return setError("Debe llenar toda la ficha");
       }
 
+      if(status.selected === "Documentación" && (!documentsState.dni || !documentsState.ficha)) {
+        return setError("Debe de tener la documentación necesaria");
+      
+      }
       setIsLoading(true);
       updateLeadStatus(lead._id, payload).then((res) => {
         setIsLoading(false);
@@ -237,6 +242,16 @@ export const ChangeStatusModal = ({
     );
   };
 
+  const [documentsState, setDocumentsState] = useState({
+    dni: false,
+    ficha: false,
+  });
+  
+  const handleDocumentChange = (e: any) => {
+    setDocumentsState({ ...documentsState, [e.target.name]: e.target.checked });
+  
+  }
+
   return (
     <Modal>
       {isLoading && <Loading className="z-10 opacity-70 rounded-md" />}
@@ -249,7 +264,7 @@ export const ChangeStatusModal = ({
           className="w-5 h-5 cursor-pointer mr-5"
         />
       </div>
-      <form onSubmit={handleSumit}>
+      <form onSubmit={handleSubmit}>
         <DialogBody divider className="flex flex-col gap-3">
           {error && (
             <Alert
@@ -518,6 +533,10 @@ export const ChangeStatusModal = ({
               </>
             )}
 
+            {/* Documentación */}
+              {status.selected === "Documentación" && (
+                <DocumentationState handleDocumentsChange={handleDocumentChange} />
+              )}
             {/* Contactarlo */}
             {(status.selected === "No dio información" ||
               status.selected === "No Precalifica en Buró" ||
