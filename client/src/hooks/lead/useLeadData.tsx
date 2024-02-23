@@ -44,12 +44,12 @@ export const useLeadData = (id: string | undefined) => {
         name: "",
         address: "",
       },
-      houseModel:{
+      houseModel: {
         model: "",
         area: 0,
         price: "",
         priceWithDiscount: "",
-      }
+      },
     },
     financingProgram: "",
     rejectedBanks: [],

@@ -28,6 +28,8 @@ import { ToAssignModel } from "./status/ToAssignModel";
 import { AppStore } from "../../../redux/store";
 import { useNavigate } from "react-router-dom";
 import { DocumentationState } from "./status/Documentation";
+import { FirstStageOfTheFile } from "./status/FirstStageOfTheFile";
+import { SecondStageOfTheFile } from "./status/SecondStageOfTheFile";
 interface ChangeStatusModalProps {
   open: boolean;
   handleOpen: () => void;
@@ -208,13 +210,12 @@ export const ChangeStatusModal = ({
         return setError("Debe llenar toda la ficha");
       }
 
-      if(hasEmptyPropertiesExcept(updateLead, ["comment"]) && status.selected === "Precalifica en Buró" && status.type === "Precalificar Buró") {
+      if (
+        hasEmptyPropertiesExcept(updateLead, ["comment"]) &&
+        status.selected === "Precalifica en Buró" &&
+        status.type === "Precalificar Buró"
+      ) {
         return setError("Debe llenar toda la ficha");
-      }
-
-      if(status.selected === "Documentación" && (!documentsState.dni || !documentsState.ficha)) {
-        return setError("Debe de tener la documentación necesaria");
-      
       }
       setIsLoading(true);
       updateLeadStatus(lead._id, payload).then((res) => {
@@ -244,13 +245,16 @@ export const ChangeStatusModal = ({
 
   const [documentsState, setDocumentsState] = useState({
     dni: false,
-    ficha: false,
+    preContract: false,
+    primaReceipt: false,
+    legalDocumentsOfTheCompany: false,
+    purchaseAndSaleContract: false,
+    blueprints: false,
   });
-  
+
   const handleDocumentChange = (e: any) => {
     setDocumentsState({ ...documentsState, [e.target.name]: e.target.checked });
-  
-  }
+  };
 
   return (
     <Modal>
@@ -398,7 +402,11 @@ export const ChangeStatusModal = ({
                     {users.length > 0 &&
                       users.map((item: any) => {
                         return (
-                          <option key={item._id} value={item._id} defaultChecked={users.length === 1}>
+                          <option
+                            key={item._id}
+                            value={item._id}
+                            defaultChecked={users.length === 1}
+                          >
                             {item.name}
                           </option>
                         );
@@ -431,7 +439,11 @@ export const ChangeStatusModal = ({
                     {users &&
                       users.map((item: any) => {
                         return (
-                          <option key={item._id} value={item._id} defaultChecked={users.length === 1}>
+                          <option
+                            key={item._id}
+                            value={item._id}
+                            defaultChecked={users.length === 1}
+                          >
                             {item.name}
                           </option>
                         );
@@ -534,9 +546,21 @@ export const ChangeStatusModal = ({
             )}
 
             {/* Documentación */}
-              {status.selected === "Documentación" && (
-                <DocumentationState handleDocumentsChange={handleDocumentChange} />
-              )}
+            {status.selected === "Documentación" && (
+              <DocumentationState
+                handleDocumentsChange={handleDocumentChange}
+              />
+            )}
+
+            {/* Primera etapa del expediente */}
+            {(status.selected === "Enviar Avalúo" && status.type === "Primera Etapa de Expediente" ) && (
+              <FirstStageOfTheFile
+                handleDocumentsChange={handleDocumentChange}
+              />
+            )}
+
+            {/* Segunda etapa del expediente */}
+            {(status.selected === "Enviar a Avalúo" && status.type === "Segunda Etapa de Expediente" ) && <SecondStageOfTheFile bankID={lead.bankID._id} />}
             {/* Contactarlo */}
             {(status.selected === "No dio información" ||
               status.selected === "No Precalifica en Buró" ||
