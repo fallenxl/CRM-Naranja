@@ -150,7 +150,7 @@ export const ChangeStatusModal = ({
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: any, cb?: Function) => {
     e.preventDefault();
     try {
       const payload =
@@ -218,6 +218,7 @@ export const ChangeStatusModal = ({
         return setError("Debe llenar toda la ficha");
       }
       setIsLoading(true);
+      cb && cb();
       updateLeadStatus(lead._id, payload).then((res) => {
         setIsLoading(false);
         if (typeof res === "string") {
@@ -256,6 +257,14 @@ export const ChangeStatusModal = ({
     setDocumentsState({ ...documentsState, [e.target.name]: e.target.checked });
   };
 
+  const [sendToBankState, setSendToBankState] = useState({
+    approved: "",
+    sameFinancialInstitutionContinues: "",
+    whoIsResponsible: "",
+  });
+  const handleSendToBankChange = (e: any) => {
+    setSendToBankState({ ...sendToBankState, [e.target.name]: e.target.value });
+  };
   return (
     <Modal>
       {isLoading && <Loading className="z-10 opacity-70 rounded-md" />}
@@ -416,8 +425,7 @@ export const ChangeStatusModal = ({
               )}
 
             {status.selected === "Precalifica en Buró" &&
-              !lead.bankManagerID &&
-              banksAvailable && (
+               banksAvailable && (
                 <>
                   <label
                     htmlFor="selectAdvisor"
@@ -553,14 +561,126 @@ export const ChangeStatusModal = ({
             )}
 
             {/* Primera etapa del expediente */}
-            {(status.selected === "Enviar Avalúo" && status.type === "Primera Etapa de Expediente" ) && (
-              <FirstStageOfTheFile
-                handleDocumentsChange={handleDocumentChange}
-              />
-            )}
+            {status.selected === "Enviar Avalúo" &&
+              status.type === "Primera Etapa de Expediente" && (
+                <FirstStageOfTheFile
+                  handleDocumentsChange={handleDocumentChange}
+                />
+              )}
 
             {/* Segunda etapa del expediente */}
-            {(status.selected === "Enviar a Avalúo" && status.type === "Segunda Etapa de Expediente" ) && <SecondStageOfTheFile bankID={lead.bankID._id} />}
+            {status.selected === "Enviar a Avalúo" &&
+              status.type === "Segunda Etapa de Expediente" && (
+                <SecondStageOfTheFile bankID={lead.bankID._id} />
+              )}
+
+            {/* Revision de expediente */}
+            {status.selected === "No hay Subsanaciones" &&
+              status.type === "Revision de Expediente" && (
+                <p className="text-gray-700 text-sm font-bold">
+                  Nota: Enviar expediente a firmar a Gerencia
+                </p>
+              )}
+
+            {/* Enviar a banco */}
+
+            {/* En caso de que no haya subsanaciones */}
+            {status.type === "Enviar a Banco" &&
+              status.selected === "No hay Subsanaciones" && (
+                <>
+                  <label className="text-gray-600 font-bold">
+                    Cliente fue aprobado en el Banco?
+                  </label>
+                  <select
+                    name="approved"
+                    className="border border-gray-300 rounded-md p-2"
+                    value={sendToBankState.approved}
+                    onChange={handleSendToBankChange}
+                    required
+                  >
+                    <option value="" defaultChecked disabled>
+                      Seleccionar
+                    </option>
+                    <option value="Si">Si</option>
+                    <option value="No">No</option>
+                  </select>
+                </>
+              )}
+
+            {/* En caso de que haya subsanaciones */}
+            {((status.type === "Enviar a Banco" &&
+              status.selected === "Hay Subsanaciones") ||
+              sendToBankState.approved === "No") && (
+              <>
+                <label className="text-gray-600 font-bold">
+                  Continua gestión en misma institución financiera?
+                </label>
+                <select
+                  name="sameFinancialInstitutionContinues"
+                  className="border border-gray-300 rounded-md p-2"
+                  value={sendToBankState.sameFinancialInstitutionContinues}
+                  onChange={handleSendToBankChange}
+                  required
+                >
+                  <option value="" defaultChecked disabled>
+                    Seleccionar
+                  </option>
+                  <option value="Si">Si</option>
+                  <option value="No">No</option>
+                </select>
+                {sendToBankState.sameFinancialInstitutionContinues === "Si" && (
+                  <>
+                    <label className="text-gray-600 font-bold">
+                      Quien es responsable de la gestión?
+                    </label>
+                    <select
+                      name="whoIsResponsible"
+                      className="border border-gray-300 rounded-md p-2"
+                      value={sendToBankState.whoIsResponsible}
+                      onChange={handleSendToBankChange}
+                      required
+                    >
+                      <option value="" defaultChecked disabled>
+                        Seleccionar
+                      </option>
+                      <option value="Gestor">Gestor Bancario</option>
+                      <option value="Asesor">Asesor</option>
+                    </select>
+
+                    <p className="text-gray-700 text-sm font-bold">
+                      Nota: Se rechazara la gestión y se enviara a subsanar
+                    </p>
+                  </>
+                )}
+                {sendToBankState.sameFinancialInstitutionContinues === "No" && (
+                  <p className="text-gray-700 text-sm font-bold">
+                    Nota: Se anulara la gestión y se enviara a seleccionar un
+                    nuevo banco.
+                  </p>
+                )}
+              </>
+            )}
+
+            {/* Contactarlo */}
+            {(status.selected === "No dio información" ||
+              status.selected === "No Precalifica en Buró" ||
+              status.selected === "Oportunidad de venta futura" ||
+              status.selected === "No contesto") && (
+              <>
+                <label className="text-gray-600 font-bold">
+                  Contactarlo el:
+                </label>
+                <input
+                  onChange={handleDate}
+                  value={date}
+                  type="date"
+                  name="date"
+                  className="border border-gray-300 rounded-md p-2 text-gray-600"
+                  required
+                />
+              </>
+            )}
+
             {/* Contactarlo */}
             {(status.selected === "No dio información" ||
               status.selected === "No Precalifica en Buró" ||
