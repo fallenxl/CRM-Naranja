@@ -45,6 +45,7 @@ import Swal from "sweetalert2";
 import { currencyFormatToLempiras } from "../../utils/currencyFormat.ts";
 import { Input } from "../../component/inputs/input.tsx";
 import { channels } from "../../constants/general.ts";
+import { ChangeBankModal } from "../../features/ChangeBankModal.tsx";
 export const LeadById = () => {
   const { id } = useParams<{ id: string }>();
   validateID(id ?? "");
@@ -113,6 +114,9 @@ export const LeadById = () => {
     return false;
   };
 
+  const [openChangeBankModal, setOpenChangeBankModal] = useState(false);
+  const handleOpenChangeBankModal = () => setOpenChangeBankModal(!openChangeBankModal);
+
   const handleDeleteBankRejected = (bankId: string) => {
     Swal.fire({
       title: "¿Estas seguro?",
@@ -151,6 +155,7 @@ export const LeadById = () => {
             lead={lead}
           />
         )}
+        {openChangeBankModal && <ChangeBankModal lead={lead} onClose={handleOpenChangeBankModal}/>}
         <div className="flex flex-col lg:flex-row gap-4">
           <Card className="h-full w-full lg:w-7/12 mx-auto p-3 md:p-10 ">
             <div className="mb-8 lg:grid grid-cols-12 ">
@@ -429,7 +434,7 @@ export const LeadById = () => {
           <div className="w-full lg:w-5/12">
             {/* Other data */}
             <Card className=" w-full mx-auto p-8 mb-4">
-              <div className="flex items-center p-2 border-b mb-2 gap-2 ">
+              <div className="flex items-center py-2 border-b mb-2 gap-2 ">
                 <h4 className="font-bold  text-gray-700 ">Detalles</h4>
               </div>
               <div className="flex items-center gap-2 py-2">
@@ -479,7 +484,7 @@ export const LeadById = () => {
                   </div>
                 )}
               </div>
-              <div className="w-full flex items-center gap-2 py-2">
+              <div className="w-full flex items-center gap-2 py-2 mb-6">
                 <MegaphoneIcon className="w-5 h-5" />
                 <div className={"w-full flex items-center gap-2"}>
                   <span className="text-sm text-gray-600 w-[5rem]">
@@ -533,14 +538,25 @@ export const LeadById = () => {
               </div>
               {(lead.bankID || lead.rejectedBanks.length > 0) && (
                 <>
-                  <div className="flex items-center p-2 border-b gap-2">
+                  <div className="flex justify-between py-2 border-b gap-2 ">
                     <h4 className="font-bold  text-gray-700 ">
                       Detalles Bancarios
                     </h4>
+                    {/* Cambiar banco */}
+                    {(user.role === "ADMIN" || user.role === 'BANK_MANAGER') && (
+                        <div className="flex items-center gap-2  ">                        
+                          <button
+                            onClick={handleOpenChangeBankModal}
+                            className="text-gray-700  text-sm cursor-pointer " 
+                          >
+                          <PencilSquareIcon className="w-4 h-4" />
+                          </button>
+                        </div>
+                      )}
                   </div>
                   {lead.bankID && (
                     <>
-                      {" "}
+                      
                       <div className="flex items-center gap-2 py-2 w-full">
                         <BuildingLibraryIcon className="w-4 h-4" />
                         <span className="text-sm text-gray-600  ">Banco:</span>
@@ -557,41 +573,45 @@ export const LeadById = () => {
                         </span>
                         <span className="text-sm">{lead.financingProgram}</span>
                       </div>
-                    </>
-                  )}
-                  <div className="flex items-center gap-2 py-2 w-full">
-                    <BuildingLibraryIcon className="w-4 h-4" />
-                    <span className="text-sm text-gray-600  ">
-                      Bancos rechazados:
-                    </span>
-                    <div className="flex items-center flex-wrap gap-2">
-                      {lead.rejectedBanks.map((item: any) => {
-                        return (
-                          <Chip
-                            value={item.name}
-                            color="red"
-                            className="flex items-center "
-                            icon={
-                              (user.role === "ADMIN" ||
-                                user.role === "BANK_MANAGER") && (
-                                <XMarkIcon
-                                  className="cursor-pointer"
-                                  onClick={() =>
-                                    handleDeleteBankRejected(item._id)
+                      {/* Bancos rechazados */}
+                      {lead.rejectedBanks.length > 0 && (
+                        <div className="flex items-center gap-2 py-2 w-full">
+                          <BuildingLibraryIcon className="w-4 h-4" />
+                          <span className="text-sm text-gray-600  ">
+                            Bancos rechazados:
+                          </span>
+                          <div className="flex items-center flex-wrap gap-2">
+                            {lead.rejectedBanks.map((item: any) => {
+                              return (
+                                <Chip
+                                  value={item.name}
+                                  color="red"
+                                  className="flex items-center "
+                                  icon={
+                                    (user.role === "ADMIN" ||
+                                      user.role === "BANK_MANAGER") && (
+                                      <XMarkIcon
+                                        className="cursor-pointer"
+                                        onClick={() =>
+                                          handleDeleteBankRejected(item._id)
+                                        }
+                                      />
+                                    )
                                   }
                                 />
-                              )
-                            }
-                          />
-                        );
-                      })}
-                    </div>
-                  </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                      
+                    </>
+                  )}
                 </>
               )}
               {lead.projectDetails?.lotID && (
                 <>
-                  <div className="flex items-center p-2 border-b gap-2">
+                  <div className="flex items-center py-2 border-b gap-2">
                     <h4 className="font-bold  text-gray-700 ">
                       Detalles del Proyecto
                     </h4>
@@ -660,7 +680,7 @@ export const LeadById = () => {
               )}
               {lead.projectDetails?.houseModel && (
                 <>
-                  <div className="flex items-center p-2 border-b gap-2">
+                  <div className="flex items-center py-2 border-b gap-2">
                     <h4 className="font-bold  text-gray-700 ">
                       Detalles Modelo de Casa
                     </h4>

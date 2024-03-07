@@ -16,7 +16,7 @@ export const capitalizeFirstLetter = (string: string) => {
   return string.charAt(0).toUpperCase() + string.slice(1).toLocaleLowerCase();
 };
 
-export const capitalizeFirtsLetterByWord = (string: string) => {
+export const capitalizeFirstLetterByWord = (string: string) => {
   return string.split(" ").map(capitalizeFirstLetter).join(" ");
 };
 

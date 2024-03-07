@@ -18,7 +18,7 @@ export const LeadTimeline = ({ lead }: Props) => {
     <Card className=" w-full mx-auto p-8">
       <div className="flex items-center p-2 border-b mb-8 gap-2">
         <ClockIcon className="w-5 h-5" />
-        <h4 className="font-bold  text-gray-700 ">Lead Timeline</h4>
+        <h4 className="font-bold  text-gray-700 ">Linea de Tiempo</h4>
       </div>
       <Timeline className="max-h-[43.2em] overflow-auto px-4">
         {lead.timeline
@@ -28,7 +28,7 @@ export const LeadTimeline = ({ lead }: Props) => {
           .map((item: any, index: number) => {
             return (
               <TimelineItem key={item._id}>
-                {lead.timeline.length - 1 !== index && <TimelineConnector />}
+                {lead.timeline.length - 1 !== index && <TimelineConnector/>}
                 <TimelineHeader className="">
                   <TimelineIcon />
                   <div className="flex items-center justify-between w-full">

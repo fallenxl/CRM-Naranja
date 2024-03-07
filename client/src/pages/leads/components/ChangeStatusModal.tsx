@@ -183,6 +183,12 @@ export const ChangeStatusModal = ({
               houseModel: modelPayload,
               comment,
             }
+            : status.type === "Enviar a Banco" ?
+            {
+              status: status.selected,
+              ...sendToBankState
+              
+            }
           : {
               status: status.selected,
               bankManagerID: lead.bankManagerID || userSelected,
@@ -606,8 +612,6 @@ export const ChangeStatusModal = ({
                   </select>
                 </>
               )}
-
-            {/* En caso de que haya subsanaciones */}
             {((status.type === "Enviar a Banco" &&
               status.selected === "Hay Subsanaciones") ||
               sendToBankState.approved === "No") && (

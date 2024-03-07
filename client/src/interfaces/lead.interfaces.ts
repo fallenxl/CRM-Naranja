@@ -6,6 +6,6 @@ export interface LeadDTO {
     source: string
     interestedIn: string
     comment: string
-    campaignID: string
+    campaignID?: string
     advisorID?: string
 }

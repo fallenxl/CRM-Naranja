@@ -3,7 +3,7 @@ import { Layout } from "../Layout";
 import { Input, Textarea } from "@material-tailwind/react";
 import { getAllCampaignsByStatus } from "../../services/campaign";
 import {
-getAdvisorsIncludingManagers,
+  getAdvisorsIncludingManagers,
   getLastAdvisor,
   getSettingsAutoAssign,
 } from "../../services/user.services";
@@ -15,7 +15,7 @@ import {
   successAlertWithRedirect,
 } from "../../component/alerts/Alerts";
 import { Loading } from "../../component";
-import { capitalizeFirtsLetterByWord, clearDNIMask } from "../../utils";
+import { capitalizeFirstLetterByWord, clearDNIMask } from "../../utils";
 import { channels } from "../../constants/general";
 
 interface Campaign {
@@ -67,7 +67,7 @@ export const CreateLead = () => {
             e.target.name !== "comment" &&
             e.target.name !== "address" &&
             e.target.name !== "interestedIn"
-          ? capitalizeFirtsLetterByWord(e.target.value)
+          ? capitalizeFirstLetterByWord(e.target.value)
           : e.target.value,
     });
   };
@@ -77,9 +77,9 @@ export const CreateLead = () => {
     setIsLoading(true);
     const data = {
       ...formData,
-      name: capitalizeFirtsLetterByWord(formData.name),
+      name: capitalizeFirstLetterByWord(formData.name),
       dni: clearDNIMask(formData.dni),
-      campaignID: campaignSelected,
+      campaignID: campaignSelected??null,
       advisorID:
         user.role === "ADVISOR" ? user.id : advisorSelected || undefined,
     };
@@ -139,7 +139,7 @@ export const CreateLead = () => {
             <div className="flex flex-col xl:flex-row items-center justify-between mb-4 gap-4">
               <div>
                 <h1 className="text-xl text-gray-700">
-                  Registrar un nuevo prospecto 
+                  Registrar un nuevo prospecto
                 </h1>
                 <small className="text-gray-500 mb-6">
                   Llena de forma correcta los campos del prospecto
@@ -165,7 +165,7 @@ export const CreateLead = () => {
                           <option value="" defaultChecked>
                             Sin asignar
                           </option>
-                          
+
                           {advisors.length > 0 &&
                             advisors.map((advisor) => {
                               return (
@@ -184,7 +184,7 @@ export const CreateLead = () => {
 
                   <div className="flex flex-col">
                     <small className="text-gray-600">
-                      <strong className="text-red-500 text-sm">*</strong>
+                      {user.role === "COMMUNITY_MANAGER" && <strong className="text-red-500 text-sm">*</strong>}
                       Selecciona una campaña:
                     </small>
                     <select
@@ -192,12 +192,12 @@ export const CreateLead = () => {
                       className="border p-2 text-gray-700 rounded-md border-blue-gray-300"
                       onChange={handleCampaignSelected}
                       value={campaignSelected}
-                      required
+                      required={user.role === "COMMUNITY_MANAGER"}
                     >
                       <option value="" defaultChecked>
                         Sin asignar
                       </option>
-                     
+
                       {campaigns.map((campaign) => {
                         return (
                           <option
