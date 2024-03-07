@@ -3,7 +3,7 @@ import { Modal } from "../component/modal/Modal";
 import { useEffect, useState } from "react";
 import { getAllBanks, getBankById } from "../services/bank.services";
 import { Bank } from "../interfaces";
-import { updateLeadService, updateLeadStatus } from "../services/lead.services";
+import { updateLeadService } from "../services/lead.services";
 import { errorAlert } from "../component/alerts/Alerts";
 interface Props {
   onClose: () => void;
