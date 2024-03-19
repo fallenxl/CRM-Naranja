@@ -40,12 +40,14 @@ import {
   assignLeadAdvisor,
   assignLeadCampaign,
   deleteBankRejected,
+  deleteDocumentByLead,
 } from "../../services/lead.services.ts";
 import Swal from "sweetalert2";
 import { currencyFormatToLempiras } from "../../utils/currencyFormat.ts";
 import { Input } from "../../component/inputs/input.tsx";
 import { channels } from "../../constants/general.ts";
 import { ChangeBankModal } from "../../features/ChangeBankModal.tsx";
+import { updateRequirementByName } from "../../services/requirements.services.ts";
 export const LeadById = () => {
   const { id } = useParams<{ id: string }>();
   validateID(id ?? "");
@@ -60,6 +62,7 @@ export const LeadById = () => {
     isLoading,
     setSocketTrigger,
   } = useLeadData(id);
+
   isError(error, "/prospectos/lista");
   const {
     edit,
@@ -115,7 +118,8 @@ export const LeadById = () => {
   };
 
   const [openChangeBankModal, setOpenChangeBankModal] = useState(false);
-  const handleOpenChangeBankModal = () => setOpenChangeBankModal(!openChangeBankModal);
+  const handleOpenChangeBankModal = () =>
+    setOpenChangeBankModal(!openChangeBankModal);
 
   const handleDeleteBankRejected = (bankId: string) => {
     Swal.fire({
@@ -155,7 +159,9 @@ export const LeadById = () => {
             lead={lead}
           />
         )}
-        {openChangeBankModal && <ChangeBankModal lead={lead} onClose={handleOpenChangeBankModal}/>}
+        {openChangeBankModal && (
+          <ChangeBankModal lead={lead} onClose={handleOpenChangeBankModal} />
+        )}
         <div className="flex flex-col lg:flex-row gap-4">
           <Card className="h-full w-full lg:w-7/12 mx-auto p-3 md:p-10 ">
             <div className="mb-8 lg:grid grid-cols-12 ">
@@ -543,20 +549,20 @@ export const LeadById = () => {
                       Detalles Bancarios
                     </h4>
                     {/* Cambiar banco */}
-                    {(user.role === "ADMIN" || user.role === 'BANK_MANAGER') && (
-                        <div className="flex items-center gap-2  ">                        
-                          <button
-                            onClick={handleOpenChangeBankModal}
-                            className="text-gray-700  text-sm cursor-pointer " 
-                          >
+                    {(user.role === "ADMIN" ||
+                      user.role === "BANK_MANAGER") && (
+                      <div className="flex items-center gap-2  ">
+                        <button
+                          onClick={handleOpenChangeBankModal}
+                          className="text-gray-700  text-sm cursor-pointer "
+                        >
                           <PencilSquareIcon className="w-4 h-4" />
-                          </button>
-                        </div>
-                      )}
+                        </button>
+                      </div>
+                    )}
                   </div>
                   {lead.bankID && (
                     <>
-                      
                       <div className="flex items-center gap-2 py-2 w-full">
                         <BuildingLibraryIcon className="w-4 h-4" />
                         <span className="text-sm text-gray-600  ">Banco:</span>
@@ -573,39 +579,38 @@ export const LeadById = () => {
                         </span>
                         <span className="text-sm">{lead.financingProgram}</span>
                       </div>
-                      {/* Bancos rechazados */}
-                      {lead.rejectedBanks.length > 0 && (
-                        <div className="flex items-center gap-2 py-2 w-full">
-                          <BuildingLibraryIcon className="w-4 h-4" />
-                          <span className="text-sm text-gray-600  ">
-                            Bancos rechazados:
-                          </span>
-                          <div className="flex items-center flex-wrap gap-2">
-                            {lead.rejectedBanks.map((item: any) => {
-                              return (
-                                <Chip
-                                  value={item.name}
-                                  color="red"
-                                  className="flex items-center "
-                                  icon={
-                                    (user.role === "ADMIN" ||
-                                      user.role === "BANK_MANAGER") && (
-                                      <XMarkIcon
-                                        className="cursor-pointer"
-                                        onClick={() =>
-                                          handleDeleteBankRejected(item._id)
-                                        }
-                                      />
-                                    )
-                                  }
-                                />
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )}
-                      
                     </>
+                  )}
+                  {/* Bancos rechazados */}
+                  {lead.rejectedBanks.length > 0 && (
+                    <div className="flex items-center gap-2 py-2 w-full">
+                      <BuildingLibraryIcon className="w-4 h-4" />
+                      <span className="text-sm text-gray-600  ">
+                        Bancos rechazados:
+                      </span>
+                      <div className="flex items-center flex-wrap gap-2">
+                        {lead.rejectedBanks.map((item: any) => {
+                          return (
+                            <Chip
+                              value={item.name}
+                              color="red"
+                              className="flex items-center "
+                              icon={
+                                (user.role === "ADMIN" ||
+                                  user.role === "BANK_MANAGER") && (
+                                  <XMarkIcon
+                                    className="cursor-pointer"
+                                    onClick={() =>
+                                      handleDeleteBankRejected(item._id)
+                                    }
+                                  />
+                                )
+                              }
+                            />
+                          );
+                        })}
+                      </div>
+                    </div>
                   )}
                 </>
               )}
@@ -714,6 +719,39 @@ export const LeadById = () => {
                     <span className="text-sm">
                       {lead.projectDetails.houseModel.priceWithDiscount}
                     </span>
+                  </div>
+                </>
+              )}
+              {lead.documents.length > 0 && (
+                <>
+                  <div className="flex items-center py-2 border-b gap-2">
+                    <h4 className="font-bold  text-gray-700 ">Documentos</h4>
+                  </div>
+                  <div className="flex flex-wrap gap-2 py-2">
+                    {lead.documents.map((doc: string, index: number) => (
+                      <Chip
+                        key={index}
+                        value={doc}
+                        color="blue"
+                        className="text-white"
+                        icon={
+                          <XMarkIcon
+                            onClick={() =>
+                              deleteDocumentByLead(id, doc).then(res => {
+                                if (typeof res === "string") {
+                                  errorAlertWithTimer("Error", res, 3000);
+                                }
+                             
+                                successAlertWithTimer("Documento eliminado", "", 3000);
+                              
+                              })
+                            }
+                            className="h-5 w-5 text-white hover:text-gray-200 cursor-pointer"
+                          />
+                        }
+
+                      />
+                    ))}
                   </div>
                 </>
               )}

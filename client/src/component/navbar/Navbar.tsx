@@ -70,10 +70,6 @@ export function NavbarWithSearch({ setOpenSidebar }: Props) {
         setTimeout(() => {
           setOpenDialog(false);
         }, 5000);
-
-        const audio = new Audio("/notification.mp3");
-        audio.volume = 0.2;
-        audio.play();
       }
     });
   }, [page]);

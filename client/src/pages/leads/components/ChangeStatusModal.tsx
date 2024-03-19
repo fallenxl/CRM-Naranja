@@ -13,6 +13,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import {
+  deleteDocumentByLead,
   getLeadStatus,
   updateLeadStatus,
 } from "../../../services/lead.services";
@@ -183,13 +184,16 @@ export const ChangeStatusModal = ({
               houseModel: modelPayload,
               comment,
             }
-            : status.type === "Enviar a Banco" ?
-            {
+          : status.type === "Enviar a Banco"
+          ? {
               status: status.selected,
-              ...sendToBankState
-              
+              ...sendToBankState,
             }
-          : {
+          : (status.type === "Cliente Potencial" || status.type === "Primera Etapa de Expediente" || status.type === 'Segunda Etapa de Expediente') ?{
+              status: status.selected,
+              documents: documentsState,
+              comment,
+          } :{
               status: status.selected,
               bankManagerID: lead.bankManagerID || userSelected,
               bankID: bankSelected,
@@ -197,6 +201,7 @@ export const ChangeStatusModal = ({
               dateToCall: date,
               comment,
             };
+            alert(JSON.stringify(payload));
       if (status.selected === lead.status.selected) {
         return setError("Debe seleccionar un estado diferente");
       }
@@ -250,17 +255,19 @@ export const ChangeStatusModal = ({
     );
   };
 
-  const [documentsState, setDocumentsState] = useState({
-    dni: false,
-    preContract: false,
-    primaReceipt: false,
-    legalDocumentsOfTheCompany: false,
-    purchaseAndSaleContract: false,
-    blueprints: false,
-  });
+  const [documentsState, setDocumentsState] = useState([]);
 
   const handleDocumentChange = (e: any) => {
-    setDocumentsState({ ...documentsState, [e.target.name]: e.target.checked });
+    if (e.target.checked && !documentsState.includes(e.target.name as never)) {
+      setDocumentsState([...documentsState, e.target.name ] as any); 
+    }else{
+      setDocumentsState(documentsState.filter((item: any) => item !== e.target.name));
+      deleteDocumentByLead(lead._id, e.target.name).then((res) => {
+        if (typeof res === "string") {
+          setError(res);
+        }
+      });
+    }
   };
 
   const [sendToBankState, setSendToBankState] = useState({
@@ -430,41 +437,40 @@ export const ChangeStatusModal = ({
                 </>
               )}
 
-            {status.selected === "Precalifica en Buró" &&
-               banksAvailable && (
-                <>
-                  <label
-                    htmlFor="selectAdvisor"
-                    className="text-gray-600 font-bold"
-                  >
-                    Seleccionar al encargado de precalificar banco:
-                  </label>
-                  <select
-                    name="selectAdvisor"
-                    className="border border-gray-300 rounded-md p-2"
-                    onChange={handleUserChange}
-                    value={userSelected}
-                    required
-                  >
-                    <option value="" defaultChecked disabled>
-                      Seleccionar encargado
-                    </option>
+            {status.selected === "Precalifica en Buró" && banksAvailable && (
+              <>
+                <label
+                  htmlFor="selectAdvisor"
+                  className="text-gray-600 font-bold"
+                >
+                  Seleccionar al encargado de precalificar banco:
+                </label>
+                <select
+                  name="selectAdvisor"
+                  className="border border-gray-300 rounded-md p-2"
+                  onChange={handleUserChange}
+                  value={userSelected}
+                  required
+                >
+                  <option value="" defaultChecked disabled>
+                    Seleccionar encargado
+                  </option>
 
-                    {users &&
-                      users.map((item: any) => {
-                        return (
-                          <option
-                            key={item._id}
-                            value={item._id}
-                            defaultChecked={users.length === 1}
-                          >
-                            {item.name}
-                          </option>
-                        );
-                      })}
-                  </select>
-                </>
-              )}
+                  {users &&
+                    users.map((item: any) => {
+                      return (
+                        <option
+                          key={item._id}
+                          value={item._id}
+                          defaultChecked={users.length === 1}
+                        >
+                          {item.name}
+                        </option>
+                      );
+                    })}
+                </select>
+              </>
+            )}
             {/* Precalificar Buró */}
             {status.selected === "Precalifica en Buró" && banksAvailable && (
               <>
@@ -563,6 +569,7 @@ export const ChangeStatusModal = ({
             {status.selected === "Documentación" && (
               <DocumentationState
                 handleDocumentsChange={handleDocumentChange}
+                lead = {lead}
               />
             )}
 
@@ -570,6 +577,7 @@ export const ChangeStatusModal = ({
             {status.selected === "Enviar Avalúo" &&
               status.type === "Primera Etapa de Expediente" && (
                 <FirstStageOfTheFile
+                lead={lead}
                   handleDocumentsChange={handleDocumentChange}
                 />
               )}
@@ -577,7 +585,7 @@ export const ChangeStatusModal = ({
             {/* Segunda etapa del expediente */}
             {status.selected === "Enviar a Avalúo" &&
               status.type === "Segunda Etapa de Expediente" && (
-                <SecondStageOfTheFile bankID={lead.bankID._id} />
+                <SecondStageOfTheFile  lead={lead} handleDocumentsChange={handleDocumentChange} bankID={lead.bankID._id} />
               )}
 
             {/* Revision de expediente */}
@@ -662,26 +670,6 @@ export const ChangeStatusModal = ({
                     nuevo banco.
                   </p>
                 )}
-              </>
-            )}
-
-            {/* Contactarlo */}
-            {(status.selected === "No dio información" ||
-              status.selected === "No Precalifica en Buró" ||
-              status.selected === "Oportunidad de venta futura" ||
-              status.selected === "No contesto") && (
-              <>
-                <label className="text-gray-600 font-bold">
-                  Contactarlo el:
-                </label>
-                <input
-                  onChange={handleDate}
-                  value={date}
-                  type="date"
-                  name="date"
-                  className="border border-gray-300 rounded-md p-2 text-gray-600"
-                  required
-                />
               </>
             )}
 

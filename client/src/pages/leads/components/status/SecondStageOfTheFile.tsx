@@ -5,8 +5,10 @@ import { Bank } from "../../../../interfaces";
 
 interface Props {
   bankID: string;
+  lead: any;
+  handleDocumentsChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
-export function SecondStageOfTheFile({ bankID }: Props) {
+export function SecondStageOfTheFile({ bankID, handleDocumentsChange, lead }: Props) {
   const [bank, setBank] = useState<Bank>({
     _id: "",
     name: "",
@@ -32,9 +34,11 @@ export function SecondStageOfTheFile({ bankID }: Props) {
             key={index}
             crossOrigin={undefined}
             name={req}
-            // onChange={handleDocumentsChange}
+            onChange={handleDocumentsChange}
             label={req}
             color="light-blue"
+            defaultChecked={lead.documents.includes(req)}
+
             required
           />
         ))}

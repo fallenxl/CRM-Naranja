@@ -51,6 +51,7 @@ export const useLeadData = (id: string | undefined) => {
         priceWithDiscount: "",
       },
     },
+    documents: [],  
     financingProgram: "",
     rejectedBanks: [],
     timeline: [],
@@ -73,6 +74,7 @@ export const useLeadData = (id: string | undefined) => {
         if (typeof res === "string") return setError(true);
         if (res?.data.message) return setError(true);
         setLead(res?.data);
+        console.log(res?.data);
       });
       socket.on("leadUpdated", (_data: any) => {
         getLeadById(id).then((res) => {

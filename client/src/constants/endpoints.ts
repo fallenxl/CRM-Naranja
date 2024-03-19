@@ -24,4 +24,5 @@ export const  Endpoints =  {
   PROJECTS_AVAILABLE: API_BASE_URL + 'projects/available',
   LOTS : API_BASE_URL + 'lots/',
   LOTS_BY_PROJECT: API_BASE_URL + 'lots/project/',
+  REQUIREMENT: API_BASE_URL + 'requirements',
 }

@@ -1,42 +1,36 @@
 import { Checkbox } from "@material-tailwind/react";
+import { useEffect, useState } from "react";
+import { getRequirementByName } from "../../../../services/requirements.services";
 
 interface Props {
   handleDocumentsChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  lead : any;
 }
-export function DocumentationState({ handleDocumentsChange }: Props) {
+export function DocumentationState({ handleDocumentsChange, lead }: Props) {
+  const [requirements, setRequirements] = useState([]);
+  useEffect(() => {
+    getRequirementByName("Primera Etapa").then((res: any) => {
+      if (res.data) {
+        setRequirements(res.data[0]?.requirements ?? []);
+      }
+    });
+  }, []);
   return (
     <>
       <div className="flex flex-wrap gap-3">
-        <Checkbox
-          crossOrigin={undefined}
-          name="dni"
-          onChange={handleDocumentsChange}
-          label="DNI"
-          color="light-blue"
-          required
-        />
-        <Checkbox
-          crossOrigin={undefined}
-          name="preContract"
-          onChange={handleDocumentsChange}
-          label="Ficha de Pre-Contrato Llena"
-          color="light-blue"
-          required
-        />
-        <Checkbox
-          crossOrigin={undefined}
-          name="req1"
-          // onChange={handleDocumentsChange}
-          label="Requisito 1"
-          color="light-blue"
-        />
-        <Checkbox
-          crossOrigin={undefined}
-          name="req2"
-          // onChange={handleDocumentsChange}
-          label="Requisito 2"
-          color="light-blue"
-        />
+
+        {requirements.map((requirement: string, index: number) => (
+          <Checkbox
+            key={index}
+            crossOrigin={undefined}
+            name={requirement}
+            onChange={handleDocumentsChange}
+            label={requirement}
+            color="light-blue"
+            defaultChecked={lead.documents.includes(requirement)}
+            required
+          />
+        ))}
       </div>
     </>
   );

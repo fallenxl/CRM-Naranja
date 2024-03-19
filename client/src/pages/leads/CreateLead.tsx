@@ -330,6 +330,7 @@ export const CreateLead = () => {
               onChange={handleInputChange}
               label="Interesado en"
               value={formData.interestedIn}
+              required
             />
             <Textarea
               name="comment"

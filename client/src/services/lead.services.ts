@@ -65,6 +65,23 @@ export const updateLeadService = async (id: string | undefined, lead: any) => {
   }
 };
 
+export const deleteDocumentByLead = async (
+  leadId: string | undefined,
+  document: string
+) => {
+  try {
+    const response = await axios.patch(
+      Endpoints.LEAD + "documents/" + leadId,
+      {
+        data: { document },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const updateLeadStatus = async (id: string | undefined, status: any) => {
   try {
     const response = await axios.put(Endpoints.LEAD_STATUS + id, status);

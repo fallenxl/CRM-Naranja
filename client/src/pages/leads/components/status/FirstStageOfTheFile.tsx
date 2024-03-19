@@ -1,46 +1,36 @@
 import { Checkbox } from "@material-tailwind/react";
+import { useEffect, useState } from "react";
+import { getRequirementByName } from "../../../../services/requirements.services";
 
 interface Props {
-    handleDocumentsChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  }
-export function FirstStageOfTheFile({ handleDocumentsChange }: Props) {
-   
-    return(
-        <>
+  handleDocumentsChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  lead : any;
+}
+export function FirstStageOfTheFile({ handleDocumentsChange, lead }: Props) {
+  const [requirements, setRequirements] = useState([]);
+  useEffect(() => {
+    getRequirementByName("Segunda Etapa").then((res: any) => {
+      if (res.data) {
+        setRequirements(res.data[0]?.requirements ?? []);
+      }
+    });
+  }, []);
+  return (
+    <>
       <div className="flex flex-wrap gap-3">
-        <Checkbox
-          crossOrigin={undefined}
-          name="purchaseAndSaleContract"
-          onChange={handleDocumentsChange}
-          label="Contrato de compra-venta"
-          color="light-blue"
-          required
-        />
-        <Checkbox
-          crossOrigin={undefined}
-          name="blueprints"
-          onChange={handleDocumentsChange}
-          label="Juego de planos"
-          color="light-blue"
-          required
-        />
-        <Checkbox
-          crossOrigin={undefined}
-          name="primaReceipt"
-          onChange={handleDocumentsChange}
-          label="Recibo de prima"
-          color="light-blue"
-          required
-        />
-        <Checkbox
-          crossOrigin={undefined}
-          name="legalDocumentsOfTheCompany"
-          onChange={handleDocumentsChange}
-          label="Documentos legales de la empresa"
-          color="light-blue"
-          required
-        />
+        {requirements.map((requirement: string, index: number) => (
+          <Checkbox
+            key={index}
+            crossOrigin={undefined}
+            name={requirement}
+            onChange={handleDocumentsChange}
+            label={requirement}
+            color="light-blue"
+            defaultChecked={lead.documents.includes(requirement)}
+            required
+          />
+        ))}
       </div>
     </>
-    )
+  );
 }
