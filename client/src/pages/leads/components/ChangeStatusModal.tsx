@@ -201,7 +201,6 @@ export const ChangeStatusModal = ({
               dateToCall: date,
               comment,
             };
-            alert(JSON.stringify(payload));
       if (status.selected === lead.status.selected) {
         return setError("Debe seleccionar un estado diferente");
       }
