@@ -44,3 +44,8 @@ export function paginateArray<T>(
 
   return { paginatedItems, totalPages, hasNext, hasPrevious };
 }
+
+export function isArrayOfStrings(arr: any | null): arr is string[] {
+  if (!arr) return false;
+  return arr.every((item: any) => typeof item === "string");
+}

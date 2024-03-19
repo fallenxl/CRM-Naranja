@@ -47,7 +47,7 @@ import { currencyFormatToLempiras } from "../../utils/currencyFormat.ts";
 import { Input } from "../../component/inputs/input.tsx";
 import { channels } from "../../constants/general.ts";
 import { ChangeBankModal } from "../../features/ChangeBankModal.tsx";
-import { updateRequirementByName } from "../../services/requirements.services.ts";
+import { isArrayOfStrings } from "../../utils/utilities.ts";
 export const LeadById = () => {
   const { id } = useParams<{ id: string }>();
   validateID(id ?? "");
@@ -722,7 +722,7 @@ export const LeadById = () => {
                   </div>
                 </>
               )}
-              {lead.documents.length > 0 && (
+              {(isArrayOfStrings(lead.documents) && lead.documents?.length > 0) && (
                 <>
                   <div className="flex items-center py-2 border-b gap-2">
                     <h4 className="font-bold  text-gray-700 ">Documentos</h4>

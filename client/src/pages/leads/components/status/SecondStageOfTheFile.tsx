@@ -2,6 +2,7 @@ import { Checkbox } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { getBankById } from "../../../../services/bank.services";
 import { Bank } from "../../../../interfaces";
+import { isArrayOfStrings } from "../../../../utils";
 
 interface Props {
   bankID: string;
@@ -37,7 +38,7 @@ export function SecondStageOfTheFile({ bankID, handleDocumentsChange, lead }: Pr
             onChange={handleDocumentsChange}
             label={req}
             color="light-blue"
-            defaultChecked={lead.documents.includes(req)}
+            defaultChecked={isArrayOfStrings(lead.documents) && lead.documents?.includes(req)}
 
             required
           />

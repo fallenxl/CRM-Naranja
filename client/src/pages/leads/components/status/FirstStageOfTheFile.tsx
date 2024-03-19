@@ -1,6 +1,7 @@
 import { Checkbox } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { getRequirementByName } from "../../../../services/requirements.services";
+import { isArrayOfStrings } from "../../../../utils";
 
 interface Props {
   handleDocumentsChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -26,7 +27,7 @@ export function FirstStageOfTheFile({ handleDocumentsChange, lead }: Props) {
             onChange={handleDocumentsChange}
             label={requirement}
             color="light-blue"
-            defaultChecked={lead.documents.includes(requirement)}
+            defaultChecked={isArrayOfStrings(lead.documents) && lead.documents?.includes(requirement)}
             required
           />
         ))}
