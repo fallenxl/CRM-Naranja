@@ -27,7 +27,6 @@ import { ToAssignProject } from "./status/ToAssignProject";
 import { hasEmptyPropertiesExcept } from "../../../utils";
 import { ToAssignModel } from "./status/ToAssignModel";
 import { AppStore } from "../../../redux/store";
-import { useNavigate } from "react-router-dom";
 import { DocumentationState } from "./status/Documentation";
 import { FirstStageOfTheFile } from "./status/FirstStageOfTheFile";
 import { SecondStageOfTheFile } from "./status/SecondStageOfTheFile";
@@ -50,10 +49,11 @@ export const ChangeStatusModal = ({
     type: "",
     enum: [],
     selected: "",
+    condition: null,
   });
 
   const user = useSelector((state: AppStore) => state.auth.user);
-  const navigate = useNavigate();
+
   const [users, setUsers] = useState([]);
   const [userSelected, setUserSelected] = useState("");
   const [date, setDate] = useState("");
@@ -232,7 +232,8 @@ export const ChangeStatusModal = ({
       updateLeadStatus(lead._id, payload).then((res) => {
         setIsLoading(false);
         if (typeof res === "string") {
-          navigate("/prospectos/lista");
+          setError(res);
+          return;
         }
         dispatch(setStatusChange(true));
         setBankSelected("");
@@ -471,7 +472,7 @@ export const ChangeStatusModal = ({
               </>
             )}
             {/* Precalificar Buró */}
-            {status.selected === "Precalifica en Buró" && banksAvailable && (
+            {((status.selected === "Precalifica en Buró" && banksAvailable) || (status.selected === 'Cambiar Banco' && banksAvailable)) && (
               <>
                 <label htmlFor="selectBank" className="text-gray-600 font-bold">
                   Seleccionar banco:
@@ -564,8 +565,16 @@ export const ChangeStatusModal = ({
               </>
             )}
 
+            {/* Prospecto definido */}
+            {(status.type === "Prospecto Definido" && status.condition === 'REJECTED') && (
+              <p className="text-gray-700 text-sm font-bold">
+                Nota: Enviar a firmar contrato
+              </p>
+            )}
+
+
             {/* Documentación */}
-            {status.selected === "Documentación" && (
+            {status.selected === "Documentación 1era Etapa" && (
               <DocumentationState
                 handleDocumentsChange={handleDocumentChange}
                 lead = {lead}
@@ -595,7 +604,7 @@ export const ChangeStatusModal = ({
                 </p>
               )}
 
-            {/* Enviar a banco */}
+
 
             {/* En caso de que no haya subsanaciones */}
             {status.type === "Enviar a Banco" &&

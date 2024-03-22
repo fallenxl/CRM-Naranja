@@ -81,13 +81,23 @@ export function LeadList() {
     });
   };
   const statusList = [
+    "Oportunidad de venta futura",
+    "Pendiente de Llamar",
     "Por Asignar",
-    "Prospecto Definido",
+    "A Contactar",
     "Precalificar Buró",
     "Precalificar Banco",
-    "Oportunidad de venta futura",
     "Por Asignar Proyecto",
-    "Pendiente de Llamar",
+    "Por Asignar Modelo de Casa",
+    "Prospecto Definido",
+    "Cliente Potencial",
+    "Enviado a Revision 1era Etapa",
+    "Primera Etapa de Expediente",
+    "Segunda Etapa de Expediente",
+    "Enviado a Revision en Banco",
+    "Revision de Expediente",
+    "Enviar a Banco",
+    "Anulado"
   ];
   
   const tableHead = [
@@ -127,7 +137,7 @@ export function LeadList() {
           onChange={handleFilter}
         >
           <option className="p-2" value="">
-            Filtrar por estado
+            Todos los prospectos
           </option>
           {statusList.map((status, index) => {
             return (

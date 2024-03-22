@@ -487,7 +487,7 @@ export const UserByID = () => {
                 )}
               </div>
               <div>
-                {leadsByUser.map((lead: any) => {
+                {leadsByUser.length > 0 && leadsByUser.map((lead: any) => {
                   return (
                     <div className="flex items-center gap-2 py-2">
                       <div

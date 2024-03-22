@@ -24,7 +24,6 @@ export const Settings = () => {
     });
   }, [settings.autoAssign]);
 
-
   const handleAutoAssign = () => {
     updateSettingsAutoAssign(user.id).then((res) => {
       setSettings({
@@ -42,14 +41,14 @@ export const Settings = () => {
   }
   return (
     <Layout title="Configuraciones">
-      <div className="w-3/4 flex flex-col gap-10 mx-auto mb-10">
+      <div className="w-full md:w-3/4 flex flex-col gap-10 mx-auto mb-10">
         <div className="w-full border-b-2 border-gray-300 py-4">
           <h2 className="text-2xl font-bold text-gray-800 ">
             Configuración de prospectos
           </h2>
         </div>
-        <div className="flex justify-between h-4">
-          <label className=" text-gray-800">
+        <div className="flex  justify-between h-4">
+          <label className=" text-gray-800 w-3/4">
             Asignar prospectos a un asesor de forma automática
           </label>
           <Switch
@@ -77,26 +76,43 @@ export const Settings = () => {
         )}
 
         {user.role === "ADMIN" && (
-          <div className="flex flex-col gap-6">
-            <h2 className="text-2xl font-bold text-gray-800 ">
-              Configurar Requisitos
-            </h2>
+          <div className="mt-10 flex flex-col gap-6">
+            <div className="w-full border-b-2 border-gray-300 py-4">
+              <h2 className="text-2xl font-bold text-gray-800 ">
+                Configuración de requisitos
+              </h2>
+            </div>
             <div className="flex justify-between h-4">
               <label className=" text-gray-800">
                 Requisitos primera etapa{" "}
               </label>
-           <button onClick={() => handleOpenModal('Primera Etapa')} className="text-blue-500">Editar</button>
+              <button
+                onClick={() => handleOpenModal("Primera Etapa")}
+                className="text-blue-500"
+              >
+                Editar
+              </button>
             </div>
             <div className="flex justify-between h-4 mt-4">
               <label className=" text-gray-800">
                 Requisitos segunda etapa{" "}
               </label>
-           <button onClick={() => handleOpenModal('Segunda Etapa')} className="text-blue-500">Editar</button>
+              <button
+                onClick={() => handleOpenModal("Segunda Etapa")}
+                className="text-blue-500"
+              >
+                Editar
+              </button>
             </div>
           </div>
         )}
       </div>
-     {openModal && <ModalRequirements stage={requirementSelected} setOpenModal={setOpenModal}/>}
+      {openModal && (
+        <ModalRequirements
+          stage={requirementSelected}
+          setOpenModal={setOpenModal}
+        />
+      )}
     </Layout>
   );
 };
