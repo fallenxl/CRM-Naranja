@@ -38,15 +38,11 @@ export function LeadList() {
           filter ? res.filter((lead: any) => lead.status.type === filter) : res
         );
       });
-
-      
     }
     socket.on("leadUpdated", (_data: any) => {
       getLeadsByRole(user.role as Roles, user.id).then((res) => {
         setLeads(
-          filter
-            ? res.filter((lead: any) => lead.status.type === filter)
-            : res
+          filter ? res.filter((lead: any) => lead.status.type === filter) : res
         );
       });
     });
@@ -97,9 +93,9 @@ export function LeadList() {
     "Enviado a Revision en Banco",
     "Revision de Expediente",
     "Enviar a Banco",
-    "Anulado"
+    "Anulado",
   ];
-  
+
   const tableHead = [
     "Fecha",
     "Nombre Completo",
@@ -122,6 +118,7 @@ export function LeadList() {
   return (
     <Layout title="Lista de prospectos">
       <Table
+        searchInput
         isLoading={isLoading}
         path="/prospectos/"
         tableHead={tableHead}

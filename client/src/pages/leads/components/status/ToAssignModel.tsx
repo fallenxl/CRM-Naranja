@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getModelsByProjectID } from "../../../../services/projects.services";
+import { formatCurrency } from "../../../../utils";
 
 interface Props {
   lead: any;
@@ -72,13 +73,13 @@ export const ToAssignModel = ({ lead, setModelPayload }: Props) => {
             <div className="flex flex-row justify-between">
               <p className="font-bold text-gray-600">Precio:</p>
               <p className="text-gray-600 font-medium">
-                {modelSelected?.price}
+                {formatCurrency(modelSelected?.price)}
               </p>
             </div>
             <div className="flex flex-row justify-between">
               <p className="font-bold text-gray-600">Precio con descuento:</p>
               <p className="text-gray-600 font-medium">
-                {modelSelected?.priceWithDiscount}
+                {formatCurrency(modelSelected?.priceWithDiscount)}
               </p>
             </div>
           </div>

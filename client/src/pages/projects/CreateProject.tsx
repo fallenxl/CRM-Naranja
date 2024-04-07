@@ -16,9 +16,7 @@ export const CreateProject = () => {
   } as IProject);
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    alert(JSON.stringify(formData));
     createProject(formData).then((res) => {
-      alert(JSON.stringify(res));
       if(typeof res === "string") return errorAlert('Oops...',res);
 
       successAlertWithRedirect('Éxito!','Se ha creado el proyecto correctamente', '/proyectos/lista');

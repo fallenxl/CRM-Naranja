@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { Table } from "../../component/table/Table";
 import { Layout } from "../Layout";
 
-import { getAllProjects } from "../../services/projects.services";
+import { deleteProjectById, getAllProjects } from "../../services/projects.services";
+import Swal from "sweetalert2";
+import { errorAlert, successAlert } from "../../component/alerts/Alerts";
 
 export function ProjectsList() {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,6 +24,31 @@ export function ProjectsList() {
       description: project.description,
     };
   });
+
+  const handleDelete = (id: string) => {
+    Swal.fire({
+      title: "¿Estas seguro?",
+      text: "No podrás revertir esta acción",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+
+      confirmButtonText: "Si, eliminar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteProjectById(id).then((res : any) => {
+          if(typeof res === "string"){
+           return errorAlert('Oops!',res);
+          }
+
+          setProjects(projects.filter((project: any) => project._id !== id));
+          successAlert("Exito", "Proyecto eliminado correctamente.");
+        }
+        );
+      }
+    });
+  }
   return (
     <Layout title="Lista de Proyectos">
       <Table
@@ -31,7 +58,7 @@ export function ProjectsList() {
         tableRows={tableRows}
         title="Lista de proyectos"
         description="Lista de todos los proyectos registrados en el sistema."
-       
+        handleDelete={handleDelete}
       />
     </Layout>
   );

@@ -28,6 +28,7 @@ export function LotInventory() {
   return (
     <Layout title="Inventario de Lotes">
       <Table
+      actions={false}
         isLoading={isLoading}
         path="/users/"
         tableHead={tableHead}

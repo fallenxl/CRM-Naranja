@@ -14,5 +14,5 @@ export const RolesArray = {
     "BANK_MANAGER": "Gestor Bancario",
     "COMMUNITY_MANAGER": "Community Manager",
     "RECEPTIONIST": "Recepcionista",
-
+    "DEPUTY_SALES_MANAGER": "Sub-jefe de Ventas",
 }

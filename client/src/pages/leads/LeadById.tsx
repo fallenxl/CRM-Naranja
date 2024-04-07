@@ -43,7 +43,7 @@ import {
   deleteDocumentByLead,
 } from "../../services/lead.services.ts";
 import Swal from "sweetalert2";
-import { currencyFormatToLempiras } from "../../utils/currencyFormat.ts";
+import { currencyFormatToLempiras, formatCurrency } from "../../utils/currencyFormat.ts";
 import { Input } from "../../component/inputs/input.tsx";
 import { channels } from "../../constants/general.ts";
 import { ChangeBankModal } from "../../features/ChangeBankModal.tsx";
@@ -701,14 +701,14 @@ export const LeadById = () => {
                     <HomeIcon className="w-4 h-4" />
                     <span className="text-sm text-gray-600  ">Area:</span>
                     <span className="text-sm">
-                      {lead.projectDetails.houseModel.area} v²
+                      {lead.projectDetails.houseModel.area ? `${lead.projectDetails.houseModel.area} v²` : 'Abierto'}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 py-2 w-full">
                     <HomeIcon className="w-4 h-4" />
                     <span className="text-sm text-gray-600  ">Precio:</span>
                     <span className="text-sm">
-                      {lead.projectDetails.houseModel.price?.toString()}
+                      {lead.projectDetails.houseModel.price ? formatCurrency(lead.projectDetails.houseModel.price) : 'Abierto'}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 py-2 w-full">
@@ -717,7 +717,7 @@ export const LeadById = () => {
                       Precio con descuento:
                     </span>
                     <span className="text-sm">
-                      {lead.projectDetails.houseModel.priceWithDiscount}
+                      {lead.projectDetails.houseModel.priceWithDiscount ? formatCurrency(lead.projectDetails.houseModel.priceWithDiscount) : 'Abierto'}
                     </span>
                   </div>
                 </>

@@ -47,8 +47,8 @@ export const useLeadData = (id: string | undefined) => {
       houseModel: {
         model: "",
         area: 0,
-        price: "",
-        priceWithDiscount: "",
+        price: 0,
+        priceWithDiscount: 0,
       },
     },
     documents: [],  

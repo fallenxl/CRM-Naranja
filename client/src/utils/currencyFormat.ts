@@ -10,3 +10,10 @@ export const currencyFormatToLempiras = (value: string) => {
     currency: "HNL",
   })
 };
+
+export const formatCurrency = (value: number) => {
+  return value.toLocaleString('es-HN', {
+    style: 'currency',
+    currency: 'HNL'
+  });
+}

@@ -2,6 +2,8 @@ import { HomeModernIcon } from "@heroicons/react/24/outline";
 import { ProjectsList } from "../../pages/projects/ProjectsList";
 import { LotInventory } from "../../pages/projects/LotInventory";
 import { RoleRoute } from "../../interfaces";
+import { CreateProject } from "../../pages/projects/CreateProject";
+import { ProjectById } from "../../pages/projects/ProjectById";
 
 export const projectsModule = (): RoleRoute => {
   const routes = {
@@ -12,6 +14,11 @@ export const projectsModule = (): RoleRoute => {
     gap: false,
     submenu: true,
     sub: [
+      {
+        path: "/proyectos/crear",
+        label: "Crear Proyecto",
+        component: <CreateProject />,
+      },
       {
         path: "/proyectos/lista",
         label: "Proyectos",
@@ -24,7 +31,7 @@ export const projectsModule = (): RoleRoute => {
       },
       {
         path: ":id",
-        component: <div>Proyecto</div>,
+        component: <ProjectById />,
       },
     ],
   };

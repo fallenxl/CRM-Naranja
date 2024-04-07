@@ -30,6 +30,8 @@ interface Props {
   handleDelete?: (id: string) => void;
   isLoading?: boolean;
   children?: React.ReactNode;
+  searchInput?: boolean;
+  actions?: boolean;
 }
 export function Table({
   title,
@@ -40,6 +42,8 @@ export function Table({
   path,
   isLoading,
   children,
+  searchInput,
+  actions = true,
 }: Props) {
   const { user } = useSelector((state: AppStore) => state.auth);
   const [search, setSearch] = useState("");
@@ -61,7 +65,6 @@ export function Table({
       rowsPerPage,
       currentPage
     );
-    console.log(paginatedItems);
     setFiltered(paginatedItems);
     setHasNext(hasNext);
     setHasPrevious(hasPrevious);
@@ -129,13 +132,13 @@ export function Table({
             </select>
             {children}
           </div>
-          <div className="w-full md:w-2/3 flex flex-row-reverse">
+         {searchInput && <div className="w-full md:w-2/3 flex flex-row-reverse">
             <Input
               onChange={handleSearch}
               placeholder="Buscar por nombre"
               value={search}
             />
-          </div>
+          </div>}
         </div>
       </CardHeader>
       <CardBody className="overflow-x-scroll md:overflow-auto px-0">
@@ -153,11 +156,11 @@ export function Table({
                   </span>
                 </th>
               ))}
-              <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
+            {actions &&  <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4">
                 <span className="font-bold leading-none opacity-90 text-sm">
                   Acciones
                 </span>
-              </th>
+              </th>}
             </tr>
           </thead>
           <tbody>
@@ -218,7 +221,7 @@ export function Table({
                       );
                     })}
 
-                    <td className={classes + " flex gap-x-2"}>
+                  {actions &&  <td className={classes + " flex gap-x-2"}>
                       {/* Boton de editar */}
                       <div className="flex items-center gap-x-2">
                         <Link replace={true} to={path + item["id"]}>
@@ -245,7 +248,7 @@ export function Table({
                             </IconButton>
                           </div>
                         )}
-                    </td>
+                    </td>}
                   </tr>
                 );
               })
