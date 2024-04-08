@@ -62,8 +62,8 @@ export function ProjectById() {
     }));
   };
 
-  const [lotSelected, setLotSelected] = useState<any>(null);  
-  const [modelSelected, setModelSelected] = useState(0);
+  const [lotSelected, setLotSelected] = useState<any>(null);
+  const [modelSelected, setModelSelected] = useState<number | null>(null);
   const handleEditModel = (index: number) => {
     setModelSelected(index);
   };
@@ -93,25 +93,24 @@ export function ProjectById() {
     });
   };
 
-
-  const handleAddLot = (lot: any, opt: string = 'create') => {
-    if(opt === "update"){
-     updateLot(lot).then((res) => {
-        if(typeof res === "string") return errorAlert("Error", res);
+  const handleAddLot = (lot: any, opt: string = "create") => {
+    if (opt === "update") {
+      updateLot(lot).then((res) => {
+        if (typeof res === "string") return errorAlert("Error", res);
         const newLot = res.data;
         setEditProject((prev: any) => ({
           ...prev,
           lots: prev.lots.map((l: any) => {
-            if(l._id === newLot._id) return newLot;
+            if (l._id === newLot._id) return newLot;
             return l;
           }),
         }));
-     });
+      });
       return;
     }
 
     createLot(lot).then((res) => {
-      if(typeof res === "string") return errorAlert("Error", res);
+      if (typeof res === "string") return errorAlert("Error", res);
       const newLot = res.data;
       setEditProject((prev: any) => ({
         ...prev,
@@ -179,28 +178,26 @@ export function ProjectById() {
                 onChange={handleChangeProject}
                 disabled={edit}
               />
-             <div className="flex items-center gap-4 mt-3">
-             <label className="text-gray-700 text-xs  ">
-                Modelos de casas
-              </label>
-              {!edit && (
-                <span
-                  onClick={() => {
-                    setOpenModal(true);
-                    setModelSelected(0);
-                  }}
-                  className="text-xs text-blue-500 hover:text-blue-700 cursor-pointer"
-                >
-                  Agregar modelo
-                </span>
-              
-              )}
-             </div>
+              <div className="flex items-center gap-4 mt-3">
+                <label className="text-gray-700 text-xs  ">
+                  Modelos de casas
+                </label>
+                {!edit && (
+                  <span
+                    onClick={() => {
+                      setModelSelected(null);
+                      setOpenModal(true);
+                    }}
+                    className="text-xs text-blue-500 hover:text-blue-700 cursor-pointer"
+                  >
+                    Agregar modelo
+                  </span>
+                )}
+              </div>
               {editProject.models?.length === 0 && (
                 <span className="text-xs text-gray-500 block mt-4">
                   No hay modelos registrados
                 </span>
-              
               )}
               <ul className="flex flex-wrap gap-2 mt-2">
                 {editProject.models?.map((program: any, index: number) => (
@@ -218,8 +215,8 @@ export function ProjectById() {
                       <span
                         onClick={() => {
                           if (edit) return;
+                          setModelSelected(index);
                           setOpenModal(true);
-                          handleEditModel(index);
                         }}
                         className={`${
                           !edit
@@ -231,21 +228,19 @@ export function ProjectById() {
                   </li>
                 ))}
               </ul>
-             <div className="flex items-center gap-4 mt-3">
-              <label className="text-gray-700 text-xs  ">
-                Lotes
-              </label>
-              {!edit && (
-                <span
-                  onClick={() => {
-                    setLotSelected(null);
-                    setOpenModalLot(true);
-                  }}
-                  className="text-xs text-blue-500 hover:text-blue-700 cursor-pointer"
-                >
-                  Agregar lote
-                </span>
-              )}
+              <div className="flex items-center gap-4 mt-3">
+                <label className="text-gray-700 text-xs  ">Lotes</label>
+                {!edit && (
+                  <span
+                    onClick={() => {
+                      setLotSelected(null);
+                      setOpenModalLot(true);
+                    }}
+                    className="text-xs text-blue-500 hover:text-blue-700 cursor-pointer"
+                  >
+                    Agregar lote
+                  </span>
+                )}
               </div>
 
               {editProject.lots?.length === 0 && (
@@ -256,23 +251,26 @@ export function ProjectById() {
               <ul className="flex flex-wrap gap-2 mt-2">
                 {editProject.lots?.map((lot: any) => (
                   <li className="flex items-center gap-x-2 bg-teal-600 rounded-md text-white p-2 text-xs">
-                     {edit ? (
-                        <ClipboardDocumentCheckIcon className="w-4 h-4" />
-                      ) : (
-                        <XMarkIcon
-                          onClick={() => handleDeleteLot(lot._id)}
-                          className="w-4 h-4 cursor-pointer"
-                        />
-                      )}
-                    <span onClick={() => {
-                      if(edit) return;
-                      setLotSelected(lot);
-                      setOpenModalLot(true);
-                    }} className={`${
-                          !edit
-                            ? "hover:text-gray-200 hover:underline cursor-pointer "
-                            : ""
-                        }`}>{`${lot.block}-${lot.lot}`}</span>
+                    {edit ? (
+                      <ClipboardDocumentCheckIcon className="w-4 h-4" />
+                    ) : (
+                      <XMarkIcon
+                        onClick={() => handleDeleteLot(lot._id)}
+                        className="w-4 h-4 cursor-pointer"
+                      />
+                    )}
+                    <span
+                      onClick={() => {
+                        if (edit) return;
+                        setLotSelected(lot);
+                        setOpenModalLot(true);
+                      }}
+                      className={`${
+                        !edit
+                          ? "hover:text-gray-200 hover:underline cursor-pointer "
+                          : ""
+                      }`}
+                    >{`${lot.block}-${lot.lot}`}</span>
                   </li>
                 ))}
               </ul>
@@ -299,17 +297,23 @@ export function ProjectById() {
             </form>
           </div>
         </div>
-      
       </Card>
-      {openModalLot && <ModalAddLot addLot={handleAddLot} setOpenModal={setOpenModalLot} projectID={project._id} setEditProject={setProject} lot={lotSelected}/>}
+      {openModalLot && (
+        <ModalAddLot
+          addLot={handleAddLot}
+          setOpenModal={setOpenModalLot}
+          projectID={project._id}
+          setEditProject={setProject}
+          lot={lotSelected}
+        />
+      )}
       {openModal && (
         <ModalAddModel
           addModel={addModel}
           setOpenModal={setOpenModal}
-          model={editProject.models[modelSelected]}
-          index={modelSelected}
+          model={modelSelected !== null && editProject.models[modelSelected]}
+          index={modelSelected && modelSelected}
           setEditProject={setEditProject}
-
         />
       )}
     </Layout>

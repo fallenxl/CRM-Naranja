@@ -58,7 +58,7 @@ export const getLotsByProjectAndStatus = async (
     const response = await axios.get(
       Endpoints.LOTS_BY_PROJECT + projectId + "/" + status
     );
-    console.log(response);
+    console.log(response.data);
     return response;
   } catch (error) {
     throw error;

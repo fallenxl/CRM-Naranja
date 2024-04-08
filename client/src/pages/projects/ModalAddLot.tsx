@@ -24,7 +24,7 @@ export const ModalAddLot = ({
       lot: "",
       price: "",
       area: 0,
-      status: "",
+      status: "Disponible",
     }
   );
   const [lead, setLead] = useState<any>({});
@@ -40,12 +40,7 @@ export const ModalAddLot = ({
   }, [lot]);
 
   const handleInputChange = (e: any) => {
-    if (e.target.name === "price" || e.target.name === "priceWithDiscount") {
-      setFormData({
-        ...formData,
-        [e.target.name]: e.target.value.toString(),
-      });
-    } else if (e.target.name === "area") {
+ if (e.target.name === "area" || e.target.name === "price" ) {
       setFormData({
         ...formData,
         [e.target.name]: e.target.value === "" ? 0 : parseFloat(e.target.value),

@@ -20,6 +20,7 @@ export const ToAssignModel = ({ lead, setModelPayload }: Props) => {
   useEffect(() => {
     getModelsByProjectID(lead.projectDetails.projectID._id).then((res) => {
       setModels(res?.data.models);
+      console.log(res?.data.models);
     });
   }, []);
 

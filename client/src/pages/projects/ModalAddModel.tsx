@@ -6,26 +6,21 @@ interface Props {
   addModel: (model: any) => void;
   model?: any;
   setEditProject: any;
-  index?: number;
+  index?: number | null;
 }
 
 export const ModalAddModel = ({ setOpenModal, addModel, model, setEditProject, index }: Props) => {
   const [formData, setFormData] = useState(
     model ?? {
       model: "",
-      price: "",
-      priceWithDiscount: "",
+      price: 0,
+      priceWithDiscount: 0,
       area: 0,
     }
   );
 
   const handleInputChange = (e: any) => {
-    if (e.target.name === "price" || e.target.name === "priceWithDiscount") {
-      setFormData({
-        ...formData,
-        [e.target.name]: e.target.value.toString(),
-      });
-    } else if (e.target.name === "area") {
+if (e.target.name === "area" || e.target.name === "price" || e.target.name === "priceWithDiscount") {
       setFormData({
         ...formData,
         [e.target.name]: e.target.value === "" ? 0 : parseFloat(e.target.value),
