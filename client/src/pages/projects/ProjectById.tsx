@@ -11,7 +11,6 @@ import {
   getAllLotsByProjectID,
   updateProjectById,
 } from "../../services/projects.services";
-import { capitalizeFirstLetterByWord } from "../../utils";
 import { Input } from "../../component/inputs/input";
 import { ModalAddModel } from "./ModalAddModel";
 import { IProjectModels } from "../../interfaces";
@@ -64,9 +63,7 @@ export function ProjectById() {
 
   const [lotSelected, setLotSelected] = useState<any>(null);
   const [modelSelected, setModelSelected] = useState<number | null>(null);
-  const handleEditModel = (index: number) => {
-    setModelSelected(index);
-  };
+
 
   const handleChangeProject = (e: any) => {
     setEditProject((prev: any) => ({

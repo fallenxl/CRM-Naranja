@@ -5,7 +5,7 @@ interface Props {
   setOpenModal: (open: boolean) => void;
   addModel: (model: any) => void;
   model?: any;
-  setEditProject: any;
+  setEditProject?: any;
   index?: number | null;
 }
 
