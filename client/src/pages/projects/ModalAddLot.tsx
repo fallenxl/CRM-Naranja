@@ -82,7 +82,7 @@ export const ModalAddLot = ({
           <div className="mt-3 text-center sm:mt-0 sm:text-left w-full">
             <div className="flex justify-between items-center">
               <h3 className="text-lg leading-6 font-medium text-gray-900">
-                Agregar programa de financiamiento
+                Agregar Lote
               </h3>
               <button onClick={handleCloseModal}>
                 <XMarkIcon className="h-8 w-8 text-gray-500 hover:text-gray-700" />
@@ -90,7 +90,7 @@ export const ModalAddLot = ({
             </div>
             <div className="mt-2">
               <p className="text-sm text-gray-500">
-                Llena los campos para agregar un programa de financiamiento
+                Llena los campos para agregar un lote
               </p>
             </div>
           </div>

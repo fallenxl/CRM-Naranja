@@ -13,8 +13,8 @@ export const ModalAddModel = ({ setOpenModal, addModel, model, setEditProject, i
   const [formData, setFormData] = useState(
     model ?? {
       model: "",
-      price: 0,
-      priceWithDiscount: 0,
+      price: "",
+      priceWithDiscount: "",
       area: 0,
     }
   );
