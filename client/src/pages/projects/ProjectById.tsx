@@ -267,7 +267,7 @@ export function ProjectById() {
                           ? "hover:text-gray-200 hover:underline cursor-pointer "
                           : ""
                       }`}
-                    >{`${lot.block}-${lot.lot}`}</span>
+                    >{`${lot.block && lot.block + " - "}${lot.lot}`}</span>
                   </li>
                 ))}
               </ul>
