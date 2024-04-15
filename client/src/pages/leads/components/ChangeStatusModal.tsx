@@ -187,6 +187,7 @@ export const ChangeStatusModal = ({
           : status.type === "Enviar a Banco"
           ? {
               status: status.selected,
+              comment,
               ...sendToBankState,
             }
           : (status.type === "Cliente Potencial" || status.type === "Primera Etapa de Expediente" || status.type === 'Segunda Etapa de Expediente') ?{
