@@ -57,12 +57,12 @@ export const Input = ({
           (seePassword ? (
             <EyeIcon
               onClick={toggleSeePassword}
-              className="w-5 h-5 absolute right-3 top-3 text-blue-gray-400 cursor-pointer"
+              className="w-5 h-5 absolute right-3 top-4 text-blue-gray-400 cursor-pointer"
             />
           ) : (
             <EyeSlashIcon
               onClick={toggleSeePassword}
-              className="w-5 h-5 absolute right-3 top-3 text-blue-gray-400 cursor-pointer"
+              className="w-5 h-5 absolute right-3 top-4 text-blue-gray-400 cursor-pointer"
             />
           ))}
       </div>

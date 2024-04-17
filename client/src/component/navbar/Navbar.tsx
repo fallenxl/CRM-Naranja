@@ -13,12 +13,12 @@ import {
   BellIcon,
   Bars2Icon,
   PowerIcon,
-  BugAntIcon,
+  BugAntIcon, UserIcon,
 } from "@heroicons/react/24/outline";
 import { getDays, getLocalStorage, getTimeOfDay } from "../../utils";
 import { LocalStorageKeys, PublicRoutes } from "../../constants";
 import { AuthResponse } from "../../interfaces";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { logout } from "../../services";
 import { useEffect, useState } from "react";
 import {
@@ -65,7 +65,7 @@ export function NavbarWithSearch({ setOpenSidebar }: Props) {
         setNotifications([...notifications, ...response]);
       });
 
-      if (data.includes(user?.user.id!) || user?.user.role === "ADMIN") {
+      if (user && (data.includes(user.user.id!) || user.user.role === "ADMIN")) {
         setOpenDialog(true);
         setTimeout(() => {
           setOpenDialog(false);
@@ -213,6 +213,17 @@ export function NavbarWithSearch({ setOpenSidebar }: Props) {
               <MenuList>
                 <MenuItem>
                   <div className="flex flex-col w-[15em]">
+                    <Link to={'/me'} className={'px-2 py-2 rounded-sm'}>
+                      <div className="flex items-center">
+                        <UserIcon className="h-5 w-5 mr-2"/>
+                        <span>Mi Perfil</span>
+                      </div>
+                    </Link>
+
+                  </div>
+                </MenuItem>
+                <MenuItem>
+                  <div className="flex flex-col w-[15em]">
                     <a
                       href="https://forms.gle/A7FSu7MMR5uYHuGG7"
                       target="_blank"
@@ -225,6 +236,7 @@ export function NavbarWithSearch({ setOpenSidebar }: Props) {
                     </a>
                   </div>
                 </MenuItem>
+
                 <MenuItem onClick={handleSignOut}>
                   <div className="flex flex-col w-[15em]">
                     <a href="#" className="px-2 py-2 rounded-sm">

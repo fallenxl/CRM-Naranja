@@ -61,9 +61,8 @@ export const CreateUser = () => {
     });
   };
 
-  // const { user } = useSelector((state: AppStore) => state.auth)
   return (
-    <Layout title="Crear lead">
+    <Layout title="Crear Usuario">
       <div className="m-auto w-full lg:w-3/4 bg-white h-auto px-10 py-6 rounded-md">
         <form
           onSubmit={handleSubmit}

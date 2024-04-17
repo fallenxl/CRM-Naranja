@@ -14,6 +14,7 @@ import React from "react";
 import { RoleGuard } from "../guards/role.guard";
 import { useSelector } from "react-redux";
 import { AppStore } from "../redux/store";
+import {Me} from "../pages/me/Me.tsx";
 
 // Rutas de acuerdo al rol del usuario
 export const indexRoutes: IIndexRoutes = {
@@ -34,6 +35,7 @@ export const renderRoutesByRole = () => {
     <>
       {role && (
         <Route element={<RoleGuard role={role} />}>
+          <Route path={'/me'} element={<Me/>}/>
           {indexRoutes[role as Roles].map((route) => (
             <React.Fragment key={route.path || route.label}>
               {route.path && (

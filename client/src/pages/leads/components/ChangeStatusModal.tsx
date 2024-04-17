@@ -214,19 +214,20 @@ export const ChangeStatusModal = ({
           "workTime",
           "workAddress",
           "salary",
+            'email'
         ]) &&
         status.selected === "Contactado" &&
         status.type === "A Contactar"
       ) {
-        return setError("Debe llenar toda la ficha");
+        return setError("Debe llenar toda la ficha en informacion general");
       }
 
       if (
-        hasEmptyPropertiesExcept(updateLead, ["comment"]) &&
+        hasEmptyPropertiesExcept(updateLead, ["comment", "email"]) &&
         status.selected === "Precalifica en Buró" &&
         status.type === "Precalificar Buró"
       ) {
-        return setError("Debe llenar toda la ficha");
+        return setError("Debe llenar toda la ficha en detalles laborales");
       }
       setIsLoading(true);
       cb && cb();
