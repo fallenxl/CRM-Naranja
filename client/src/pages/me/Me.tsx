@@ -356,7 +356,7 @@ export const Me = () => {
                             </div>
                         </Card>
                         {/* Prospectos asignados */}
-                        <Card className=" w-full mx-auto p-8 mb-4 max-h-[70rem]">
+                        <Card className=" w-full mx-auto p-8 mb-4 max-h-[70rem] ">
                             <div className="flex items-center justify-between p-2 border-b mb-2 gap-2 ">
                                 <h4 className="font-bold  text-gray-700  flex items-center justify-between lg:justify-start gap-2">
                                     Prospectos asignados <span>({leadsByUser.length})</span>
@@ -368,7 +368,7 @@ export const Me = () => {
                                     </small>
                                 )}
                             </div>
-                            <div>
+                            <div className={'overflow-auto'}>
                                 {leadsByUser.length > 0 && leadsByUser.map((lead: any) => {
                                     return (
                                         <div className="flex items-center gap-2 py-2">
