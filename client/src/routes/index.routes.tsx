@@ -15,6 +15,7 @@ import { RoleGuard } from "../guards/role.guard";
 import { useSelector } from "react-redux";
 import { AppStore } from "../redux/store";
 import {Me} from "../pages/me/Me.tsx";
+import {supervisorRoutes} from "./roles/supervisor.routes.tsx";
 
 // Rutas de acuerdo al rol del usuario
 export const indexRoutes: IIndexRoutes = {
@@ -24,6 +25,7 @@ export const indexRoutes: IIndexRoutes = {
   BANK_MANAGER: [...bankManagerRoutes],
   COMMUNITY_MANAGER: [...communityRoutes] as RoleRoute[],
   RECEPTIONIST: [...receptionistRoutes],
+  SUPERVISOR: [...supervisorRoutes],
 };
 
 // Renderizar rutas de acuerdo al rol del usuario

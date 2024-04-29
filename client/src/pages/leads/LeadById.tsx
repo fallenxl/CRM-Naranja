@@ -193,15 +193,15 @@ export const LeadById = () => {
                 </div>
                 <div className="w-full flex justify-between py-2">
                   <span className="font-bold text-gray-600">Información</span>
-                  <button
-                    onClick={handleEdit}
-                    className="flex gap-x-2 items-center"
+                  {user?.role !== 'SUPERVISOR' && <button
+                      onClick={handleEdit}
+                      className="flex gap-x-2 items-center"
                   >
                     <span className="text-xs hover:text-blue-500 cursor-pointer">
                       Editar
                     </span>
-                    <PencilSquareIcon className="w-4 h-4 " />
-                  </button>
+                    <PencilSquareIcon className="w-4 h-4 "/>
+                  </button>}
                 </div>
                 <hr className="w-full mb-2" />
                 {/* Lead details form */}
