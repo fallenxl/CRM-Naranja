@@ -25,4 +25,5 @@ export const  Endpoints =  {
   LOTS : API_BASE_URL + 'lots/',
   LOTS_BY_PROJECT: API_BASE_URL + 'lots/project/',
   REQUIREMENT: API_BASE_URL + 'requirements',
+  ROLES: API_BASE_URL + 'roles',
 }
