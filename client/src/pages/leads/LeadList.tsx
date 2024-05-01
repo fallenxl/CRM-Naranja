@@ -99,7 +99,7 @@ export function LeadList() {
   const tableHead = [
     "Fecha",
     "Nombre Completo",
-    "DNI",
+    "DNI / Pasaporte / Carne de Residencia",
     "Teléfono",
     "Estado",
     "Asesor",
@@ -109,7 +109,7 @@ export function LeadList() {
       id: lead._id,
       date: getDays(lead.createdAt),
       name: lead.name,
-      dni: lead.dni,
+      dni: lead.dni?.length > 0 ? lead.dni : lead.passport?.length > 0 ? lead.passport : lead.residenceNumber,
       phone: lead.phone,
       status: lead.status.type,
       advisor: lead.advisorID?.name ?? "No asignado",

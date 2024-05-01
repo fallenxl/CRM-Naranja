@@ -101,7 +101,6 @@ export const CreateLead = () => {
             if (typeof res === "string" || !res) {
                 return errorAlertWithTimer("Error", res??'Error al crear el prospecto');
             }
-
             successAlertWithRedirect(
                 "Lead creado",
                 "El lead se ha creado correctamente",
