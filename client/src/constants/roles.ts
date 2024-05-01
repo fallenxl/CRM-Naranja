@@ -6,6 +6,7 @@ export enum Roles {
     COMMUNITY_MANAGER = 'COMMUNITY_MANAGER',
     RECEPTIONIST = 'RECEPTIONIST',
     SUPERVISOR = 'SUPERVISOR',
+    MANAGEMENT = 'MANAGEMENT',
 }
 
 export const RolesArray = {
@@ -15,6 +16,6 @@ export const RolesArray = {
     "BANK_MANAGER": "Gestor Bancario",
     "COMMUNITY_MANAGER": "Community Manager",
     "RECEPTIONIST": "Recepcionista",
-    "DEPUTY_SALES_MANAGER": "Sub-jefe de Ventas",
+    "MANAGEMENT": "Gerencia",
     "SUPERVISOR": "Supervisor",
 }

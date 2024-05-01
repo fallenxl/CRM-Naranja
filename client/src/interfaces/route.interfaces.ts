@@ -7,6 +7,7 @@ export interface IIndexRoutes {
     COMMUNITY_MANAGER: RoleRoute[],
     RECEPTIONIST: RoleRoute[],
     SUPERVISOR: RoleRoute[],
+    MANAGEMENT: RoleRoute[],
   }
 export interface RoleRoute {
     path?: string;

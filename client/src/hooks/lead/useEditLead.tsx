@@ -6,6 +6,8 @@ export const useEditLead = (id: string | undefined, lead: any) => {
   const [updateLead, setUpdateLead] = useState<any>({
     name: "",
     dni: "",
+    passport: "",
+    residenceNumber: "",
     phone: "",
     address: "",
     email: "",
@@ -27,6 +29,8 @@ export const useEditLead = (id: string | undefined, lead: any) => {
     setUpdateLead({
       name: lead.name,
       dni: lead.dni,
+        passport: lead.passport,
+        residenceNumber: lead.residenceNumber,
       phone: lead.phone,
       address: lead.address,
       department: lead.department,

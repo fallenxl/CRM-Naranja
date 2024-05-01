@@ -9,6 +9,8 @@ export const useLeadData = (id: string | undefined) => {
   const [lead, setLead] = useState({
     name: "",
     dni: "",
+    passport: "",
+    residenceNumber: "",
     phone: "",
     status: {
       type: "",

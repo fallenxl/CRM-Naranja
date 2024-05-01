@@ -9,3 +9,24 @@ export interface LeadDTO {
     campaignID?: string
     advisorID?: string
 }
+
+export interface CreateLeadDTO {
+    name: string,
+    dni: string,
+    email: string,
+    phone: string,
+    address: string,
+    country: string,
+    department: string,
+    source: string,
+    interestedIn: string,
+    workAddress: string,
+    workPosition: string,
+    salary: string,
+    workTime: string,
+    paymentMethod: string,
+    comment: string,
+    passport?: string,
+    residenceNumber?: string,
+
+}

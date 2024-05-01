@@ -1,7 +1,7 @@
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { HTMLInputTypeAttribute, useState } from "react";
 
-interface PasswordInputProps {
+interface PasswordInputProps extends React.InputHTMLAttributes<HTMLInputElement>{
   name?: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -28,7 +28,8 @@ export const Input = ({
   type,
   step,
   label,
-  onKeyDown
+  onKeyDown,
+    ...rest
 }: PasswordInputProps) => {
   const [seePassword, setSeePassword] = useState(false);
   const toggleSeePassword = () => setSeePassword(!seePassword);
@@ -37,7 +38,7 @@ export const Input = ({
     <>
       <div className={`relative w-full`}>
       {label && (
-        <label className="text-gray-700 text-xs  ">{label}</label>
+        <label className="text-gray-700 text-xs ">{label} {required && <span className={'text-red-500'}>*</span>}</label>
       )}
         <input
           {...(type === "password" && { minLength: 8 })}
@@ -52,6 +53,7 @@ export const Input = ({
           min={type === "number" ? 0 : undefined}
           step={step}
           onKeyDown={onKeyDown}
+            {...rest}
         />
         {type === "password" &&
           (seePassword ? (

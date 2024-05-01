@@ -13,7 +13,8 @@ export const getLeadsByRole = async (role: Roles, id?: string) => {
       role === Roles.COMMUNITY_MANAGER ||
       role === Roles.RECEPTIONIST ||
         role === Roles.SUPERVISOR ||
-        role === Roles.MANAGER
+        role === Roles.MANAGER ||
+        role === Roles.MANAGEMENT
     ) {
       const { data } = await axios.get(Endpoints.ADMIN_LEADS);
       return data;
