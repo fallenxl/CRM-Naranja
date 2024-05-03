@@ -224,7 +224,7 @@ export const ChangeStatusModal = ({
       }
 
       if (
-        hasEmptyPropertiesExcept(updateLead, ["comment", "email"]) &&
+        hasEmptyPropertiesExcept(updateLead, ["comment", "email", ...identityBlock]) &&
         status.selected === "Precalifica en Buró" &&
         status.type === "Precalificar Buró"
       ) {
