@@ -205,7 +205,7 @@ export const ChangeStatusModal = ({
       if (status.selected === lead.status.selected) {
         return setError("Debe seleccionar un estado diferente");
       }
-
+      const identityBlock = lead.dni.length > 0 ? ['passport', 'residenceNumber'] : lead.passport.length > 0 ? ['dni', 'residenceNumber'] : ['dni', 'passport'];
       if (
         hasEmptyPropertiesExcept(updateLead, [
           "comment",
@@ -214,7 +214,8 @@ export const ChangeStatusModal = ({
           "workTime",
           "workAddress",
           "salary",
-            'email'
+            'email',
+            ...identityBlock
         ]) &&
         status.selected === "Contactado" &&
         status.type === "A Contactar"

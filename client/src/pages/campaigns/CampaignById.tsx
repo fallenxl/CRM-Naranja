@@ -131,82 +131,74 @@ export const CampaignById = () => {
             </div>
             {/* Lead details form */}
             <form
-              onSubmit={handleSubmit}
-              action=""
-              className="w-full flex flex-col gap-y-2 p-4"
+                onSubmit={handleSubmit}
+                action=""
+                className="w-full flex flex-col gap-y-2 p-4"
             >
-              <label className="text-gray-700 text-xs ml-7">
-                Nombre de la campaña
-              </label>
-              <div className="flex items-center gap-x-2  w-full">
-                <IdentificationIcon className="w-5 h-5" />
-                <Input
-                  name="name"
-                  onChange={handleUpdateCampaignChange}
-                  label="Nombre del banco"
-                  value={updateCampaign.name}
-                  disabled={edit}
-                />
-              </div>
-              <label className="text-gray-700 text-xs ml-7">Descripción</label>
-              <div className="flex items-center gap-x-2  w-full">
-                <IdentificationIcon className="w-5 h-5" />
-                <Textarea
-                  onChange={handleUpdateCampaignChange}
-                  name="description"
-                  disabled={edit}
-                  label="Descripción"
-                  value={updateCampaign.description}
-                />
-              </div>
-              <label className="text-gray-700 text-xs ml-7">
-                Fecha de inicio
-              </label>
-              <div className="flex items-center gap-x-2  w-full">
-                <CalendarDaysIcon className="w-5 h-5" />
-                <Input
-                  name="startDate"
-                  onChange={handleUpdateCampaignChange}
-                  label="Fecha de inicio"
-                  type="date"
-                  value={getFormattedDate(updateCampaign.startDate ?? "")}
-                  disabled={edit}
-                />
-              </div>
-              <label className="text-gray-700 text-xs ml-7">
-                Fecha de finalización
-              </label>
 
               <div className="flex items-center gap-x-2  w-full">
-                <CalendarDaysIcon className="w-5 h-5" />
+                <IdentificationIcon className="w-5 h-5"/>
                 <Input
-                  name="endDate"
-                  onChange={handleUpdateCampaignChange}
-                  label="Fecha de finalización"
-                  type="date"
-                  value={getFormattedDate(updateCampaign.endDate ?? "")}
-                  disabled={edit}
+                    name="name"
+                    onChange={handleUpdateCampaignChange}
+                    label="Nombre de la Campaña"
+                    value={updateCampaign.name}
+                    disabled={edit}
+                />
+              </div>
+              <label className="ml-8 text-gray-700 text-xs ">Descripción</label>
+              <div className="flex items-center gap-x-2  w-full">
+                <IdentificationIcon className="w-5 h-5"/>
+                <Textarea
+                    onChange={handleUpdateCampaignChange}
+                    name="description"
+                    disabled={edit}
+                    label="Descripción"
+                    value={updateCampaign.description}
+                />
+              </div>
+              <div className="flex items-center gap-x-2  w-full">
+                <CalendarDaysIcon className="w-5 h-5"/>
+                <Input
+                    name="startDate"
+                    onChange={handleUpdateCampaignChange}
+                    label="Fecha de inicio"
+                    type="date"
+                    value={getFormattedDate(updateCampaign.startDate ?? "")}
+                    disabled={edit}
+                />
+              </div>
+
+              <div className="flex items-center gap-x-2  w-full">
+                <CalendarDaysIcon className="w-5 h-5"/>
+                <Input
+                    name="endDate"
+                    onChange={handleUpdateCampaignChange}
+                    label="Fecha de finalización"
+                    type="date"
+                    value={getFormattedDate(updateCampaign.endDate ?? "")}
+                    disabled={edit}
                 />
               </div>
 
               {!edit && (
-                <>
-                  <div className="flex items-center gap-2 flex-row-reverse">
-                    <div className="flex flex-row-reverse">
-                      <button className="bg-blue-500 px-4 py-2 rounded-md  text-white">
-                        Guardar
-                      </button>
-                    </div>
-                    <div className="flex flex-row-reverse">
+                  <>
+                    <div className="flex items-center gap-2 flex-row-reverse">
+                      <div className="flex flex-row-reverse">
+                        <button className="bg-blue-500 px-4 py-2 rounded-md  text-white">
+                          Guardar
+                        </button>
+                      </div>
+                      <div className="flex flex-row-reverse">
                       <span
-                        onClick={handleEdit}
-                        className="bg-gray-500 hover:bg-red-500 cursor-pointer px-4 py-2 rounded-md  text-white"
+                          onClick={handleEdit}
+                          className="bg-gray-500 hover:bg-red-500 cursor-pointer px-4 py-2 rounded-md  text-white"
                       >
                         Cancelar
                       </span>
+                      </div>
                     </div>
-                  </div>
-                </>
+                  </>
               )}
             </form>
           </div>
