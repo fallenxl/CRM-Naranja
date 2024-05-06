@@ -106,7 +106,7 @@ export const LeadById = () => {
     const handleOpen = () => setOpen(!open);
 
     const verifyPermissions = (role: Roles) => {
-        if (!lead.status.role) return false;
+        if (!lead.status.role) return true;
 
         if (role === "ADMIN") return true;
 
