@@ -85,6 +85,15 @@ export const deleteDocumentByLead = async (
   }
 };
 
+export const revertLeadStatus = async (id: string | undefined) => {
+    try {
+        const response = await axios.patch(Endpoints.LEAD_REVERT_STATUS + id);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+
+}
 export const updateLeadStatus = async (id: string | undefined, status: any) => {
   try {
     const response = await axios.put(Endpoints.LEAD_STATUS + id, status);

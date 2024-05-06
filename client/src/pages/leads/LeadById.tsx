@@ -3,6 +3,7 @@ import {Layout} from "../Layout";
 import {useState} from "react";
 import {Avatar, Card, Chip} from "@material-tailwind/react";
 import {
+    ArrowUturnLeftIcon,
     AtSymbolIcon,
     BriefcaseIcon,
     BuildingLibraryIcon,
@@ -40,7 +41,7 @@ import {
     assignLeadAdvisor,
     assignLeadCampaign,
     deleteBankRejected,
-    deleteDocumentByLead,
+    deleteDocumentByLead, revertLeadStatus,
 } from "../../services/lead.services.ts";
 import Swal from "sweetalert2";
 import {currencyFormatToLempiras, formatCurrency} from "../../utils/currencyFormat.ts";
@@ -147,6 +148,28 @@ export const LeadById = () => {
             }
         });
     };
+
+    const handleReverseStatus = () => {
+        Swal.fire({
+            title: "¿Estas seguro?",
+            text: "No podrás revertir esta acción",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Si, revertir",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                revertLeadStatus(id).then((res) => {
+                    if (typeof res === "string") {
+                        errorAlertWithTimer("Error", res, 3000);
+                    }
+
+                    successAlertWithTimer("Estado revertido", "", 3000);
+                });
+            }
+        });
+
+    }
     return (
         <Layout title={"Prospecto " + lead.name}>
             {isLoading && <Loading className="z-10"/>}
@@ -194,15 +217,29 @@ export const LeadById = () => {
                                 </div>
                                 <div className="w-full flex justify-between py-2">
                                     <span className="font-bold text-gray-600">Información</span>
-                                    {(user?.role !== 'SUPERVISOR' && user?.role !== 'MANAGEMENT') && <button
-                                        onClick={handleEdit}
-                                        className="flex gap-x-2 items-center"
-                                    >
+                                    <div className={'flex items-center gap-5'}>
+                                        {((lead.lastStatus && lead.lastStatus.type !== lead.status.type)&& (user?.role === 'ADMIN' || user?.role === 'MANAGER')) && <button
+                                            onClick={handleReverseStatus}
+                                            className="flex gap-x-2 items-center"
+                                        >
+                    <span className="text-xs hover:text-blue-500 cursor-pointer">
+                     Revertir Estado
+                    </span>
+                                            <ArrowUturnLeftIcon className="w-4 h-4 "/>
+
+                                        </button>}
+                                        {(user?.role !== 'SUPERVISOR' && user?.role !== 'MANAGEMENT') && <button
+                                            onClick={handleEdit}
+                                            className="flex gap-x-2 items-center"
+                                        >
                     <span className="text-xs hover:text-blue-500 cursor-pointer">
                       Editar
                     </span>
-                                        <PencilSquareIcon className="w-4 h-4 "/>
-                                    </button>}
+
+                                            <PencilSquareIcon className="w-4 h-4 "/>
+                                        </button>}
+
+                                    </div>
                                 </div>
                                 <hr className="w-full mb-2"/>
                                 {/* Lead details form */}

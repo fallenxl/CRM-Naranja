@@ -12,6 +12,12 @@ export const useLeadData = (id: string | undefined) => {
     passport: "",
     residenceNumber: "",
     phone: "",
+    lastStatus: {
+      type: "",
+      enum: [],
+      selected: "",
+      role: [] as string[] | string,
+    },
     status: {
       type: "",
       enum: [],
