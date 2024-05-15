@@ -6,7 +6,7 @@ import {LotInventory} from "../../pages/projects/LotInventory.tsx";
 
 export const lotModule = (): RoleRoute => {
     const routes = {
-        path: "/lotesyar",
+        path: "/lotes",
         label: "Lotes",
         icon: <HomeModernIcon />,
         component: <div>Proyectos</div>,
