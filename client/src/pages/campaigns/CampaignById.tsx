@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { Layout } from "../Layout";
 import { useEffect, useState } from "react";
-import { Card, Chip, Switch, Textarea } from "@material-tailwind/react";
+import { Card, Chip, Switch} from "@material-tailwind/react";
 import {
   CalendarDaysIcon,
   IdentificationIcon,
@@ -11,6 +11,7 @@ import { isError, validateID } from "../../utils/redirects";
 import { getCampaignByID, updateCampaignByID } from "../../services/campaign";
 import { getFormattedDate } from "../../utils";
 import { Input } from "../../component/inputs/input";
+import {TextArea} from "../../component/inputs/textarea.tsx";
 
 export const CampaignById = () => {
   const { id } = useParams<{ id: string }>();
@@ -97,7 +98,7 @@ export const CampaignById = () => {
   };
   return (
     <Layout title={campaign.name ?? "Campaña"}>
-      <Card className="h-full w-full lg:w-9/12 mx-auto p-0 lg:p-10 ">
+      <Card className="h-full w-full lg:w-9/12  p-0 lg:p-10 ">
         <div className="mb-8 lg:grid grid-cols-12 ">
           {/* Lead info */}
           <div className="w-full col-start-1 col-end-13 flex flex-col items-center p-4">
@@ -149,7 +150,7 @@ export const CampaignById = () => {
               <label className="ml-8 text-gray-700 text-xs ">Descripción</label>
               <div className="flex items-center gap-x-2  w-full">
                 <IdentificationIcon className="w-5 h-5"/>
-                <Textarea
+                <TextArea
                     onChange={handleUpdateCampaignChange}
                     name="description"
                     disabled={edit}

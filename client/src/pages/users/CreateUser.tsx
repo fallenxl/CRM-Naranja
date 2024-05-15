@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { Layout } from "../Layout";
-import { Input, Textarea } from "@material-tailwind/react";
 import { Roles, RolesArray } from "../../constants";
 import {
   errorAlertWithTimer,
   successAlertWithRedirect,
 } from "../../component/alerts/Alerts";
 import { capitalizeFirstLetter } from "../../utils";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { createUser } from "../../services/user.services";
 import { UserDTO } from "../../interfaces";
 import { GENRE, POSITIONS } from "../../constants/user-form";
+import {Input} from "../../component/inputs/input.tsx";
+import {TextArea} from "../../component/inputs/textarea.tsx";
 
 export const CreateUser = () => {
   const [formData, setFormData] = useState<UserDTO>({
@@ -31,8 +31,6 @@ export const CreateUser = () => {
     setConfirmPassword(e.target.value);
   };
 
-  const [seePassword, setSeePassword] = useState(false);
-  const toggleSeePassword = () => setSeePassword(!seePassword);
   const handleInputChange = (e: any) => {
     setFormData({
       ...formData,
@@ -63,7 +61,7 @@ export const CreateUser = () => {
 
   return (
     <Layout title="Crear Usuario">
-      <div className="m-auto w-full lg:w-3/4 bg-white h-auto px-10 py-6 rounded-md">
+      <div className=" w-full lg:w-3/4 bg-white h-auto px-10 py-6 rounded-md">
         <form
           onSubmit={handleSubmit}
           action=""
@@ -83,7 +81,7 @@ export const CreateUser = () => {
             name="name"
             value={formData.name}
             onChange={handleInputChange}
-            crossOrigin={undefined}
+
             type="text"
             label="Nombre completo"
             required
@@ -92,7 +90,7 @@ export const CreateUser = () => {
             name="email"
             value={formData.email}
             onChange={handleInputChange}
-            crossOrigin={undefined}
+
             type="text"
             label="Email"
             required
@@ -101,12 +99,12 @@ export const CreateUser = () => {
             name="phone"
             value={formData.phone}
             onChange={handleInputChange}
-            crossOrigin={undefined}
+
             type="text"
             label="Teléfono"
             required
           />
-          <Textarea
+          <TextArea
             name="address"
             value={formData.address}
             onChange={handleInputChange}
@@ -117,7 +115,7 @@ export const CreateUser = () => {
             name="city"
             value={formData.city}
             onChange={handleInputChange}
-            crossOrigin={undefined}
+
             type="text"
             label="Ciudad"
             required
@@ -126,7 +124,7 @@ export const CreateUser = () => {
             name="department"
             value={formData.department}
             onChange={handleInputChange}
-            crossOrigin={undefined}
+
             type="text"
             label="Departamento"
             required
@@ -181,29 +179,18 @@ export const CreateUser = () => {
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              crossOrigin={undefined}
-              type={seePassword ? "text" : "password"}
+
+                type="password"
               label="Contraseña"
               required
             />
-            {seePassword ? (
-              <EyeIcon
-                onClick={toggleSeePassword}
-                className="w-5 h-5 absolute right-3 top-3 text-blue-gray-400 cursor-pointer"
-              />
-            ) : (
-              <EyeSlashIcon
-                onClick={toggleSeePassword}
-                className="w-5 h-5 absolute right-3 top-3 text-blue-gray-400 cursor-pointer"
-              />
-            )}
+
           </div>
           {/* Confirm password */}
           <Input
             name="confirmPassword"
             value={confirmPassword}
             onChange={handleConfirmPassword}
-            crossOrigin={undefined}
             type="password"
             label="Confirmar contraseña"
             required

@@ -53,7 +53,7 @@ export const CreateBank = () => {
 
   return (
     <Layout title="Registrar Banco">
-      <div className="m-auto w-full lg:w-3/4 bg-white h-auto px-10 py-6 rounded-md">
+      <div className=" w-full lg:w-3/4 bg-white h-auto px-10 py-6 rounded-md">
         {openModal && (
           <ModalFinancialProgram
             addFinancialProgram={addFinancialProgram}

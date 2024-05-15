@@ -1,8 +1,8 @@
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import { Layout } from "../Layout";
-import { Card } from "@material-tailwind/react";
+import {Card} from "@material-tailwind/react";
 import {
-  ClipboardDocumentCheckIcon,
+  ClipboardDocumentCheckIcon, EyeIcon,
   PencilSquareIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -17,6 +17,11 @@ import { IProjectModels } from "../../interfaces";
 import { errorAlert, successAlert } from "../../component/alerts/Alerts";
 import { ModalAddLot } from "./ModalAddLot";
 import { createLot, deleteLot, updateLot } from "../../services/lots.services";
+import {useSelector} from "react-redux";
+import {AppStore} from "../../redux/store.ts";
+import {TextArea} from "../../component/inputs/textarea.tsx";
+import {TrashIcon} from "@heroicons/react/24/solid";
+import Swal from "sweetalert2";
 
 export function ProjectById() {
   const { id } = useParams<{ id: string }>();
@@ -25,7 +30,7 @@ export function ProjectById() {
     setEdit(!edit);
     if (!edit) setEditProject(project);
   };
-
+const navigate = useNavigate()
   const [project, setProject] = useState<any>({
     _id: "",
     name: "",
@@ -117,22 +122,32 @@ export function ProjectById() {
   };
 
   const handleDeleteLot = (_id: string) => {
-    deleteLot(_id).then((res) => {
-      if (typeof res === "string") return errorAlert("Error", res);
-
-      setProject((prev: any) => ({
-        ...prev,
-        lots: prev.lots.filter((lot: any) => lot._id !== _id),
-      }));
-      setEditProject((prev: any) => ({
-        ...prev,
-        lots: prev.lots.filter((lot: any) => lot._id !== _id),
-      }));
+    Swal.fire({
+        title: 'Estas seguro?',
+        text: "No podras revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, eliminar!'
+        }).then((result) => {
+        if (result.isConfirmed) {
+            deleteLot(_id).then((res) => {
+            if (typeof res === "string") return errorAlert("Error", res);
+            setEditProject((prev: any) => ({
+                ...prev,
+                lots: prev.lots.filter((lot: any) => lot._id !== _id),
+            }));
+            successAlert("Exito!", "Lote eliminado");
+            });
+        }
     });
   };
+
+  const user = useSelector((state: AppStore) => state.auth.user);
   return (
     <Layout title="Proyecto">
-      <Card className="h-full w-full lg:w-9/12 mx-auto p-0 lg:p-10 ">
+      <Card className="h-full w-full lg:w-9/12  p-0 lg:p-10 ">
         <div className="mb-8 lg:grid grid-cols-12 ">
           {/* Project info */}
           <div className="w-full col-start-1 col-end-13 flex flex-col items-center p-4">
@@ -150,7 +165,7 @@ export function ProjectById() {
             </div>
             <hr className="w-full mb-2" />
             {/* Lead details form */}
-            <form className="w-full mt-5" onSubmit={handleUpdateProject}>
+            <div className="w-full mt-5" >
               <Input
                 className="w-full"
                 name="name"
@@ -168,13 +183,20 @@ export function ProjectById() {
                 disabled={edit}
               />
               <Input
-                className="w-full"
+                className="w-full mb-4"
                 name="address"
                 label="Dirección"
                 value={editProject.address}
                 onChange={handleChangeProject}
                 disabled={edit}
               />
+              {user.role === 'ADMIN' && (<TextArea
+                  name="svg"
+                  label="SVG"
+                  value={editProject.svg}
+                  onChange={handleChangeProject}
+                  disabled={edit}
+              />)}
               <div className="flex items-center gap-4 mt-3">
                 <label className="text-gray-700 text-xs  ">
                   Modelos de casas
@@ -196,7 +218,7 @@ export function ProjectById() {
                   No hay modelos registrados
                 </span>
               )}
-              <ul className="flex flex-wrap gap-2 mt-2">
+              <ul className="flex flex-wrap gap-2 mt-2 mb-5">
                 {editProject.models?.map((program: any, index: number) => (
                   <li className="flex items-center gap-x-2 bg-teal-600 rounded-md text-white p-2 text-xs">
                     <div className="flex items-center gap-x-2">
@@ -225,58 +247,81 @@ export function ProjectById() {
                   </li>
                 ))}
               </ul>
-              <div className="flex items-center gap-4 mt-3">
-                <label className="text-gray-700 text-xs  ">Lotes</label>
-                {!edit && (
-                  <span
-                    onClick={() => {
-                      setLotSelected(null);
-                      setOpenModalLot(true);
-                    }}
-                    className="text-xs text-blue-500 hover:text-blue-700 cursor-pointer"
-                  >
-                    Agregar lote
-                  </span>
-                )}
-              </div>
+
 
               {editProject.lots?.length === 0 && (
                 <span className="text-xs text-gray-500 block mt-4">
                   No hay lotes registrados
                 </span>
               )}
-              <ul className="flex flex-wrap gap-2 mt-2">
-                {editProject.lots?.map((lot: any) => (
-                  <li className="flex items-center gap-x-2 bg-teal-600 rounded-md text-white p-2 text-xs">
-                    {edit ? (
-                      <ClipboardDocumentCheckIcon className="w-4 h-4" />
-                    ) : (
-                      <XMarkIcon
-                        onClick={() => handleDeleteLot(lot._id)}
-                        className="w-4 h-4 cursor-pointer"
-                      />
-                    )}
+              {/*<ul className="flex flex-wrap gap-2 mt-2">*/}
+              {/*  {editProject.lots?.map((lot: any) => (*/}
+              {/*    <li className="flex items-center gap-x-2 bg-teal-600 rounded-md text-white p-2 text-xs">*/}
+              {/*      {edit ? (*/}
+              {/*        <ClipboardDocumentCheckIcon className="w-4 h-4" />*/}
+              {/*      ) : (*/}
+              {/*        <XMarkIcon*/}
+              {/*          onClick={() => handleDeleteLot(lot._id)}*/}
+              {/*          className="w-4 h-4 cursor-pointer"*/}
+              {/*        />*/}
+              {/*      )}*/}
+              {/*      <span*/}
+              {/*        onClick={() => {*/}
+              {/*          if (edit) return;*/}
+              {/*          setLotSelected(lot);*/}
+              {/*          setOpenModalLot(true);*/}
+              {/*        }}*/}
+              {/*        className={`${*/}
+              {/*          !edit*/}
+              {/*            ? "hover:text-gray-200 hover:underline cursor-pointer "*/}
+              {/*            : ""*/}
+              {/*        }`}*/}
+              {/*      >{`${lot.block && lot.block + " - "}${lot.lot}`}</span>*/}
+              {/*    </li>*/}
+              {/*  ))}*/}
+              {/*</ul>*/}
+
+              <div className={'flex gap-4'}>
+                <label className="text-gray-700 text-xs  ">Lotes ({editProject.lots?.length})</label>
                     <span
-                      onClick={() => {
-                        if (edit) return;
-                        setLotSelected(lot);
-                        setOpenModalLot(true);
-                      }}
-                      className={`${
-                        !edit
-                          ? "hover:text-gray-200 hover:underline cursor-pointer "
-                          : ""
-                      }`}
-                    >{`${lot.block && lot.block + " - "}${lot.lot}`}</span>
-                  </li>
-                ))}
+                        onClick={() => {
+                          setLotSelected(null);
+                          setOpenModalLot(true);
+                        }}
+                        className="text-xs text-blue-500 hover:text-blue-700 cursor-pointer"
+                    >
+                    Agregar lote
+                  </span>
+
+              </div>
+              <ul className={`flex flex-col  gap-1 mt-2 max-h-[15rem] overflow-auto mb-10`}>
+                {editProject.lots?.map((lot: any, index:number) => {
+                  return (
+                      <li key={index} className={'flex justify-between w-full border p-2 rounded-sm'}>
+                        <div className={'flex w-full'}>
+                          <h3 className={'text-xs w-1/6'}>Lote: <span className={'text-sm'}>{lot.lot}</span></h3>
+                          <h3 className={'text-xs w-1/6'}>Bloque: <span className={'text-sm'}>{lot.block}</span></h3>
+                          <h3 className={'text-xs flex gap-2'}>Status: <span className={`text-sm ${lot.status === 'Disponible' ? 'text-green-500' : lot.status === 'Reservado' ? 'text-blue-500' : 'text-red-500'}`}>{lot.status}</span></h3>
+                        </div>
+                        <button onClick={() => {
+                          navigate(`/lote/${lot._id}`)
+                        }} className={' text-white rounded-md px-2 py-1'}>
+                          <EyeIcon className={'w-5 h-5 stroke-gray-600 '}/>{' '}
+                        </button>
+                        <button onClick={() => handleDeleteLot(lot._id)} className={' text-white rounded-md px-2 py-1'}>
+                              <TrashIcon className={'w-5 h-5 stroke-gray-600 '}/>{' '}
+                        </button>
+
+                      </li>
+                  )
+                })}
               </ul>
 
               {!edit && (
                 <>
                   <div className="flex items-center gap-2 flex-row-reverse">
                     <div className="flex flex-row-reverse">
-                      <button className="bg-blue-500 px-4 py-2 rounded-md  text-white">
+                      <button onClick={handleUpdateProject} className="bg-blue-500 px-4 py-2 rounded-md  text-white">
                         Guardar
                       </button>
                     </div>
@@ -291,7 +336,7 @@ export function ProjectById() {
                   </div>
                 </>
               )}
-            </form>
+            </div>
           </div>
         </div>
       </Card>

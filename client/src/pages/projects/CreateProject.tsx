@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { Layout } from "../Layout";
 import { IProject, IProjectModels } from "../../interfaces";
-import { Chip, Input, Textarea } from "@material-tailwind/react";
+import { Chip,  } from "@material-tailwind/react";
 import { ModalAddModel } from "./ModalAddModel";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { createProject } from "../../services/projects.services";
 import { errorAlert, successAlertWithRedirect } from "../../component/alerts/Alerts";
+import {useSelector} from "react-redux";
+import {AppStore} from "../../redux/store.ts";
+import {Input} from "../../component/inputs/input.tsx";
+import {TextArea} from "../../component/inputs/textarea.tsx";
 
 export const CreateProject = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +17,7 @@ export const CreateProject = () => {
     description: "",
     address: "",
     models: [],
+    svg: "",
   } as IProject);
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -36,10 +41,10 @@ export const CreateProject = () => {
       models: [...(prev.models || []), model],
     }));
   };
-
+  const user = useSelector((state: AppStore) => state.auth.user);
   return (
     <Layout title="Crear Proyecto">
-      <div className="m-auto w-full lg:w-3/4 bg-white h-auto px-10 py-6 rounded-md">
+      <div className=" w-full lg:w-3/4 bg-white h-auto px-10 py-6 rounded-md">
         {openModal && <ModalAddModel addModel={addModel} setOpenModal={setOpenModal} />}
         <form
           onSubmit={handleSubmit}
@@ -58,23 +63,29 @@ export const CreateProject = () => {
             name="name"
             value={formData.name}
             onChange={handleInputChange}
-            crossOrigin={undefined}
+
             type="text"
             label="Nombre del proyecto"
             required
           />
-          <Textarea
+          <TextArea
             name="description"
             value={formData.description}
             onChange={handleInputChange}
             label="Descripción"
           />
-          <Textarea
+          <TextArea
             label="Dirección"
             value={formData.address}
             onChange={handleInputChange}
             name="address"
           />
+          {user.role === 'ADMIN' && (<TextArea
+              label="SVG"
+              value={formData.svg}
+              onChange={handleInputChange}
+              name="svg"
+          />)}
           <span
             onClick={() => setOpenModal(true)}
             className="flex text-gray-600 hover:text-gray-800  underline cursor-pointer"

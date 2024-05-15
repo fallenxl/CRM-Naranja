@@ -4,6 +4,7 @@ export interface IProject {
   description: string;
   address: string;
   models?: IProjectModels[] | [];
+    svg?: string;
 }
 
 export interface IProjectModels {

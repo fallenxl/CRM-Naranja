@@ -188,7 +188,7 @@ export const UserByID = () => {
                   action=""
                   className="w-full flex flex-col gap-y-2 p-4"
                 >
-                  <label className="text-gray-600 text-xs ml-6">Nombre</label>
+
                   <div className="flex items-center gap-x-2  w-full">
                     <IdentificationIcon className="w-5 h-5" />
                     <Input
@@ -216,7 +216,7 @@ export const UserByID = () => {
                       })}
                     </select>
                   </div>
-                  <label className="text-gray-600 text-xs ml-6">Teléfono</label>
+
                   <div className="flex items-center gap-x-2  w-full">
                     <PhoneIcon className="w-5 h-5" />
                     <Input
@@ -227,7 +227,7 @@ export const UserByID = () => {
                       disabled={edit}
                     />
                   </div>
-                  <label className="text-gray-600 text-xs ml-6">Correo</label>
+
                   <div className="flex items-center gap-x-2  w-full">
                     <AtSymbolIcon className="w-5 h-5" />
                     <Input
@@ -238,9 +238,7 @@ export const UserByID = () => {
                       disabled={edit}
                     />
                   </div>
-                  <label className="text-gray-600 text-xs ml-6">
-                    Dirección
-                  </label>
+
                   <div className="flex items-center gap-x-2  w-full">
                     <MapIcon className="w-5 h-5" />
                     <Input
@@ -251,7 +249,6 @@ export const UserByID = () => {
                       disabled={edit}
                     />
                   </div>
-                  <label className="text-gray-600 text-xs ml-6">País</label>
                   <div className="flex items-center gap-x-2  w-full">
                     <MapIcon className="w-5 h-5" />
                     <Input
@@ -262,9 +259,6 @@ export const UserByID = () => {
                       disabled={edit}
                     />
                   </div>
-                  <label className="text-gray-600 text-xs ml-6">
-                    Departamento
-                  </label>
                   <div className="flex items-center gap-x-2  w-full">
                     <MapIcon className="w-5 h-5" />
                     <Input

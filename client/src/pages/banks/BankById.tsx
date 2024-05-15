@@ -113,7 +113,7 @@ export const BankById = () => {
           handleUpdateProgram={handleUpdateProgram}
         />
       )}
-      <Card className="h-full w-full lg:w-9/12 mx-auto p-10 ">
+      <Card className="h-full w-full lg:w-9/12  p-10 ">
         <div className="mb-8 lg:grid grid-cols-12 ">
           {/* Lead info */}
           <div className="w-full col-start-1 col-end-13 flex flex-col items-center p-4">

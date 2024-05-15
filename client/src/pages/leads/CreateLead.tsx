@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import {Layout} from "../Layout";
-import {Textarea} from "@material-tailwind/react";
 import {getAllCampaignsByStatus} from "../../services/campaign";
 import {
     getAdvisorsIncludingManagers,
@@ -25,6 +24,7 @@ import {
 } from "../../constants/general";
 import {Input} from "../../component/inputs/input.tsx";
 import {CreateLeadDTO} from "../../interfaces";
+import {TextArea} from "../../component/inputs/textarea.tsx";
 
 interface Campaign {
     _id: string;
@@ -160,7 +160,7 @@ export const CreateLead = () => {
         <>
             <Layout title="Crear prospecto">
                 {isLoading && <Loading className="bg-[rgba(255,255,255,0.1)] z-10"/>}
-                <div className="m-auto w-full lg:w-3/4 bg-white h-auto px-10 py-6 rounded-md">
+                <div className="w-full lg:w-3/4 bg-white h-auto px-10 py-6 rounded-md">
                     <form
                         onSubmit={handleSubmit}
                         action=""
@@ -385,14 +385,14 @@ export const CreateLead = () => {
                                 })}
                             </select>
                         </div>
-                        <Textarea
+                        <TextArea
                             name="interestedIn"
                             onChange={handleInputChange}
                             label="Interesado en"
                             value={formData.interestedIn}
                             required
                         />
-                        <Textarea
+                        <TextArea
                             name="comment"
                             value={formData.comment}
                             onChange={handleInputChange}
