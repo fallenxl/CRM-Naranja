@@ -91,6 +91,24 @@ export const getLastAdvisor = async () => {
     console.log(error);
   }
 };
+export const updateUserSettings = async (id: string, settings: any) => {
+    try {
+        const response = await axios.put(Endpoints.USER + "/edit/settings/" + id, settings);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+export const getUserSettings = async (id: string) => {
+    try {
+        const { data } = await axios.get(Endpoints.USER + "/settings/" + id);
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+
+}
 
 export const getSettingsAutoAssign = async (id: string) => {
   try {

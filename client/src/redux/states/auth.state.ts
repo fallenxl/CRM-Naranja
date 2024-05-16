@@ -13,6 +13,7 @@ const AuthEmptyState: AuthResponse = {
     avatar: '',
     settings: {
       autoAssign: false,
+        notificationsSound: true,
     },
     status: false,
   },

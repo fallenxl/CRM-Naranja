@@ -8,7 +8,8 @@ export interface User {
   status?: boolean
   role?: Roles,
   settings:{
-    autoAssign: boolean
+    autoAssign: boolean,
+    notificationsSound: boolean,
   }
 }
 export interface UserDTO {

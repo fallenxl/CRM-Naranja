@@ -87,7 +87,8 @@ const formatAuthResponse = (data: any): AuthResponse => {
       role: data.user.role,
       avatar: data.user.avatar,
       settings: {
-        autoAssign: data.user.settings.autoAssign,
+        notificationsSound: data.user.settings.notificationsSound??true,
+        autoAssign: data.user.settings.autoAssign
       },
     }
 

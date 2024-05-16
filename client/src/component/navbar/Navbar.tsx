@@ -29,6 +29,7 @@ import {
 import { useSelector } from "react-redux";
 import { AppStore } from "../../redux/store";
 import { Dialog } from "../dialog/Dialog";
+import {getUserSettings} from "../../services/user.services.ts";
 
 interface Notification {
   _id: string;
@@ -47,6 +48,7 @@ export function NavbarWithSearch({ setOpenSidebar }: Props) {
   const navigate = useNavigate();
   // Get user data from local storage
   const user = getLocalStorage<AuthResponse>(LocalStorageKeys.DATA);
+  const [settings, setSettings] = useState(user?.user.settings ?? { autoAssign: false, notificationsSound: true } );
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [page, setPage] = useState<number>(1);
   const socket = useSelector((state: AppStore) => state.socket.socket);
@@ -60,6 +62,13 @@ export function NavbarWithSearch({ setOpenSidebar }: Props) {
       setNotifications([...notifications, ...response]);
     });
 
+    getUserSettings(user?.user.id!).then((res) => {
+        setSettings({
+            ...settings,
+            notificationsSound: res.notificationsSound??true,
+        });
+    });
+
     socket.on("leadUpdated", (data: string[]) => {
       getNotifications(4, page).then((response) => {
         setNotifications([...notifications, ...response]);
@@ -67,8 +76,15 @@ export function NavbarWithSearch({ setOpenSidebar }: Props) {
 
       if (user && (data.includes(user.user.id!) || user.user.role === "ADMIN")) {
         setOpenDialog(true);
+        //notification sound
+        if(settings.notificationsSound){
+            const audio = new Audio('/notification.mp3');
+            audio.play();
+        }
         setTimeout(() => {
           setOpenDialog(false);
+
+
         }, 5000);
       }
     });
