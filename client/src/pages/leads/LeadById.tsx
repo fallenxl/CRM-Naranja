@@ -510,7 +510,7 @@ export const LeadById = () => {
                                             ))}
                                     </select>
                                 </div>
-                                {user.role === "ADMIN" && (
+                                {(user.role === "ADMIN" || user.role === 'MANAGER')&& (
                                     <div className={"flex items-center gap-2"}>
                                         {!editAdvisors && (
                                             <button onClick={() => setEditAdvisors(!editAdvisors)}>
