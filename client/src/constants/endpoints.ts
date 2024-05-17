@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NODE_ENV === 'production' ? 'https://api.crm.sigurban.com/apiyar' : 'http://localhost:3001/api/'
+const API_BASE_URL = process.env.NODE_ENV === 'production' ? 'https://api.crm.sigurban.com/api' : 'http://localhost:3001/api/'
 
 export const  Endpoints =  {
   LOGIN : API_BASE_URL + 'auth/login',
