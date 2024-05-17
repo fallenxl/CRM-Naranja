@@ -39,7 +39,7 @@ import {isError, validateID} from "../../utils/redirects.tsx";
 import {Loading} from "../../component/index.ts";
 import {
     assignLeadAdvisor,
-    assignLeadCampaign,
+    assignLeadCampaign, createComment,
     deleteBankRejected,
     deleteDocumentByLead, revertLeadStatus,
 } from "../../services/lead.services.ts";
@@ -170,6 +170,19 @@ export const LeadById = () => {
         });
 
     }
+
+    const [comments, setComments] = useState("");
+    const handleComments = (e: any) => setComments(e.target.value);
+    const handleCommentsSubmit = (e: any) => {
+        e.preventDefault();
+        createComment(id!, {comment: comments}).then((res) => {
+            if (typeof res === "string") {
+                errorAlertWithTimer("Error", res, 3000);
+            }
+            setComments("");
+        })
+
+    };
     return (
         <Layout title={"Prospecto " + lead.name}>
             {isLoading && <Loading className="z-10"/>}
@@ -218,16 +231,17 @@ export const LeadById = () => {
                                 <div className="w-full flex justify-between py-2">
                                     <span className="font-bold text-gray-600">Información</span>
                                     <div className={'flex items-center gap-5'}>
-                                        {((lead.lastStatus && lead.lastStatus.type !== lead.status.type)&& (user?.role === 'ADMIN' || user?.role === 'MANAGER')) && <button
-                                            onClick={handleReverseStatus}
-                                            className="flex gap-x-2 items-center"
-                                        >
+                                        {((lead.lastStatus && lead.lastStatus.type !== lead.status.type) && (user?.role === 'ADMIN' || user?.role === 'MANAGER')) &&
+                                            <button
+                                                onClick={handleReverseStatus}
+                                                className="flex gap-x-2 items-center"
+                                            >
                     <span className="text-xs hover:text-blue-500 cursor-pointer">
                      Revertir Estado
                     </span>
-                                            <ArrowUturnLeftIcon className="w-4 h-4 "/>
+                                                <ArrowUturnLeftIcon className="w-4 h-4 "/>
 
-                                        </button>}
+                                            </button>}
                                         {(user?.role !== 'SUPERVISOR' && user?.role !== 'MANAGEMENT') && <button
                                             onClick={handleEdit}
                                             className="flex gap-x-2 items-center"
@@ -366,7 +380,7 @@ export const LeadById = () => {
                                         <Input
                                             name="comment"
                                             onChange={handleUpdateLeadChange}
-                                            label="Comentarios"
+                                            label="Nota"
                                             value={updateLead.comment}
                                             disabled={edit}
                                         />
@@ -429,6 +443,7 @@ export const LeadById = () => {
                                                 label="Antigüedad"
                                                 value={updateLead.workTime}
                                                 disabled={edit}
+
                                             />
                                         </div>
                                         <label className="text-gray-700 text-xs ml-7">
@@ -453,6 +468,8 @@ export const LeadById = () => {
                                             </select>
                                         </div>
                                     </div>
+
+
                                     {!edit && (
                                         <>
                                             <div className="flex items-center gap-2 flex-row-reverse">
@@ -473,6 +490,76 @@ export const LeadById = () => {
                                         </>
                                     )}
                                 </form>
+                                {/*Comments box*/}
+                                <div className="w-full flex flex-col gap-y-2 mt-4 px-4">
+                                    <span className="font-bold text-sm">Comentarios</span>
+                                    <hr className="w-full mb-4"/>
+                                    {lead.comments.length > 0 && (
+                                        <div className="flex flex-col gap-y-2 py-5 max-h-[20rem] overflow-auto px-2">
+                                            {lead.comments.sort((a:{date:Date}, b:{date:Date}) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((comment:{
+                                                comment: string;
+                                                date: Date;
+                                                userID: {
+                                                    _id: string;
+                                                    name: string;
+                                                    avatar: string;
+                                                }
+                                            } )=>{
+                                                    return (
+                                                        <div className="flex flex-col  gap-y-2 my-2">
+                                                            <div
+                                                                className={`w-full  flex flex-col-reverse md:flex-row  md:justify-between   gap-x-2 ${comment.userID._id === user.id && 'flex-row-reverse md:flex-row-reverse text-right'}`}>
+                                                                <div className={`flex ${comment.userID._id === user.id && 'flex-row-reverse'} gap-4`}>
+                                                                    <Avatar src={comment.userID.avatar} size="sm"/>
+                                                                    <div className={`flex flex-col max-w-md  px-5 py-2 rounded-md ${comment.userID._id === user.id ? 'bg-orange-50' : 'bg-blue-50'}`}>
+                                                                    <span className={`text-sm font-bold `}>
+                                                                        {comment.userID.name}
+                                                                    </span>
+                                                                        <span className="text-sm">
+                                                                        {comment.comment}
+                                                                    </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="flex self-center md:self-start mb-4 md:mb-0">
+                                                                <span className="text-xs text-gray-500 ">
+                                                                    {/*date and hour*/}
+                                                                    {new Date(comment.date).toLocaleDateString()}{" "} {new Date(comment.date).toLocaleTimeString()}
+                                                                </span>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+                                                    );
+                                                }
+                                            )}
+                                        </div>
+
+                                    )}
+
+                                    {lead.comments.length === 0 && (
+                                        <div className="flex flex-col items-center gap-y-2 py-10">
+                                            <span className="text-sm text-gray-500">
+                                                No hay comentarios
+                                            </span>
+                                        </div>
+                                    )}
+
+                                    <div className="flex items-center gap-x-2  w-full">
+                                        <Input
+
+                                            onChange={handleComments}
+                                            placeholder={'Escribe un comentario...'}
+                                            className={'mt-0'}
+                                            value={comments}
+
+                                        />
+                                        <button onClick={handleCommentsSubmit}
+                                                className="bg-blue-500 px-4 py-2 rounded-md  text-white">
+                                            Enviar
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </Card>
@@ -510,7 +597,7 @@ export const LeadById = () => {
                                             ))}
                                     </select>
                                 </div>
-                                {(user.role === "ADMIN" || user.role === 'MANAGER')&& (
+                                {(user.role === "ADMIN" || user.role === 'MANAGER') && (
                                     <div className={"flex items-center gap-2"}>
                                         {!editAdvisors && (
                                             <button onClick={() => setEditAdvisors(!editAdvisors)}>

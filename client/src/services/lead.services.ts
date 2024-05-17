@@ -42,6 +42,28 @@ export const createLead = async (lead: LeadDTO) => {
     return response;
   } catch (error) {}
 };
+export const createComment = async (leadId: string, comment: any) => {
+    try {
+        const response = await axios.post(
+        Endpoints.LEAD + "comments/create/" + leadId,
+        comment
+        );
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const deleteComment = async (leadId: string, commentId: string) => {
+    try {
+        const response = await axios.delete(
+        Endpoints.LEAD + "comments/delete/" + leadId + "/" + commentId
+        );
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 export const getLeadStatus = async (id: string) => {
   try {
