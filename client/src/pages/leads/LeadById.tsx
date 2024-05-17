@@ -40,7 +40,7 @@ import {Loading} from "../../component/index.ts";
 import {
     assignLeadAdvisor,
     assignLeadCampaign, createComment,
-    deleteBankRejected,
+    deleteBankRejected, deleteComment,
     deleteDocumentByLead, revertLeadStatus,
 } from "../../services/lead.services.ts";
 import Swal from "sweetalert2";
@@ -497,6 +497,7 @@ export const LeadById = () => {
                                     {lead.comments.length > 0 && (
                                         <div className="flex flex-col gap-y-2 py-5 max-h-[20rem] overflow-auto px-2">
                                             {lead.comments.sort((a:{date:Date}, b:{date:Date}) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((comment:{
+                                                _id: string;
                                                 comment: string;
                                                 date: Date;
                                                 userID: {
@@ -518,6 +519,12 @@ export const LeadById = () => {
                                                                         <span className="text-sm">
                                                                         {comment.comment}
                                                                     </span>
+                                                                        {comment.userID._id === user.id && (
+                                                                            <button onClick={() => deleteComment(id!, comment._id)} className="flex self-end items-center gap-x-2 text-gray-600 hover:text-red-500 text-xs mt-2">
+
+                                                                                <span>Eliminar</span>
+                                                                            </button>
+                                                                        )}
                                                                     </div>
                                                                 </div>
                                                                 <div className="flex self-center md:self-start mb-4 md:mb-0">
