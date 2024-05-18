@@ -65,29 +65,39 @@ export function NavbarWithSearch({ setOpenSidebar }: Props) {
     getUserSettings(user?.user.id!).then((res) => {
         setSettings({
             ...settings,
-            notificationsSound: res.notificationsSound??true,
+            notificationsSound: res.notificationsSound??false,
         });
     });
 
-    socket.on("leadUpdated", (data: string[]) => {
-      getNotifications(4, page).then((response) => {
-        setNotifications([...notifications, ...response]);
-      });
+    function handleLeadUpdated(data:string[]){
+      {
+        getNotifications(4, page).then((response) => {
+          setNotifications([...notifications, ...response]);
+        });
 
-      if (user && (data.includes(user.user.id!) || user.user.role === "ADMIN")) {
-        setOpenDialog(true);
-        //notification sound
-        if(settings.notificationsSound){
+        if (user && (data.includes(user.user.id!) || user.user.role === "ADMIN")) {
+          setOpenDialog(true);
+          //notification sound
+          if(settings.notificationsSound){
             const audio = new Audio('/notification.mp3');
             audio.play();
+          }
+          setTimeout(() => {
+            setOpenDialog(false);
+
+          }, 5000);
+
+          return () => {
+            socket.off("leadUpdated")
+          }
         }
-        setTimeout(() => {
-          setOpenDialog(false);
-
-
-        }, 5000);
       }
-    });
+    }
+
+    socket.on("leadUpdated", handleLeadUpdated);
+    return () => {
+      socket.off("leadUpdated", handleLeadUpdated)
+    }
   }, [page]);
 
   const handleLoadMore = (e: any) => {

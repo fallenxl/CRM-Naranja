@@ -12,7 +12,7 @@ export const Settings = () => {
   const user = useSelector((state: AppStore) => state.auth.user);
   const [settings, setSettings] = useState({
     autoAssign: false,
-    notificationsSound: true,
+    notificationsSound: false,
     maxDays: 0,
   });
   useEffect(() => {
@@ -20,7 +20,7 @@ export const Settings = () => {
         setSettings({
             ...settings,
             autoAssign: res.autoAssign??false,
-            notificationsSound: res.notificationsSound??true,
+            notificationsSound: res.notificationsSound??false,
         });
     });
   }, []);
