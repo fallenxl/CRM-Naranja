@@ -38,7 +38,7 @@ export const Input = ({
     <>
       <div className={`relative w-full`}>
       {label && (
-        <label className="text-gray-700 text-xs ">{label} {required && <span className={'text-red-500'}>*</span>}</label>
+        <label className="text-gray-700 text-xs mb-2">{label} {required && <span className={'text-red-500'}>*</span>}</label>
       )}
         <input
           {...(type === "password" && { minLength: 8 })}
@@ -46,7 +46,7 @@ export const Input = ({
           name={name}
           value={value}
           onChange={onChange}
-          className={`w-full mt-2 px-3 py-[.7em] border border-gray-300 outline-none rounded-md  placeholder-gray-400 sm:text-sm ${className}`}
+          className={`w-full  px-3 py-[.7em] border border-gray-300 outline-none rounded-md  placeholder-gray-400 sm:text-sm ${className}`}
           placeholder={placeholder}
           disabled={disabled}
           required={required}

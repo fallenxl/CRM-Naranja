@@ -490,83 +490,7 @@ export const LeadById = () => {
                                         </>
                                     )}
                                 </form>
-                                {/*Comments box*/}
-                                <div className="w-full flex flex-col gap-y-2 mt-4 px-4">
-                                    <span className="font-bold text-sm">Comentarios</span>
-                                    <hr className="w-full mb-4"/>
-                                    {lead.comments.length > 0 && (
-                                        <div className="flex flex-col gap-y-2 py-5 max-h-[20rem] overflow-auto px-2">
-                                            {lead.comments.sort((a:{date:Date}, b:{date:Date}) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((comment:{
-                                                _id: string;
-                                                comment: string;
-                                                date: Date;
-                                                userID: {
-                                                    _id: string;
-                                                    name: string;
-                                                    avatar: string;
-                                                }
-                                            } )=>{
-                                                    return (
-                                                        <div className="flex flex-col  gap-y-2 my-2">
-                                                            <div
-                                                                className={`w-full  flex flex-col-reverse md:flex-row  md:justify-between   gap-x-2 ${comment.userID._id === user.id && 'flex-row-reverse md:flex-row-reverse text-right'}`}>
-                                                                <div className={`flex ${comment.userID._id === user.id && 'flex-row-reverse'} gap-4`}>
-                                                                    <Avatar src={comment.userID.avatar} size="sm"/>
-                                                                    <div className={`flex flex-col max-w-md  px-5 py-2 rounded-md ${comment.userID._id === user.id ? 'bg-orange-50' : 'bg-blue-50'}`}>
-                                                                    <span className={`text-sm font-bold `}>
-                                                                        {comment.userID.name}
-                                                                    </span>
-                                                                        <span className="text-sm">
-                                                                        {comment.comment}
-                                                                    </span>
-                                                                        {comment.userID._id === user.id && (
-                                                                            <button onClick={() => deleteComment(id!, comment._id)} className="flex self-end items-center gap-x-2 text-gray-600 hover:text-red-500 text-xs mt-2">
 
-                                                                                <span>Eliminar</span>
-                                                                            </button>
-                                                                        )}
-                                                                    </div>
-                                                                </div>
-                                                                <div className="flex self-center md:self-start mb-4 md:mb-0">
-                                                                <span className="text-xs text-gray-500 ">
-                                                                    {/*date and hour*/}
-                                                                    {new Date(comment.date).toLocaleDateString()}{" "} {new Date(comment.date).toLocaleTimeString()}
-                                                                </span>
-                                                                </div>
-                                                            </div>
-
-
-                                                        </div>
-                                                    );
-                                                }
-                                            )}
-                                        </div>
-
-                                    )}
-
-                                    {lead.comments.length === 0 && (
-                                        <div className="flex flex-col items-center gap-y-2 py-10">
-                                            <span className="text-sm text-gray-500">
-                                                No hay comentarios
-                                            </span>
-                                        </div>
-                                    )}
-
-                                    <div className="flex items-center gap-x-2  w-full">
-                                        <Input
-
-                                            onChange={handleComments}
-                                            placeholder={'Escribe un comentario...'}
-                                            className={'mt-0'}
-                                            value={comments}
-
-                                        />
-                                        <button onClick={handleCommentsSubmit}
-                                                className="bg-blue-500 px-4 py-2 rounded-md  text-white">
-                                            Enviar
-                                        </button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </Card>
@@ -748,6 +672,83 @@ export const LeadById = () => {
                                     )}
                                 </>
                             )}
+                            {/*Comments box*/}
+                            <div className="w-full flex flex-col gap-y-2 mt-4 ">
+                                <span className="font-bold ">Comentarios</span>
+                                <hr className="w-full mb-4"/>
+                                {lead.comments.length > 0 && (
+                                    <div className="flex flex-col gap-y-2 py-5 max-h-[20rem] overflow-auto px-2">
+                                        {lead.comments.sort((a:{date:Date}, b:{date:Date}) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((comment:{
+                                                _id: string;
+                                                comment: string;
+                                                date: Date;
+                                                userID: {
+                                                    _id: string;
+                                                    name: string;
+                                                    avatar: string;
+                                                }
+                                            } )=>{
+                                                return (
+                                                    <div className="flex flex-col  gap-y-2 my-2">
+                                                        <div
+                                                            className={`w-full  flex flex-col-reverse     gap-x-2 ${comment.userID._id === user.id && 'flex-row-reverse  text-right'}`}>
+                                                            <div className={`flex ${comment.userID._id === user.id && 'flex-row-reverse'} gap-4`}>
+                                                                <Avatar src={comment.userID.avatar} size="sm"/>
+                                                                <div className={`flex flex-col max-w-md  px-5 py-2 rounded-md ${comment.userID._id === user.id ? 'bg-orange-50' : 'bg-blue-50'}`}>
+                                                                    <span className={`text-sm font-bold `}>
+                                                                        {comment.userID.name}
+                                                                    </span>
+                                                                    <span className="text-sm">
+                                                                        {comment.comment}
+                                                                    </span>
+                                                                    {comment.userID._id === user.id && (
+                                                                        <button onClick={() => deleteComment(id!, comment._id)} className="flex self-end items-center gap-x-2 text-gray-600 hover:text-red-500 text-xs mt-2">
+
+                                                                            <span>Eliminar</span>
+                                                                        </button>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                            <div className="flex self-center mb-4 ">
+                                                                <span className="text-xs text-gray-500 ">
+                                                                    {/*date and hour*/}
+                                                                    {new Date(comment.date).toLocaleDateString()}{" "} {new Date(comment.date).toLocaleTimeString()}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                );
+                                            }
+                                        )}
+                                    </div>
+
+                                )}
+
+                                {lead.comments.length === 0 && (
+                                    <div className="flex flex-col items-center gap-y-2 py-10">
+                                            <span className="text-sm text-gray-500">
+                                                No hay comentarios
+                                            </span>
+                                    </div>
+                                )}
+
+                                <div className="flex items-center gap-x-2  w-full">
+                                    <Input
+
+                                        onChange={handleComments}
+                                        placeholder={'Escribe un comentario...'}
+                                        className={'m-0'}
+                                        value={comments}
+
+                                    />
+                                    <button onClick={handleCommentsSubmit}
+                                            className="bg-blue-500 px-4 py-2 rounded-md  text-white">
+                                        Enviar
+                                    </button>
+                                </div>
+                            </div>
                             {lead.projectDetails?.lotID && (
                                 <>
                                     <div className="flex items-center py-2 border-b gap-2">
