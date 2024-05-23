@@ -138,16 +138,28 @@ export const CreateLead = () => {
     }, [autoAssign]);
 
     const {user} = useSelector((state: AppStore) => state.auth);
+
+    const [useDNI, setUseDNI] = useState<boolean>(true);
     const [usePassport, setUsePassport] = useState<boolean>(false);
     const [useResidenceNumber, setUseResidenceNumber] = useState<boolean>(false);
     const handlePassportAndResidenceNumber = (e: any) => {
         if (e.target.id === 'passport') {
             setUsePassport(!usePassport);
             setUseResidenceNumber(false);
+            setUseDNI(false)
         } else if (e.target.id === 'residenceNumber') {
             setUseResidenceNumber(!useResidenceNumber);
             setUsePassport(false);
+            setUseDNI(false)
+        } else if (e.target.id === 'dni') {
+            if(e.target.checked){
+                setUseDNI(true);
+            }
+
+            setUsePassport(false);
+            setUseResidenceNumber(false);
         }
+
         setFormData({
             ...formData,
             passport: '',
@@ -279,11 +291,19 @@ export const CreateLead = () => {
                                 name={`${usePassport ? "passport" : useResidenceNumber ? "residenceNumber" : "dni"}`}
                                 value={`${usePassport ? formData.passport : useResidenceNumber ? formData.residenceNumber : formData.dni}`}
                                 onChange={handleInputChange}
-                                onPaste={(e: any) => {
+                                onPaste={(e) => {
                                     e.preventDefault();
                                     const text = e.clipboardData.getData("text/plain");
                                     const numbers = text.replace(/\D/g, "");
-                                    e.target.value = numbers;
+
+                                    // Aquí actualizamos el estado del formulario para reflejar el nuevo valor pegado
+                                    const fieldName = usePassport ? "passport" : useResidenceNumber ? "residenceNumber" : "dni";
+                                    handleInputChange({
+                                        target: {
+                                            name: fieldName,
+                                            value: numbers
+                                        }
+                                    });
                                 }}
                                 maxLength={usePassport ? PASSPORT_MAX_LENGTH : useResidenceNumber ? RESIDENCE_NUMBER_MAX_LENGTH : DNI_MAX_LENGTH}
                                 minLength={usePassport ? PASSPORT_MIN_LENGTH : useResidenceNumber ? RESIDENCE_NUMBER_MAX_LENGTH : DNI_MAX_LENGTH}
@@ -293,6 +313,18 @@ export const CreateLead = () => {
                             />
                         </div>
                         <div className={'flex items-center gap-4'}>
+                            <div className="flex items-center gap-4">
+                                <input
+                                    type="checkbox"
+                                    id="dni"
+                                    name="dni"
+                                    checked={useDNI}
+                                    onChange={handlePassportAndResidenceNumber}
+                                />
+                                <label htmlFor="residenceNumber" className="text-gray-700">
+                                    DNI
+                                </label>
+                            </div>
                             {/*input checkbox if is passport*/}
                             <div className="flex items-center gap-4">
                                 <input
