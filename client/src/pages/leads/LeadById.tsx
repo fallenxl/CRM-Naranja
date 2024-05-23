@@ -600,80 +600,8 @@ export const LeadById = () => {
                                     </div>
                                 )}
                             </div>
-                            {(lead.bankID || lead.rejectedBanks.length > 0) && (
-                                <>
-                                    <div className="flex justify-between py-2 border-b gap-2 ">
-                                        <h4 className="font-bold  text-gray-700 ">
-                                            Detalles Bancarios
-                                        </h4>
-                                        {/* Cambiar banco */}
-                                        {(user.role === "ADMIN" ||
-                                            user.role === "BANK_MANAGER") && (
-                                            <div className="flex items-center gap-2  ">
-                                                <button
-                                                    onClick={handleOpenChangeBankModal}
-                                                    className="text-gray-700  text-sm cursor-pointer "
-                                                >
-                                                    <PencilSquareIcon className="w-4 h-4"/>
-                                                </button>
-                                            </div>
-                                        )}
-                                    </div>
-                                    {lead.bankID && (
-                                        <>
-                                            <div className="flex items-center gap-2 py-2 w-full">
-                                                <BuildingLibraryIcon className="w-4 h-4"/>
-                                                <span className="text-sm text-gray-600  ">Banco:</span>
-                                                <span className="text-sm">{`${lead.bankID.name} ${
-                                                    lead.status.type === "Precalificar Banco"
-                                                        ? "(Pendiente de aprobar)"
-                                                        : ""
-                                                }`}</span>
-                                            </div>
-                                            <div className="flex items-center gap-2 py-2 w-full">
-                                                <ChartPieIcon className="w-4 h-4"/>
-                                                <span className="text-sm text-gray-600  ">
-                          Programa de financiamiento:
-                        </span>
-                                                <span className="text-sm">{lead.financingProgram}</span>
-                                            </div>
-                                        </>
-                                    )}
-                                    {/* Bancos rechazados */}
-                                    {lead.rejectedBanks.length > 0 && (
-                                        <div className="flex items-center gap-2 py-2 w-full">
-                                            <BuildingLibraryIcon className="w-4 h-4"/>
-                                            <span className="text-sm text-gray-600  ">
-                        Bancos rechazados:
-                      </span>
-                                            <div className="flex items-center flex-wrap gap-2">
-                                                {lead.rejectedBanks.map((item: any) => {
-                                                    return (
-                                                        <Chip
-                                                            value={item.name}
-                                                            color="red"
-                                                            className="flex items-center "
-                                                            icon={
-                                                                (user.role === "ADMIN" ||
-                                                                    user.role === "BANK_MANAGER") && (
-                                                                    <XMarkIcon
-                                                                        className="cursor-pointer"
-                                                                        onClick={() =>
-                                                                            handleDeleteBankRejected(item._id)
-                                                                        }
-                                                                    />
-                                                                )
-                                                            }
-                                                        />
-                                                    );
-                                                })}
-                                            </div>
-                                        </div>
-                                    )}
-                                </>
-                            )}
                             {/*Comments box*/}
-                            <div className="w-full flex flex-col gap-y-2 mt-4 ">
+                            <div className="w-full flex flex-col gap-y-2  ">
                                 <span className="font-bold ">Comentarios</span>
                                 <hr className="w-full mb-4"/>
                                 {lead.comments.length > 0 && (
@@ -749,6 +677,79 @@ export const LeadById = () => {
                                     </button>
                                 </div>
                             </div>
+                            {(lead.bankID || lead.rejectedBanks.length > 0) && (
+                                <>
+                                    <div className="flex justify-between py-2 border-b gap-2 mt-2">
+                                        <h4 className="font-bold  text-gray-700 ">
+                                            Detalles Bancarios
+                                        </h4>
+                                        {/* Cambiar banco */}
+                                        {(user.role === "ADMIN" ||
+                                            user.role === "BANK_MANAGER") && (
+                                            <div className="flex items-center gap-2  ">
+                                                <button
+                                                    onClick={handleOpenChangeBankModal}
+                                                    className="text-gray-700  text-sm cursor-pointer "
+                                                >
+                                                    <PencilSquareIcon className="w-4 h-4"/>
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                    {lead.bankID && (
+                                        <>
+                                            <div className="flex items-center gap-2 py-2 w-full">
+                                                <BuildingLibraryIcon className="w-4 h-4"/>
+                                                <span className="text-sm text-gray-600  ">Banco:</span>
+                                                <span className="text-sm">{`${lead.bankID.name} ${
+                                                    lead.status.type === "Precalificar Banco"
+                                                        ? "(Pendiente de aprobar)"
+                                                        : ""
+                                                }`}</span>
+                                            </div>
+                                            <div className="flex items-center gap-2 py-2 w-full">
+                                                <ChartPieIcon className="w-4 h-4"/>
+                                                <span className="text-sm text-gray-600  ">
+                          Programa de financiamiento:
+                        </span>
+                                                <span className="text-sm">{lead.financingProgram}</span>
+                                            </div>
+                                        </>
+                                    )}
+                                    {/* Bancos rechazados */}
+                                    {lead.rejectedBanks.length > 0 && (
+                                        <div className="flex items-center gap-2 py-2 w-full">
+                                            <BuildingLibraryIcon className="w-4 h-4"/>
+                                            <span className="text-sm text-gray-600  ">
+                        Bancos rechazados:
+                      </span>
+                                            <div className="flex items-center flex-wrap gap-2">
+                                                {lead.rejectedBanks.map((item: any) => {
+                                                    return (
+                                                        <Chip
+                                                            value={item.name}
+                                                            color="red"
+                                                            className="flex items-center "
+                                                            icon={
+                                                                (user.role === "ADMIN" ||
+                                                                    user.role === "BANK_MANAGER") && (
+                                                                    <XMarkIcon
+                                                                        className="cursor-pointer"
+                                                                        onClick={() =>
+                                                                            handleDeleteBankRejected(item._id)
+                                                                        }
+                                                                    />
+                                                                )
+                                                            }
+                                                        />
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
+                            )}
+
                             {lead.projectDetails?.lotID && (
                                 <>
                                     <div className="flex items-center py-2 border-b gap-2">

@@ -3,7 +3,6 @@ import { HTMLInputTypeAttribute, useState } from "react";
 
 interface PasswordInputProps extends React.InputHTMLAttributes<HTMLInputElement>{
   name?: string;
-  value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   error?: string;
@@ -19,7 +18,6 @@ interface PasswordInputProps extends React.InputHTMLAttributes<HTMLInputElement>
 }
 export const Input = ({
   name,
-  value,
   className,
   onChange,
   placeholder,
@@ -44,7 +42,7 @@ export const Input = ({
           {...(type === "password" && { minLength: 8 })}
           type={type === "password" && seePassword ? "text" : type}
           name={name}
-          value={value}
+
           onChange={onChange}
           className={`w-full  px-3 py-[.7em] border border-gray-300 outline-none rounded-md  placeholder-gray-400 sm:text-sm ${className}`}
           placeholder={placeholder}
