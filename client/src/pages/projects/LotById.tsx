@@ -10,7 +10,7 @@ import { formatCurrency } from "../../utils/currencyFormat.ts";
 import { TextArea } from "../../component/inputs/textarea.tsx";
 import { useSelector } from "react-redux";
 import { AppStore } from "../../redux/store.ts";
-import { getLeadsWithoutLot, updateLeadProjectDetailsService, updateLeadService } from "../../services/lead.services.ts";
+import { getLeadsWithoutLot, updateLeadProjectDetailsService} from "../../services/lead.services.ts";
 import { errorAlert, successAlert } from "../../component/alerts/Alerts.tsx";
 
 export function LotById() {
