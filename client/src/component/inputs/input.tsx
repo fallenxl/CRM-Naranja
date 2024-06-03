@@ -18,7 +18,6 @@ interface PasswordInputProps extends React.InputHTMLAttributes<HTMLInputElement>
 }
 export const Input = ({
   name,
-  className,
   onChange,
   placeholder,
   disabled,
@@ -44,7 +43,7 @@ export const Input = ({
           name={name}
 
           onChange={onChange}
-          className={`w-full  px-3 py-[.7em] border border-gray-300 outline-none rounded-md  placeholder-gray-400 sm:text-sm ${className}`}
+          className={`w-full  px-3 py-[.7em] border border-gray-300 outline-none rounded-md  placeholder-gray-400 sm:text-sm ${rest.className}`}
           placeholder={placeholder}
           disabled={disabled}
           required={required}

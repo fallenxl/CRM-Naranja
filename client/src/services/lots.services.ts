@@ -65,7 +65,7 @@ export const getLotsByProjectAndStatus = async (
   }
 
 };
-export const updateLot = async (lot: any) => {
+export const updateLotService = async (lot: any) => {
   try {
     const response = await axios.put(Endpoints.LOTS + lot._id, lot);
     return response;

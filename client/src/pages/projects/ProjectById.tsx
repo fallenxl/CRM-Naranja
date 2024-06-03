@@ -16,7 +16,7 @@ import { ModalAddModel } from "./ModalAddModel";
 import { IProjectModels } from "../../interfaces";
 import { errorAlert, successAlert } from "../../component/alerts/Alerts";
 import { ModalAddLot } from "./ModalAddLot";
-import { createLot, deleteLot, updateLot } from "../../services/lots.services";
+import { createLot, deleteLot, updateLotService } from "../../services/lots.services";
 import {useSelector} from "react-redux";
 import {AppStore} from "../../redux/store.ts";
 import {TextArea} from "../../component/inputs/textarea.tsx";
@@ -97,7 +97,7 @@ const navigate = useNavigate()
 
   const handleAddLot = (lot: any, opt: string = "create") => {
     if (opt === "update") {
-      updateLot(lot).then((res) => {
+      updateLotService(lot).then((res) => {
         if (typeof res === "string") return errorAlert("Error", res);
         const newLot = res.data;
         setEditProject((prev: any) => ({
@@ -294,29 +294,38 @@ const navigate = useNavigate()
                   </span>
 
               </div>
-              <ul className={`flex flex-col  gap-1 mt-2 max-h-[15rem] overflow-auto mb-10`}>
-                {editProject.lots?.map((lot: any, index:number) => {
-                  return (
-                      <li key={index} className={'flex justify-between w-full border p-2 rounded-sm'}>
-                        <div className={'flex w-full'}>
-                          <h3 className={'text-xs w-1/6'}>Lote: <span className={'text-sm'}>{lot.lot}</span></h3>
-                          <h3 className={'text-xs w-1/6'}>Bloque: <span className={'text-sm'}>{lot.block}</span></h3>
-                          <h3 className={'text-xs flex gap-2'}>Status: <span className={`text-sm ${lot.status === 'Disponible' ? 'text-green-500' : lot.status === 'Reservado' ? 'text-blue-500' : 'text-red-500'}`}>{lot.status}</span></h3>
-                        </div>
-                        <button onClick={() => {
-                          navigate(`/lote/${lot._id}`)
-                        }} className={' text-white rounded-md px-2 py-1'}>
-                          <EyeIcon className={'w-5 h-5 stroke-gray-600 '}/>{' '}
-                        </button>
-                        <button onClick={() => handleDeleteLot(lot._id)} className={' text-white rounded-md px-2 py-1'}>
-                              <TrashIcon className={'w-5 h-5 stroke-gray-600 '}/>{' '}
-                        </button>
 
-                      </li>
+              <table className="w-full mt-2">
+                <thead>
+                <tr className="bg-gray-100">
+                  <th className="p-2">Lote</th>
+                  <th className="p-2">Bloque</th>
+                  <th className="p-2">Status</th>
+                  <th className="p-2">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {editProject.lots?.map((lot: any, index: number) => {
+                  return (
+                      <tr key={index} className={'border-b text-center'}>
+                        <td className={'p-2'}>{lot.lot}</td>
+                        <td className={'p-2'}>{lot.block}</td>
+                        <td className={`p-2 ${lot.status === 'Liquidado' ? 'text-red-500' : lot.status === 'Reservado' ? 'text-blue-500' : 'text-green-500'}`}>{lot.status}</td>
+                        <td className={'p-2'}>
+                          <button title="Ver Lote" onClick={() => {
+                            navigate(`/lotes/${lot._id}`)
+                          }} className={'rounded-md px-2 py-1'}>
+                            <EyeIcon className={'w-5 h-5 '}/>{' '}
+                          </button>
+                          <button title="Eliminar Lote" onClick={() => handleDeleteLot(lot._id)} className={' rounded-md px-2 py-1'}>
+                            <TrashIcon className={'w-5 h-5  '}/>{' '}
+                          </button>
+                        </td>
+                      </tr>
                   )
                 })}
-              </ul>
-
+                </tbody>
+              </table>
               {!edit && (
                 <>
                   <div className="flex items-center gap-2 flex-row-reverse">

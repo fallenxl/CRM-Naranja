@@ -36,6 +36,16 @@ export const getLeadById = async (id: string) => {
   }
 };
 
+export const getLeadsWithoutLot = async () => {
+  try {
+    const response = await axios.get(Endpoints.LEAD + "without-lot");
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
 export const createLead = async (lead: LeadDTO) => {
   try {
     const response = await axios.post(Endpoints.LEAD, lead);
@@ -71,6 +81,18 @@ export const getLeadStatus = async (id: string) => {
     return response;
   } catch (error) {}
 };
+
+export const updateLeadProjectDetailsService = async (id: string, data: any) => {
+  try {
+    const response = await axios.put(Endpoints.LEAD + "project-details/" + id, {
+      data,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+
+}
 
 export const updateLeadService = async (id: string | undefined, lead: any) => {
   try {

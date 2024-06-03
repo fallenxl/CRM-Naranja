@@ -50,6 +50,7 @@ export const CreateLead = () => {
     const [formData, setFormData] = useState<CreateLeadDTO>({
         name: "",
         dni: "",
+        birthdate: "",
         passport: "",
         residenceNumber: "",
         email: "",
@@ -279,9 +280,8 @@ export const CreateLead = () => {
                         </div>
                         <Input
                             name="name"
-                            value={formData.name}
+                            value={capitalizeFirstLetterByWord(formData.name)}
                             onChange={handleInputChange}
-
                             type="text"
                             label="Nombre Completo"
                             required
@@ -354,14 +354,7 @@ export const CreateLead = () => {
                         </div>
 
                         <div className="flex flex-col  gap-4 md:gap-2 md:flex-row items-center">
-                            <Input
-                                name="address"
-                                value={formData.address}
-                                onChange={handleInputChange}
 
-                                type="text"
-                                label="Dirección"
-                            />
                             <Input
                                 name="phone"
                                 value={formData.phone}
@@ -371,7 +364,21 @@ export const CreateLead = () => {
                                 label="Numero de teléfono"
                                 required
                             />
+                            <Input
+                                name="birthdate"
+                                value={formData.birthdate}
+                                onChange={handleInputChange}
+                                type="date"
+                                label="Fecha de nacimiento"
+                            />
                         </div>
+                        <TextArea
+                            name="address"
+                            value={formData.address}
+                            onChange={handleInputChange}
+                            label="Dirección"
+                        />
+
                         <div className="flex flex-col  gap-4 md:gap-2 md:flex-row items-center">
                             <Input
                                 name="country"

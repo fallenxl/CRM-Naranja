@@ -6,7 +6,7 @@ import {
     ArrowUturnLeftIcon,
     AtSymbolIcon,
     BriefcaseIcon,
-    BuildingLibraryIcon,
+    BuildingLibraryIcon, CakeIcon,
     ChartPieIcon,
     ChatBubbleBottomCenterIcon,
     CheckIcon,
@@ -48,7 +48,7 @@ import {currencyFormatToLempiras, formatCurrency} from "../../utils/currencyForm
 import {Input} from "../../component/inputs/input.tsx";
 import {channels} from "../../constants/general.ts";
 import {ChangeBankModal} from "../../features/ChangeBankModal.tsx";
-import {isArrayOfStrings} from "../../utils/utilities.ts";
+import {capitalizeFirstLetterByWord, isArrayOfStrings} from "../../utils/utilities.ts";
 
 export const LeadById = () => {
     const {id} = useParams<{ id: string }>();
@@ -268,7 +268,7 @@ export const LeadById = () => {
                                             name="name"
                                             onChange={handleUpdateLeadChange}
                                             label="Nombre completo"
-                                            value={updateLead.name}
+                                            value={capitalizeFirstLetterByWord(updateLead.name)}
                                             disabled={edit}
                                         />
                                     </div>
@@ -307,7 +307,17 @@ export const LeadById = () => {
                                             disabled={edit}
                                         />
                                     </div>
-
+                                    <div className="flex items-center gap-x-2  w-full">
+                                        <CakeIcon className="w-5 h-5"/>
+                                        <Input
+                                            name="birthdate"
+                                            onChange={handleUpdateLeadChange}
+                                            label="Fecha de nacimiento"
+                                            type={'date'}
+                                            value={updateLead.birthdate}
+                                            disabled={edit}
+                                        />
+                                    </div>
                                     <div className="flex items-center gap-x-2  w-full">
                                         <MapIcon className="w-5 h-5"/>
                                         <Input
@@ -502,7 +512,7 @@ export const LeadById = () => {
                                 <h4 className="font-bold  text-gray-700 ">Detalles</h4>
                             </div>
                             <div className="flex items-center gap-2 py-2">
-                                <UserCircleIcon className="w-5 h-5"/>
+                            <UserCircleIcon className="w-5 h-5"/>
                                 <div className={"w-full flex items-center gap-2"}>
                   <span className="text-sm text-gray-600 w-[5rem]">
                     Asesor:

@@ -14,6 +14,7 @@ export interface CreateLeadDTO {
     name: string,
     dni: string,
     email: string,
+    birthdate: string,
     phone: string,
     address: string,
     country: string,

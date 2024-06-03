@@ -213,6 +213,7 @@ export const ChangeStatusModal = ({
           "paymentMethod",
           "workTime",
           "workAddress",
+          "birthdate",
           "salary",
             'email',
             ...identityBlock
@@ -224,12 +225,20 @@ export const ChangeStatusModal = ({
       }
 
       if (
-        hasEmptyPropertiesExcept(updateLead, ["comment", "email", ...identityBlock]) &&
+        hasEmptyPropertiesExcept(updateLead, ["comment", "email","birthdate", ...identityBlock]) &&
         status.selected === "Precalifica en Buró" &&
         status.type === "Precalificar Buró"
       ) {
         return setError("Debe llenar toda la ficha en detalles laborales");
       }
+      if (
+          hasEmptyPropertiesExcept(updateLead, ["comment", "email", ...identityBlock]) &&
+          status.selected === "Documentación 1era Etapa"
+      ) {
+
+        return setError("Debe llenar toda la ficha, por favor complete la información (Fecha de nacimiento)");
+      }
+      console.log(updateLead)
       setIsLoading(true);
       cb && cb();
       updateLeadStatus(lead._id, payload).then((res) => {

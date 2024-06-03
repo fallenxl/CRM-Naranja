@@ -92,7 +92,9 @@ export function Table({
     if (search) {
       setFiltered(
         tableRows.filter((row) =>
-          row.name.toLowerCase().includes(search.toLowerCase())
+            Object.values(row).some((value:any) =>
+                value.toString().toLowerCase().includes(search.toLowerCase())
+            )
         )
       );
     } else {
@@ -135,7 +137,7 @@ export function Table({
          {searchInput && <div className="w-full md:w-2/3 flex flex-row-reverse">
             <Input
               onChange={handleSearch}
-              placeholder="Buscar por nombre"
+              placeholder="Buscar... "
               value={search}
             />
           </div>}
