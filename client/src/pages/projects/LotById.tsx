@@ -130,21 +130,21 @@ export function LotById() {
     updateLotService(payload).then((res) => {
         if (typeof res === "string") return errorAlert("Error", res);
         if(lot?.reservedBy?._id !== updateLot.reservedBy?._id ){
-          alert('entro')
             updateLeadProjectDetailsService(payload.reservedBy!, {
                 lotID: updateLot._id,
                 projectID: updateLot.projectID._id,
             }).then((_res) => {});
             if(lot?.reservedBy?._id){
-              alert('entro2')
                 updateLeadProjectDetailsService(lot.reservedBy._id, {projectDetails: null}).then((res) => {
                     if (typeof res === "string") return errorAlert("Error", res);
                 });
             }
-        }else if(updateLot.reservedBy === null && lot?.reservedBy._id){
+        }else if(updateLot.reservedBy === null && lot?.reservedBy?._id){
             updateLeadProjectDetailsService(lot.reservedBy._id, {projectDetails: null}).then((res) => {
                 if (typeof res === "string") return errorAlert("Error", res);
             });
+        }else {
+            updateLotService(payload).then((_res) => {});
         }
         successAlert("Éxito", "Lote actualizado correctamente");
         setEdit(false);
