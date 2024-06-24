@@ -201,7 +201,7 @@ function Dashboard() {
           {option?.series[0]?.data?.length === 0 && <div className="text-center text-gray-500 absolute top-[60%] left-[15%] md:left-[20%]">No hay datos para mostrar</  div>}
         </div>
         <div className="w-full md:col-span-1 row-start-3 lg:col-start-3 lg:col-end-5 lg:row-span-3 "   >
-          <div className="bg-white p-4 rounded-lg shadow-md w-full md:col-span-1 row-start-3 lg:col-start-3 lg:col-end-5 lg:row-span-3 md:h-1/2 overflow-auto">
+          <div className="bg-white p-4 rounded-lg shadow-md w-full md:col-span-1 row-start-3 lg:col-start-3 lg:col-end-5 lg:row-span-3 md:max-h-[19.5rem] overflow-auto">
             <h2 className="text-xl font-semibold">Prospectos</h2>
             <div className="mb-2">
               <small className="text-gray-500">Filtrar por:</small>
