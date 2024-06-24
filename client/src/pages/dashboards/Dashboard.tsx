@@ -43,16 +43,8 @@ function Dashboard() {
             type: "shadow",
           },
         },
-        legend: {
-          data: dataX.map((item: any) => {
-            return item.status ?? item._id;
-          }),
-        },
         xAxis: {
           data: ["Prospectos"],
-        },
-        yAxis: {
-
         },
         series: dataX.map((item: any) => {
           return {
