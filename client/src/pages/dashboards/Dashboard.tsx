@@ -46,6 +46,9 @@ function Dashboard() {
         xAxis: {
           data: ["Prospectos"],
         },
+        yAxis: {
+
+        },
         series: dataX.map((item: any) => {
           return {
             name: item.status?? item._id,
