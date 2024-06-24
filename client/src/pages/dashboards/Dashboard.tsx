@@ -44,36 +44,23 @@ function Dashboard() {
           },
         },
         legend: {
-          data: response?.data?.leadsByStatus?.map((item: any) => item.status)
+          data: dataX.map((item: any) => {
+            return item.status ?? item._id;
+          }),
         },
         xAxis: {
-          data: dataX.map((item: any) => {
-            return item._id ?? item.status
-          }),
+          data: ["Prospectos"],
         },
         yAxis: {
 
         },
-        series: [
-          {
-            name: "Prospectos",
+        series: dataX.map((item: any) => {
+          return {
+            name: item.status?? item._id,
             type: "bar",
-            data: dataX.map((item: any) => item.count).sort((a: any, b: any) => b - a),
-            itemStyle: {
-              color: (params: any) => {
-                const colorList = [
-                  "#5470C6",
-                  "#91CC75",
-                  "#EE6666",
-                  "#FAC858",
-                  "#73C0DE",
-                  "#3BA272",
-                ];
-                return colorList[params.dataIndex % colorList.length];
-              },
-            },
-          },
-        ],
+            data: [item.count],
+          };
+        }),
       });
     });
   }, [interval.startDate, interval.endDate]);
@@ -137,7 +124,7 @@ function Dashboard() {
 
   const renderAdvisorTable = () => {
     return (
-      <div className="bg-white p-4 rounded-lg shadow-md mt-4 col-start-1 col-end-5  md:max-h-[23.5rem] overflow-auto">
+      <div className="bg-white p-4 rounded-lg shadow-md mt-4 col-start-1 col-end-5  md:max-h-[19.5rem] overflow-auto">
         <h2 className="text-xl font-semibold">Prospectos por Asesor</h2>
         {/* Filter by date */}
         <div className="mb-6">
