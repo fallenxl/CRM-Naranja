@@ -3,6 +3,8 @@ import { Layout } from "../Layout";
 import { getDashboardService } from "../../services/dashboard.services";
 import ReactECharts from "echarts-for-react";
 import { PhoneArrowDownLeftIcon, UsersIcon } from "@heroicons/react/24/outline";
+import { useSelector } from "react-redux";
+import { AppStore } from "../../redux/store";
 
 const tabs = [
   { label: "Por Canal", key: "channel" },
@@ -26,13 +28,13 @@ function Dashboard() {
       [e.target.name]: e.target.value
     });
   }
-
+  const user = useSelector((state: AppStore) => state.auth.user);
   useEffect(() => {
     getDashboardService(interval).then((response: any) => {
       setDashboardData(response?.data);
       console.log(response?.data);
       let dataX = response?.data?.leadsByStatus
-      if(response?.data?.leadsStatusByDate ){
+      if (response?.data?.leadsStatusByDate) {
         dataX = response?.data?.leadsStatusByDate
       }
 
@@ -51,7 +53,7 @@ function Dashboard() {
         },
         series: dataX.map((item: any) => {
           return {
-            name: item.status?? item._id,
+            name: item.status ?? item._id,
             type: "bar",
             data: [item.count],
           };
@@ -152,7 +154,7 @@ function Dashboard() {
 
   return (
     <Layout title="Dashboard">
-      <div className="grid  md:grid-cols-3 lg:grid-cols-4 gap-4 text-gray-800 w-full">
+      {(user.role && (user.role === 'ADMIN' || user.role === 'MANAGER')) ? <div className="grid  md:grid-cols-3 lg:grid-cols-4 gap-4 text-gray-800 w-full">
         <div className="bg-white p-4 rounded-lg shadow-md px-10">
           <h2 className="text-xl font-semibold pb-5 flex items-center justify-between">Total Prospectos<UsersIcon className="h-6 w-6" /></h2>
           <p className="text-3xl font-semibold">{dashboardData?.totalLeads}</p>
@@ -254,7 +256,10 @@ function Dashboard() {
           {renderAdvisorTable()}
         </div>
 
-      </div>
+      </div> : <div className="flex justify-center items-center h-[80vh]">
+        <h1 className="text-2xl font-semibold">Aun se está trabajando en esta sección</h1>
+      </div>}
+
     </Layout>
   );
 }
