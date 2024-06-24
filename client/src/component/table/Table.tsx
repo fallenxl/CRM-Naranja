@@ -90,7 +90,13 @@ export function Table({
       currentPage
     );
     if (search) {
+      // set search query param to URL
+      const params = new URLSearchParams();
+      params.append("search", search);
+      window.history.pushState({}, "", `?${params.toString()}`);
+
       setFiltered(
+        
         tableRows.filter((row) =>
             Object.values(row).some((value:any) =>
                 value.toString().toLowerCase().includes(search.toLowerCase())
@@ -98,6 +104,9 @@ export function Table({
         )
       );
     } else {
+      const params = new URLSearchParams();
+      params.delete("search");
+      window.history.pushState({}, "", `?${params.toString()}`);
       setFiltered(paginatedItems);
       setHasNext(hasNext);
       setHasPrevious(hasPrevious);

@@ -58,4 +58,8 @@ label {
   color: rgba(0, 0, 0, 0.6) ;
 }
 
+th {
+  padding: .5rem;
+}
+
 

@@ -1,6 +1,7 @@
 const API_BASE_URL = process.env.NODE_ENV === 'production' ? 'https://api.crm.sigurban.com/api' : 'http://localhost:3001/api/'
 
 export const  Endpoints =  {
+  DASHBOARD : API_BASE_URL + 'dashboard',
   LOGIN : API_BASE_URL + 'auth/login',
   REFRESH_TOKEN : API_BASE_URL + 'auth/refresh-token',
   USER : API_BASE_URL + 'users',

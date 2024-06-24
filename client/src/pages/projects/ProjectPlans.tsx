@@ -30,12 +30,12 @@ export function ProjectPlans() {
                 const lotsAsSVG = res.lots
                     ?.filter((lot: any) => lot.svgPath !== '' && lot.svgPath !== null && lot.svgPath !== undefined)
                     .map((lot: any) => `<a href="/lotes/${lot._id}" >
-<path d="${lot.svgPath}"  class="${lot.status === 'Disponible' ? 'fill-green-500' : lot.status === 'Reservado' ? 'fill-blue-500' : 'fill-red-500'}"
- transform="translate(-1069.07 -138.44)"/>
+<path d="${lot.svgPath}"  class="${(lot.status === 'Disponible' || lot.status === 'Potencial') ? 'fill-green-500' : lot.status === 'Reservado' ? 'fill-blue-500' : 'fill-red-500'} opacity-30"
+ "/>
 </a>`)
                     .join('');
                 setSvg((prev: string) => {
-                    return prev.replace(' <!-- {children} -->', lotsAsSVG);
+                    return prev.replace('<!-- children -->', lotsAsSVG);
                 });
 
             }

@@ -105,6 +105,10 @@ export function LotById() {
     getLeadsWithoutLot().then((res) => {
       if (typeof res === "string") return;
       setLeads(res?.data);
+      // setUpdateLot({
+      //   ...updateLot,
+      //   reservedBy: res?.data[0]._id,
+      // });
     });
   }, [updateLot.reservedBy]);
 
@@ -122,14 +126,17 @@ export function LotById() {
       reservationDate: reservationDate}
       console.log(payload);
     if(updateLot.status === 'Reservado' && updateLot.reservedBy === null) return errorAlert('Error', 'Selecciona un prospecto para reservar el lote')
+      console.log(payload);
     updateLotService(payload).then((res) => {
         if (typeof res === "string") return errorAlert("Error", res);
-        if(lot?.reservedBy?._id !== updateLot.reservedBy?._id && updateLot.reservedBy !== null){
+        if(lot?.reservedBy?._id !== updateLot.reservedBy?._id ){
+          alert('entro')
             updateLeadProjectDetailsService(payload.reservedBy!, {
                 lotID: updateLot._id,
                 projectID: updateLot.projectID._id,
             }).then((_res) => {});
             if(lot?.reservedBy?._id){
+              alert('entro2')
                 updateLeadProjectDetailsService(lot.reservedBy._id, {projectDetails: null}).then((res) => {
                     if (typeof res === "string") return errorAlert("Error", res);
                 });
@@ -180,7 +187,7 @@ export function LotById() {
                     className="border w-full md:w-auto border-gray-300 px-4 py-2 rounded-md self-end justify-self-end"
                   >
                     <option value="Disponible">Disponible</option>
-                    <option value="Reservado">Reservado</option>
+                    {/* <option value="Reservado">Reservado</option> */}
                     <option value="Liquidado">Liquidado</option>
                   </select>
                 </div>
@@ -200,17 +207,17 @@ export function LotById() {
                       className="border overflow-auto w-full md:w-auto border-gray-300 px-4 py-2 rounded-md self-end justify-self-end"
                     >
                       {lot?.reservedBy ? (
-                        <option value={lot?.reservedBy._id}>
+                        <option value={lot?.reservedBy._id} key={lot?.reservedBy._id} defaultChecked>
                           {lot?.reservedBy.name}
                         </option>
                       ) : (
-                        <option value="" disabled>
+                        <option value="" >
                           Selecciona un prospecto
                         </option>
                       )}
                       {leads.map((lead) => {
                         return (
-                          <option value={lead._id} key={lead._id}>
+                          <option value={lead._id} key={lead._id} defaultChecked={lot?.reservedBy?._id? false : true}>
                             {lead.name}
                           </option>
                         );
