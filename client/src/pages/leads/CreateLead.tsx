@@ -309,7 +309,7 @@ export const CreateLead = () => {
                                 minLength={usePassport ? PASSPORT_MIN_LENGTH : useResidenceNumber ? RESIDENCE_NUMBER_MAX_LENGTH : DNI_MAX_LENGTH}
                                 type="text"
                                 label={`${usePassport ? "Pasaporte" : useResidenceNumber ? "Numero de residencia" : "DNI"}`}
-                                required
+                                required={user.role !== "COMMUNITY_MANAGER"}
                             />
                         </div>
                         <div className={'flex items-center gap-4'}>

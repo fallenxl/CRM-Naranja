@@ -276,12 +276,36 @@ export const LeadById = () => {
                                     <div className="flex items-center gap-x-2  w-full">
                                         <IdentificationIcon className="w-5 h-5"/>
                                         <Input
-                                            name={`${updateLead.dni ? "dni" : updateLead.passport ? "passport" : "residenceNumber"}`}
+                                            name={"dni"}    
                                             onChange={handleUpdateLeadChange}
-                                            label={`${updateLead.dni ? "DNI" : updateLead.passport ? "Pasaporte" : "Carnet de residencia"}`}
-                                            value={updateLead.dni ? updateLead.dni : updateLead.passport ? updateLead.passport : updateLead.residenceNumber}
-                                            maxLength={updateLead.dni ? 13 : updateLead.passport ? 7 : 15}
-                                            minLength={updateLead.dni ? 13 : updateLead.passport ? 6 : 15}
+                                            label={"DNI"}
+                                            value={updateLead.dni}
+                                            maxLength={13}
+                                            minLength={13}
+                                            disabled={edit}
+                                        />
+                                    </div>
+                                    <div className="flex items-center gap-x-2  w-full">
+                                        <IdentificationIcon className="w-5 h-5"/>
+                                        <Input
+                                            name={"passport"}
+                                            onChange={handleUpdateLeadChange}
+                                            label={"Pasaporte"}
+                                            value={updateLead.passport }
+                                            maxLength={7}
+                                            minLength={6}
+                                            disabled={edit}
+                                        />
+                                    </div>
+                                    <div className="flex items-center gap-x-2  w-full">
+                                        <IdentificationIcon className="w-5 h-5"/>
+                                        <Input
+                                            name={ "residenceNumber"}
+                                            onChange={handleUpdateLeadChange}
+                                            label={"Carnet de residencia"}
+                                            value={updateLead.residenceNumber}
+                                            maxLength={15}
+                                            minLength={ 15}
                                             disabled={edit}
                                         />
                                     </div>
