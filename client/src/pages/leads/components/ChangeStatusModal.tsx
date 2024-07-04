@@ -694,7 +694,7 @@ export const ChangeStatusModal = ({
             )}
 
             {/* Contactarlo */}
-            {(status.selected === "No dio información" ||
+            {(status.selected === "No dio Información" ||
               status.selected === "No Precalifica en Buró" ||
               status.selected === "Oportunidad de venta futura" ||
               status.selected === "No contesto") && (
