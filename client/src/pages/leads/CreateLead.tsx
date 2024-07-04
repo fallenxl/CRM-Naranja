@@ -26,7 +26,6 @@ import { Input } from "../../component/inputs/input.tsx";
 import { CreateLeadDTO } from "../../interfaces";
 import { TextArea } from "../../component/inputs/textarea.tsx";
 import countriesData from "../../assets/paises.json"
-import { count } from "console";
 interface Campaign {
     _id: string;
     name: string;
