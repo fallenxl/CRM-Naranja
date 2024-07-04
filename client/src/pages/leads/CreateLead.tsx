@@ -1,20 +1,20 @@
-import {useEffect, useState} from "react";
-import {Layout} from "../Layout";
-import {getAllCampaignsByStatus} from "../../services/campaign";
+import { useEffect, useState } from "react";
+import { Layout } from "../Layout";
+import { getAllCampaignsByStatus } from "../../services/campaign";
 import {
     getAdvisorsIncludingManagers,
     getLastAdvisor,
     getSettingsAutoAssign,
 } from "../../services/user.services";
-import {createLead} from "../../services/lead.services";
-import {useSelector} from "react-redux";
-import {AppStore} from "../../redux/store";
+import { createLead } from "../../services/lead.services";
+import { useSelector } from "react-redux";
+import { AppStore } from "../../redux/store";
 import {
     errorAlertWithTimer,
     successAlertWithRedirect,
 } from "../../component/alerts/Alerts";
-import {Loading} from "../../component";
-import {capitalizeFirstLetterByWord, clearDNIMask} from "../../utils";
+import { Loading } from "../../component";
+import { capitalizeFirstLetterByWord, clearDNIMask } from "../../utils";
 import {
     channels,
     DNI_MAX_LENGTH,
@@ -22,10 +22,11 @@ import {
     PASSPORT_MIN_LENGTH,
     RESIDENCE_NUMBER_MAX_LENGTH
 } from "../../constants/general";
-import {Input} from "../../component/inputs/input.tsx";
-import {CreateLeadDTO} from "../../interfaces";
-import {TextArea} from "../../component/inputs/textarea.tsx";
-
+import { Input } from "../../component/inputs/input.tsx";
+import { CreateLeadDTO } from "../../interfaces";
+import { TextArea } from "../../component/inputs/textarea.tsx";
+import countriesData from "../../assets/paises.json"
+import { count } from "console";
 interface Campaign {
     _id: string;
     name: string;
@@ -47,6 +48,16 @@ export const CreateLead = () => {
     const handleAdvisorSelected = (e: any) => {
         setAdvisorSelected(e.target.value);
     };
+    const [others, setOthers] = useState({
+        otherCountry: "",
+        otherDepartment: "",
+    })
+    const handleOthers = (e: any) => {
+        setOthers({
+            ...others,
+            [e.target.name]: e.target.value
+        })
+    }
     const [formData, setFormData] = useState<CreateLeadDTO>({
         name: "",
         dni: "",
@@ -70,6 +81,15 @@ export const CreateLead = () => {
     });
 
     const handleInputChange = (e: any) => {
+
+        if (e.target.name === "country") {
+            setFormData({
+                ...formData,
+                [e.target.name]: e.target.value,
+                department: ""
+            });
+            return;
+        }
         setFormData({
             ...formData,
             [e.target.name]:
@@ -78,9 +98,9 @@ export const CreateLead = () => {
                     : e.target.name === "dni"
                         ? clearDNIMask(e.target.value)
                         : e.target.name !== "email" &&
-                        e.target.name !== "comment" &&
-                        e.target.name !== "address" &&
-                        e.target.name !== "interestedIn"
+                            e.target.name !== "comment" &&
+                            e.target.name !== "address" &&
+                            e.target.name !== "interestedIn"
                             ? capitalizeFirstLetterByWord(e.target.value)
                             : e.target.value,
         });
@@ -94,13 +114,15 @@ export const CreateLead = () => {
             name: capitalizeFirstLetterByWord(formData.name),
             dni: clearDNIMask(formData.dni),
             campaignID: campaignSelected ?? null,
+            department: formData.country === "Otro" ? others.otherDepartment : formData.department,
+            country: formData.country === "Otro" ? others.otherCountry : formData.country,
             advisorID:
                 user.role === "ADVISOR" ? user.id : advisorSelected || undefined,
         };
         createLead(data).then((res) => {
             setIsLoading(false);
             if (typeof res === "string" || !res) {
-                return errorAlertWithTimer("Error", res??'Error al crear el prospecto');
+                return errorAlertWithTimer("Error", res ?? 'Error al crear el prospecto');
             }
             successAlertWithRedirect(
                 "Lead creado",
@@ -138,7 +160,18 @@ export const CreateLead = () => {
         }
     }, [autoAssign]);
 
-    const {user} = useSelector((state: AppStore) => state.auth);
+    const [department, setDepartment] = useState<string[]>([]);
+    useEffect(() => {
+        if (formData.country) {
+            setDepartment(
+                countriesData.countries
+                    .find((country) => country.name === formData.country)
+                    ?.states ?? []
+            );
+        }
+
+    }, [formData.country]);
+    const { user } = useSelector((state: AppStore) => state.auth);
 
     const [useDNI, setUseDNI] = useState<boolean>(true);
     const [usePassport, setUsePassport] = useState<boolean>(false);
@@ -153,7 +186,7 @@ export const CreateLead = () => {
             setUsePassport(false);
             setUseDNI(false)
         } else if (e.target.id === 'dni') {
-            if(e.target.checked){
+            if (e.target.checked) {
                 setUseDNI(true);
             }
 
@@ -172,7 +205,7 @@ export const CreateLead = () => {
     return (
         <>
             <Layout title="Crear prospecto">
-                {isLoading && <Loading className="bg-[rgba(255,255,255,0.1)] z-10"/>}
+                {isLoading && <Loading className="bg-[rgba(255,255,255,0.1)] z-10" />}
                 <div className="w-full lg:w-3/4 bg-white h-auto px-10 py-6 rounded-md">
                     <form
                         onSubmit={handleSubmit}
@@ -269,8 +302,8 @@ export const CreateLead = () => {
                                                         Asesor asignado:
                                                     </small>
                                                     <span className="text-blue-500 text-sm">
-                            {lastAdvisor}
-                          </span>
+                                                        {lastAdvisor}
+                                                    </span>
                                                 </div>
                                             </div>
                                         )}
@@ -372,6 +405,78 @@ export const CreateLead = () => {
                                 label="Fecha de nacimiento"
                             />
                         </div>
+
+                        <div className="flex flex-col  gap-4 md:gap-2 md:flex-row items-center">
+
+                            <div className="flex flex-col flex-grow gap-2">
+                                <label htmlFor="country" className="text-gray-700">
+                                    País
+                                </label>
+                                <select name="country" value={formData.country} onChange={handleInputChange} className="border p-2 text-gray-700 rounded-md border-blue-gray-300 flex-grow">
+                                    <option value="" defaultChecked>
+                                        Seleccione un país
+                                    </option>
+
+                                    {countriesData.countries.map((country) => {
+                                        return (
+                                            <option value={country.name} key={country.name}>
+                                                {country.name}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+                                {formData.country === "Otro" && (
+                                    <div className="flex  gap-2 ">
+                                        <Input
+                                            name="otherCountry"
+                                            value={others.otherCountry}
+                                            onChange={handleOthers}
+                                            type="text"
+                                            label="Especifique el país"
+                                            required
+                                        />
+                                        <Input
+                                            name="otherDepartment"
+                                            value={others.otherDepartment}
+                                            onChange={handleOthers}
+                                            type="text"
+                                            label="Especifique el departamento"
+                                            required
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                            {(formData.country && department.length > 0) && (
+
+                                <>
+                                    <div className="flex flex-col gap-2 flex-grow">
+                                        <label htmlFor="department" className="text-gray-700">
+                                            {
+                                                formData.country === "Honduras" ? "Departamento" : formData.country === "USA" ? "Estado" : "Provincia"
+                                            }
+                                        </label>
+                                        <select
+                                            name="department"
+                                            value={formData.department}
+                                            onChange={handleInputChange}
+                                            className="border p-2 text-gray-700 rounded-md border-blue-gray-300 flex-grow"
+                                        >
+                                            <option value="" defaultChecked>
+                                                Seleccione un departamento
+                                            </option>
+                                            {department.map((department) => {
+                                                return (
+                                                    <option value={department} key={department}>
+                                                        {department}
+                                                    </option>
+                                                );
+                                            })}
+                                        </select>
+                                    </div>
+                                </>
+
+                            )}
+                        </div>
                         <TextArea
                             name="address"
                             value={formData.address}
@@ -379,24 +484,6 @@ export const CreateLead = () => {
                             label="Dirección"
                         />
 
-                        <div className="flex flex-col  gap-4 md:gap-2 md:flex-row items-center">
-                            <Input
-                                name="country"
-                                value={formData.country}
-                                onChange={handleInputChange}
-
-                                type="text"
-                                label="País"
-                            />
-                            <Input
-                                name="department"
-                                value={formData.department}
-                                onChange={handleInputChange}
-
-                                type="text"
-                                label="Departamento"
-                            />
-                        </div>
                         <Input
                             name="email"
                             value={formData.email}

@@ -352,18 +352,6 @@ export const LeadById = () => {
                                             disabled={edit}
                                         />
                                     </div>
-
-                                    <div className="flex items-center gap-x-2  w-full">
-                                        <MapIcon className="w-5 h-5"/>
-                                        <Input
-                                            name="department"
-                                            onChange={handleUpdateLeadChange}
-                                            label="Departamento"
-                                            value={updateLead.department}
-                                            disabled={edit}
-                                        />
-                                    </div>
-
                                     <div className="flex items-center gap-x-2  w-full">
                                         <MapIcon className="w-5 h-5"/>
                                         <Input
@@ -374,6 +362,19 @@ export const LeadById = () => {
                                             disabled={edit}
                                         />
                                     </div>
+
+                                    <div className="flex items-center gap-x-2  w-full">
+                                        <MapIcon className="w-5 h-5"/>
+                                        <Input
+                                            name="department"
+                                            onChange={handleUpdateLeadChange}
+                                            label={updateLead.country === 'Honduras' ? 'Departamento' : updateLead.country === 'USA' ? 'Estado' : 'Provincia'}
+                                            value={updateLead.department}
+                                            disabled={edit}
+                                        />
+                                    </div>
+
+                                  
 
                                     <div className="flex items-center gap-x-2  w-full">
                                         <BriefcaseIcon className="w-5 h-5"/>
