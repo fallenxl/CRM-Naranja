@@ -295,7 +295,7 @@ const navigate = useNavigate()
 
               </div>
 
-              <table className="w-full mt-2">
+              <table className="w-full mt-2 max-h-[30rem]">
                 <thead>
                 <tr className="bg-gray-100">
                   <th className="p-2">Lote</th>
