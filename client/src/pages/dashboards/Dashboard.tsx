@@ -196,8 +196,8 @@ function Dashboard() {
     <Layout title="Dashboard">
       {(user.role && (user.role === 'ADMIN' || user.role === 'MANAGER')) ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 text-gray-800 w-full ">
-          <div className="flex items-center gap-4 w-full  col-span-4">
-            <div className="bg-white p-4 rounded-lg shadow-md max-h-[10rem] flex-grow col-span-2">
+          <div className="flex flex-col md:flex-row items-center gap-4 w-full  col-span-4">
+            <div className="bg-white p-4 rounded-lg shadow-md max-h-[10rem] flex-grow col-span-2 w-full">
               <h2 className="text-xl font-semibold pb-5 flex items-center justify-between">
                 Total Prospectos
                 <UsersIcon className="h-6 w-6" />
@@ -206,7 +206,7 @@ function Dashboard() {
               <small className="text-gray-500">Desde el inicio</small>
             </div>
 
-            <div className="bg-white p-4 rounded-lg shadow-md  max-h-[10rem] flex-grow col-span-2">
+            <div className="bg-white p-4 rounded-lg shadow-md  max-h-[10rem] flex-grow col-span-2 w-full">
               <h2 className="text-xl font-semibold pb-5 flex justify-between">
                 Total pendientes de llamar
                 <PhoneArrowDownLeftIcon className="h-6 w-6" />
