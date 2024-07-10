@@ -104,6 +104,7 @@ function Dashboard() {
         series: [{
           data: ageCounts,
           type: 'bar',
+          
           itemStyle: {
             color: function (params: any) {
               const colorList = [
@@ -112,7 +113,8 @@ function Dashboard() {
               return colorList[params.dataIndex];
             }
           }
-        }]
+        }],
+
       });
     });
   }, [interval.startDate, interval.endDate]);
@@ -243,7 +245,7 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-            {option && <ReactECharts option={option} className="text-sm" />}
+            {option && <ReactECharts option={option} className="text-sm" style={{ height: "330px" }} />}
             {option?.series[0]?.data?.length === 0 && (
               <div className="text-center text-gray-500 absolute top-[60%] left-[15%] md:left-[20%]">
                 No hay datos para mostrar en el gráfico
@@ -253,9 +255,9 @@ function Dashboard() {
 
           <div className="bg-white p-4 rounded-lg shadow-md col-span-4 md:col-span-4 lg:col-span-2">
             <h2 className="text-xl font-semibold pb-2">Prospectos por Edad</h2>
-            <small className="text-gray-500">Filtrar por fecha</small>
+            <small className="text-gray-500">Se muestra la cantidad de prospectos por rango de edad</small>
             <div className="mt-4">
-              {ageOption && <ReactECharts option={ageOption} className="text-sm" />}
+              {ageOption && <ReactECharts option={ageOption} className="text-sm h-full" style={{ height: "400px" }} />}
               {ageOption?.series[0]?.data?.length === 0 && (
                 <div className="text-center text-gray-500 absolute top-[60%] left-[15%] md:left-[20%]">
                   No hay datos para mostrar en el gráfico
