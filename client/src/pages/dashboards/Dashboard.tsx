@@ -8,7 +8,6 @@ import { AppStore } from "../../redux/store";
 
 const tabs = [
   { label: "Por Canal", key: "channel" },
-  { label: "Por Edad", key: "age" },
   { label: "Por País", key: "country" },
   { label: "Por Ciudad", key: "city" },
 ];
@@ -16,6 +15,7 @@ const tabs = [
 function Dashboard() {
   const [dashboardData, setDashboardData] = useState<any>(null);
   const [option, setOption] = useState<any>(null);
+  const [ageOption, setAgeOption] = useState<any>(null);
   const [activeTab, setActiveTab] = useState("channel");
   const [interval, setInterval] = useState<any>({
     startDate: '',
@@ -29,13 +29,13 @@ function Dashboard() {
     });
   }
   const user = useSelector((state: AppStore) => state.auth.user);
+
   useEffect(() => {
     getDashboardService(interval).then((response: any) => {
       setDashboardData(response?.data);
-      console.log(response?.data);
-      let dataX = response?.data?.leadsByStatus
+      let dataX = response?.data?.leadsByStatus;
       if (response?.data?.leadsStatusByDate) {
-        dataX = response?.data?.leadsStatusByDate
+        dataX = response?.data?.leadsStatusByDate;
       }
 
       setOption({
@@ -48,9 +48,7 @@ function Dashboard() {
         xAxis: {
           data: ["Prospectos"],
         },
-        yAxis: {
-
-        },
+        yAxis: {},
         series: dataX.map((item: any) => {
           return {
             name: item.status ?? item._id,
@@ -58,6 +56,63 @@ function Dashboard() {
             data: [item.count],
           };
         }),
+      });
+
+      // Transformar fechas de nacimiento a edades y preparar los datos para el gráfico
+      const ageData = response?.data?.leadsByAge?.map((item: any) => {
+        const birthYear = new Date(item._id).getFullYear();
+        const currentYear = new Date().getFullYear();
+        const age = currentYear - birthYear;
+
+        let ageGroup = "";
+        if (age >= 18 && age <= 24) {
+          ageGroup = "18-24";
+        } else if (age >= 25 && age <= 34) {
+          ageGroup = "25-34";
+        } else if (age >= 35 && age <= 44) {
+          ageGroup = "35-44";
+        } else if (age >= 45 && age <= 54) {
+          ageGroup = "45-54";
+        } else if (age >= 55 && age <= 64) {
+          ageGroup = "55-64";
+        } else if (age >= 65) {
+          ageGroup = "65+";
+        }
+
+        return { ...item, age, ageGroup };
+      });
+
+      const ageGroups = ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"];
+      const ageCounts = ageGroups.map((group) =>
+        ageData.filter((item: any) => item.ageGroup === group).length
+      );
+
+      setAgeOption({
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
+        xAxis: {
+          type: 'category',
+          data: ageGroups
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [{
+          data: ageCounts,
+          type: 'bar',
+          itemStyle: {
+            color: function (params: any) {
+              const colorList = [
+                '#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae', '#749f83'
+              ];
+              return colorList[params.dataIndex];
+            }
+          }
+        }]
       });
     });
   }, [interval.startDate, interval.endDate]);
@@ -67,9 +122,6 @@ function Dashboard() {
     switch (activeTab) {
       case "channel":
         data = dashboardData?.leadsByChannel || [];
-        break;
-      case "age":
-        data = dashboardData?.leadsByAge || [];
         break;
       case "country":
         data = dashboardData?.leadsByCountry || [];
@@ -92,13 +144,6 @@ function Dashboard() {
             <th>Prospectos</th>
           </>
         );
-      case "age":
-        return (
-          <>
-            <th>Edad</th>
-            <th>Prospectos</th>
-          </>
-        );
       case "country":
         return (
           <>
@@ -118,17 +163,12 @@ function Dashboard() {
     }
   };
 
-
   const renderAdvisorTable = () => {
     return (
-      <div className="bg-white p-4 rounded-lg shadow-md mt-4 col-start-1 col-end-5  md:max-h-[22rem] overflow-auto">
+      <div className="bg-white p-4 rounded-lg shadow-md col-span-4 md:col-span-4 lg:col-span-2">
         <h2 className="text-xl font-semibold">Prospectos por Asesor</h2>
-        {/* Filter by date */}
-        <div className="mb-6">
-          <small className="text-gray-500 ">Cantidad de prospectos por asesor</small>
-        </div>
-
-        <div className="overflow-auto">
+        <small className="text-gray-500">Cantidad de prospectos por asesor</small>
+        <div className="overflow-auto mt-4">
           <table className="w-full border-collapse border border-gray-300">
             <thead>
               <tr className="text-left bg-gray-100">
@@ -154,67 +194,84 @@ function Dashboard() {
 
   return (
     <Layout title="Dashboard">
-      {(user.role && (user.role === 'ADMIN' || user.role === 'MANAGER')) ? <div className="grid  md:grid-cols-3 lg:grid-cols-4 gap-4 text-gray-800 w-full">
-        <div className="bg-white p-4 rounded-lg shadow-md px-10">
-          <h2 className="text-xl font-semibold pb-5 flex items-center justify-between">Total Prospectos<UsersIcon className="h-6 w-6" /></h2>
-          <p className="text-3xl font-semibold">{dashboardData?.totalLeads}</p>
-          <small className="text-gray-500">Desde el inicio</small>
-        </div>
-        <div className="bg-white p-4 rounded-lg shadow-md px-10">
-          <h2 className="text-xl font-semibold pb-5 flex justify-between">
-            Total pendientes de llamar
-            <PhoneArrowDownLeftIcon className="h-6 w-6" />
+      {(user.role && (user.role === 'ADMIN' || user.role === 'MANAGER')) ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 text-gray-800 w-full ">
+          <div className="flex items-center gap-4 w-full  col-span-4">
+            <div className="bg-white p-4 rounded-lg shadow-md max-h-[10rem] flex-grow col-span-2">
+              <h2 className="text-xl font-semibold pb-5 flex items-center justify-between">
+                Total Prospectos
+                <UsersIcon className="h-6 w-6" />
+              </h2>
+              <p className="text-3xl font-semibold">{dashboardData?.totalLeads}</p>
+              <small className="text-gray-500">Desde el inicio</small>
+            </div>
 
-          </h2>
-          <p className="text-3xl font-semibold">
-            {dashboardData?.leadsPendingCall}
-
-          </p>
-          <small className="text-gray-500">Desde el inicio</small>
-        </div>
-        <div className="bg-white p-4 rounded-lg shadow-md md:col-span-2 row-start-4 md:row-start-2 lg:col-span-2">
-          <h2 className="text-xl font-semibold pb-2">Gráfico de Prospectos por Estado</h2>
-          <small className="text-gray-500">Filtrar por fecha y estado</small>
-
-          <div className="mb-4 flex flex-wrap mt-3">
-            <div className="flex w-full gap-4">
-              <div className="flex flex-col gap-2 flex-grow ">
-                <label className="mr-2">Desde:</label>
-                <input
-                  name="startDate"
-                  onChange={handleInterval}
-                  type="date"
-                  className="border border-gray-300 p-2 rounded-md mr-4 w-full"
-                />
-              </div>
-              <div className="flex flex-col gap-2 flex-grow ">
-                <label className="mr-2">Hasta:</label>
-                <input
-
-                  name="endDate"
-                  onChange={handleInterval}
-                  type="date"
-                  className="border border-gray-300 p-2 rounded-md mr-4 w-full"
-                />
-              </div>
+            <div className="bg-white p-4 rounded-lg shadow-md  max-h-[10rem] flex-grow col-span-2">
+              <h2 className="text-xl font-semibold pb-5 flex justify-between">
+                Total pendientes de llamar
+                <PhoneArrowDownLeftIcon className="h-6 w-6" />
+              </h2>
+              <p className="text-3xl font-semibold">
+                {dashboardData?.leadsPendingCall}
+              </p>
+              <small className="text-gray-500">Desde el inicio</small>
             </div>
           </div>
-          {option && <ReactECharts option={option} className="text-sm" />}
-          {option?.series[0]?.data?.length === 0 && <div className="text-center text-gray-500 absolute top-[60%] left-[15%] md:left-[20%]">No hay datos para mostrar</  div>}
-        </div>
-        <div className="w-full md:col-span-1 row-start-3 lg:col-start-3 lg:col-end-5 lg:row-span-3 "   >
-          <div className="bg-white p-4 rounded-lg shadow-md w-full md:col-span-1 row-start-3 lg:col-start-3 lg:col-end-5 lg:row-span-3 md:max-h-[22rem] overflow-auto">
-            <h2 className="text-xl font-semibold">Prospectos</h2>
-            <div className="mb-2">
-              <small className="text-gray-500">Filtrar por:</small>
+
+          <div className="bg-white p-4 rounded-lg shadow-md col-span-4 md:col-span-4 lg:col-span-2  ">
+            <h2 className="text-xl font-semibold pb-2">Gráfico de Prospectos por Estado</h2>
+            <small className="text-gray-500">Filtrar por fecha y estado</small>
+            <div className="mb-4 flex flex-wrap mt-3">
+              <div className="flex w-full gap-4">
+                <div className="flex flex-col gap-2 flex-grow">
+                  <label className="mr-2">Desde:</label>
+                  <input
+                    name="startDate"
+                    onChange={handleInterval}
+                    type="date"
+                    className="border border-gray-300 p-2 rounded-md mr-4 w-full"
+                  />
+                </div>
+                <div className="flex flex-col gap-2 flex-grow">
+                  <label className="mr-2">Hasta:</label>
+                  <input
+                    name="endDate"
+                    onChange={handleInterval}
+                    type="date"
+                    className="border border-gray-300 p-2 rounded-md mr-4 w-full"
+                  />
+                </div>
+              </div>
             </div>
-            <div className="mb-4">
+            {option && <ReactECharts option={option} className="text-sm" />}
+            {option?.series[0]?.data?.length === 0 && (
+              <div className="text-center text-gray-500 absolute top-[60%] left-[15%] md:left-[20%]">
+                No hay datos para mostrar en el gráfico
+              </div>
+            )}
+          </div>
+
+          <div className="bg-white p-4 rounded-lg shadow-md col-span-4 md:col-span-4 lg:col-span-2">
+            <h2 className="text-xl font-semibold pb-2">Prospectos por Edad</h2>
+            <small className="text-gray-500">Filtrar por fecha</small>
+            <div className="mt-4">
+              {ageOption && <ReactECharts option={ageOption} className="text-sm" />}
+              {ageOption?.series[0]?.data?.length === 0 && (
+                <div className="text-center text-gray-500 absolute top-[60%] left-[15%] md:left-[20%]">
+                  No hay datos para mostrar en el gráfico
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="bg-white p-4 rounded-lg shadow-md col-span-4 md:col-span-4 lg:col-span-2">
+            <h2 className="text-xl font-semibold">Prospectos por {tabs.find(tab => tab.key === activeTab)?.label}</h2>
+            <small className="text-gray-500">Filtrar por {tabs.find(tab => tab.key === activeTab)?.label.toLowerCase()}</small>
+            <div className="flex justify-center mt-4">
               {tabs.map((tab) => (
                 <button
                   key={tab.key}
-                  className={`px-4 py-2 mr-2 mb-2 ${activeTab === tab.key
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200"
+                  className={`px-4 py-2 rounded-md mr-2 ${activeTab === tab.key ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"
                     }`}
                   onClick={() => setActiveTab(tab.key)}
                 >
@@ -222,7 +279,7 @@ function Dashboard() {
                 </button>
               ))}
             </div>
-            <div className="overflow-auto">
+            <div className="mt-4 overflow-auto">
               <table className="w-full border-collapse border border-gray-300">
                 <thead>
                   <tr className="text-left bg-gray-100">
@@ -230,36 +287,27 @@ function Dashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {renderTableData().
-                    sort((a: any, b: any) => b.count - a.count)
-                    .map((item: any, index: number) => (
-                      <tr
-                        key={index}
-                        className={`border border-gray-300 ${index % 2 === 0 ? "bg-gray-100" : "bg-white"
-                          }`}
-                      >
-                        <td className="p-2">
-                          {item._id ??
-                            item.age ??
-                            item.country ??
-                            item.city ??
-                            "Sin registrar"}
-                        </td>
-                        <td className="p-2">{item.count}</td>
-                      </tr>
-                    ))}
+                  {renderTableData()?.sort(
+                    (a: any, b: any) => b.count - a.count
+                  ).map((item: any, index: number) => (
+                    <tr key={index} className={`border border-gray-300 ${index % 2 === 0 ? "bg-gray-100" : "bg-white"}`}>
+                      <td className="p-2">{item._id || "Sin definir"}</td>
+                      <td className="p-2">{item.count}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
-
+            
           </div>
+
           {renderAdvisorTable()}
         </div>
-
-      </div> : <div className="flex justify-center items-center h-[80vh]">
-        <h1 className="text-2xl font-semibold">Aun se está trabajando en esta sección</h1>
-      </div>}
-
+      ) : (
+        <div className="bg-red-600 text-white font-semibold p-4 rounded-md shadow-md">
+          No tienes permiso para acceder a este contenido
+        </div>
+      )}
     </Layout>
   );
 }
