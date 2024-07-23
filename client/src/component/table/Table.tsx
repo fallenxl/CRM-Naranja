@@ -19,6 +19,7 @@ import { SkeletonRow } from "./SkeletonRow";
 import { useEffect, useState } from "react";
 import { paginateArray } from "../../utils";
 import { Input } from "../inputs/input";
+import { getStatusColor } from "../../utils/charts";
 
 interface Props {
   title: string;
@@ -193,27 +194,7 @@ export function Table({
                                 {value === "status" ? (
                                   <Chip
                                     value={item[value]}
-                                    className={
-                                      item[value] === "Prospecto"
-                                        ? "bg-blue-300"
-                                        : item[value] === "Por Asignar"
-                                        ? "bg-yellow-600"
-                                        : item[value] === "A Contactar"
-                                        ? "bg-green-300"
-                                        : item[value] === "Precalificar Buró"
-                                        ? "bg-cyan-400"
-                                        : item[value] === "Precalificar Banco"
-                                        ? "bg-orange-400"
-                                        : item[value] === "Por Asignar Proyecto"
-                                        ? "bg-[#9EB384]"
-                                        : item[value] === "Liquidado" ||
-                                          item[value] === "Inactiva" ||
-                                          item[value] === false
-                                        ? "bg-red-400"
-                                        : item[value] === "Potencial"
-                                        ? "bg-orange-400"
-                                        : "bg-green-500"
-                                    }
+                                    style={{ backgroundColor: getStatusColor(item[value]) }}
                                   />
                                 ) : value === "date" ? (
                                   <Chip

@@ -11,6 +11,7 @@ export const useLeadData = (id: string | undefined) => {
     dni: "",
     passport: "",
     birthdate: "",
+    genre: "",
     residenceNumber: "",
     phone: "",
     lastStatus: {

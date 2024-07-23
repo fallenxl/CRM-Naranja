@@ -1,7 +1,7 @@
-import {useParams} from "react-router-dom";
-import {Layout} from "../Layout";
-import {useState} from "react";
-import {Avatar, Card, Chip} from "@material-tailwind/react";
+import { useParams } from "react-router-dom";
+import { Layout } from "../Layout";
+import { useState } from "react";
+import { Avatar, Card, Chip } from "@material-tailwind/react";
 import {
     ArrowUturnLeftIcon,
     AtSymbolIcon,
@@ -20,23 +20,24 @@ import {
     PencilIcon,
     PencilSquareIcon,
     PhoneIcon,
+    TagIcon,
     UserCircleIcon,
     XMarkIcon,
 } from "@heroicons/react/24/outline";
 
-import {Roles} from "../../constants";
-import {useSelector} from "react-redux";
-import {AppStore} from "../../redux/store";
-import {ChangeStatusModal} from "./components/ChangeStatusModal.tsx";
+import { Roles } from "../../constants";
+import { useSelector } from "react-redux";
+import { AppStore } from "../../redux/store";
+import { ChangeStatusModal } from "./components/ChangeStatusModal.tsx";
 import {
     errorAlertWithTimer,
     successAlertWithTimer,
 } from "../../component/alerts/Alerts.tsx";
-import {useLeadData} from "../../hooks/lead/useLeadData.tsx";
-import {useEditLead} from "../../hooks/lead/useEditLead.tsx";
-import {LeadTimeline} from "./components/LeadTimeline.tsx";
-import {isError, validateID} from "../../utils/redirects.tsx";
-import {Loading} from "../../component/index.ts";
+import { useLeadData } from "../../hooks/lead/useLeadData.tsx";
+import { useEditLead } from "../../hooks/lead/useEditLead.tsx";
+import { LeadTimeline } from "./components/LeadTimeline.tsx";
+import { isError, validateID } from "../../utils/redirects.tsx";
+import { Loading } from "../../component/index.ts";
 import {
     assignLeadAdvisor,
     assignLeadCampaign, createComment,
@@ -44,16 +45,17 @@ import {
     deleteDocumentByLead, revertLeadStatus,
 } from "../../services/lead.services.ts";
 import Swal from "sweetalert2";
-import {currencyFormatToLempiras, formatCurrency} from "../../utils/currencyFormat.ts";
-import {Input} from "../../component/inputs/input.tsx";
-import {channels} from "../../constants/general.ts";
-import {ChangeBankModal} from "../../features/ChangeBankModal.tsx";
-import {capitalizeFirstLetterByWord, isArrayOfStrings} from "../../utils/utilities.ts";
-
+import { currencyFormatToLempiras, formatCurrency } from "../../utils/currencyFormat.ts";
+import { Input } from "../../component/inputs/input.tsx";
+import { channels } from "../../constants/general.ts";
+import { ChangeBankModal } from "../../features/ChangeBankModal.tsx";
+import { capitalizeFirstLetterByWord, isArrayOfStrings } from "../../utils/utilities.ts";
+import { getStatusColor } from "../../utils/charts.ts";
+import countriesData from '../../assets/paises.json';
 export const LeadById = () => {
-    const {id} = useParams<{ id: string }>();
+    const { id } = useParams<{ id: string }>();
     validateID(id ?? "");
-    const {user} = useSelector((state: AppStore) => state.auth);
+    const { user } = useSelector((state: AppStore) => state.auth);
 
     const {
         advisorList,
@@ -77,7 +79,6 @@ export const LeadById = () => {
 
     const [editAdvisors, setEditAdvisors] = useState(false);
     const [advisorSelected, setAdvisorSelected] = useState(" ");
-
     const handleAdvisorChange = (e: any) => setAdvisorSelected(e.target.value);
     const handleSubmitAdvisor = () => {
         assignLeadAdvisor(id, advisorSelected).then((res) => {
@@ -175,7 +176,7 @@ export const LeadById = () => {
     const handleComments = (e: any) => setComments(e.target.value);
     const handleCommentsSubmit = (e: any) => {
         e.preventDefault();
-        createComment(id!, {comment: comments}).then((res) => {
+        createComment(id!, { comment: comments }).then((res) => {
             if (typeof res === "string") {
                 errorAlertWithTimer("Error", res, 3000);
             }
@@ -185,7 +186,7 @@ export const LeadById = () => {
     };
     return (
         <Layout title={"Prospecto " + lead.name}>
-            {isLoading && <Loading className="z-10"/>}
+            {isLoading && <Loading className="z-10" />}
             <div className="relative">
                 {open && (
                     <ChangeStatusModal
@@ -197,7 +198,7 @@ export const LeadById = () => {
                     />
                 )}
                 {openChangeBankModal && (
-                    <ChangeBankModal lead={lead} onClose={handleOpenChangeBankModal}/>
+                    <ChangeBankModal lead={lead} onClose={handleOpenChangeBankModal} />
                 )}
                 <div className="flex flex-col lg:flex-row gap-4">
                     <Card className="h-full w-full lg:w-7/12 mx-auto p-3 md:p-10 ">
@@ -212,17 +213,17 @@ export const LeadById = () => {
                                     <div className="flex flex-col items-center">
                                         <span className="text-2xl">{lead.name}</span>
                                         <div className="flex gap-x-2 items-center mb-2">
-                                            <IdentificationIcon className="w-5 h-5"/>
+                                            <IdentificationIcon className="w-5 h-5" />
                                             <span>{lead.dni}</span>
                                         </div>
-                                        <div className="bg-blue-300 px-3 py-1 rounded-md flex items-center">
+                                        <div className={` px-3 py-1 rounded-md flex items-center`} style={{ backgroundColor: getStatusColor(lead.status.type) }}>
                                             <Chip
                                                 value={lead.status.type}
                                                 className="bg-transparent font-medium text-white"
                                             />
                                             {user.role && verifyPermissions(user.role) && (
                                                 <button onClick={handleOpen} className="">
-                                                    <PencilIcon className="w-4 h-4 text-white"/>
+                                                    <PencilIcon className="w-4 h-4 text-white" />
                                                 </button>
                                             )}
                                         </div>
@@ -236,26 +237,26 @@ export const LeadById = () => {
                                                 onClick={handleReverseStatus}
                                                 className="flex gap-x-2 items-center"
                                             >
-                    <span className="text-xs hover:text-blue-500 cursor-pointer">
-                     Revertir Estado
-                    </span>
-                                                <ArrowUturnLeftIcon className="w-4 h-4 "/>
+                                                <span className="text-xs hover:text-blue-500 cursor-pointer">
+                                                    Revertir Estado
+                                                </span>
+                                                <ArrowUturnLeftIcon className="w-4 h-4 " />
 
                                             </button>}
                                         {(user?.role !== 'SUPERVISOR' && user?.role !== 'MANAGEMENT') && <button
                                             onClick={handleEdit}
                                             className="flex gap-x-2 items-center"
                                         >
-                    <span className="text-xs hover:text-blue-500 cursor-pointer">
-                      Editar
-                    </span>
+                                            <span className="text-xs hover:text-blue-500 cursor-pointer">
+                                                Editar
+                                            </span>
 
-                                            <PencilSquareIcon className="w-4 h-4 "/>
+                                            <PencilSquareIcon className="w-4 h-4 " />
                                         </button>}
 
                                     </div>
                                 </div>
-                                <hr className="w-full mb-2"/>
+                                <hr className="w-full mb-2" />
                                 {/* Lead details form */}
                                 <form
                                     onSubmit={handleSubmit}
@@ -263,7 +264,7 @@ export const LeadById = () => {
                                     className="w-full flex flex-col gap-y-2 p-0 md:p-4"
                                 >
                                     <div className="flex items-center gap-x-2  w-full">
-                                        <IdentificationIcon className="w-5 h-5"/>
+                                        <IdentificationIcon className="w-5 h-5" />
                                         <Input
                                             name="name"
                                             onChange={handleUpdateLeadChange}
@@ -273,10 +274,31 @@ export const LeadById = () => {
                                         />
                                     </div>
 
+
                                     <div className="flex items-center gap-x-2  w-full">
-                                        <IdentificationIcon className="w-5 h-5"/>
+                                        <TagIcon className="w-5 h-5" />
+                                        {/* select */}
+                                        <div className="flex flex-col  w-full">
+                                            <label className="text-gray-700 text-xs">Género</label>
+                                            <select
+                                                name="genre"
+                                                value={updateLead.genre}
+                                                onChange={handleUpdateLeadChange}
+                                                className={`w-full border border-gray-300 bg-white rounded-md py-[.7em] px-3 text-sm ${edit ? "disabled:bg-gray-50"
+                                                    : "bg-white"} text-black`}
+                                                disabled={edit}
+                                            >
+                                                <option value="">Género</option>
+                                                <option value="Masculino">Masculino</option>
+                                                <option value="Femenino">Femenino</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <div className="flex items-center gap-x-2  w-full">
+                                        <IdentificationIcon className="w-5 h-5" />
                                         <Input
-                                            name={"dni"}    
+                                            name={"dni"}
                                             onChange={handleUpdateLeadChange}
                                             label={"DNI"}
                                             value={updateLead.dni}
@@ -286,32 +308,32 @@ export const LeadById = () => {
                                         />
                                     </div>
                                     <div className="flex items-center gap-x-2  w-full">
-                                        <IdentificationIcon className="w-5 h-5"/>
+                                        <IdentificationIcon className="w-5 h-5" />
                                         <Input
                                             name={"passport"}
                                             onChange={handleUpdateLeadChange}
                                             label={"Pasaporte"}
-                                            value={updateLead.passport }
+                                            value={updateLead.passport}
                                             maxLength={7}
                                             minLength={6}
                                             disabled={edit}
                                         />
                                     </div>
                                     <div className="flex items-center gap-x-2  w-full">
-                                        <IdentificationIcon className="w-5 h-5"/>
+                                        <IdentificationIcon className="w-5 h-5" />
                                         <Input
-                                            name={ "residenceNumber"}
+                                            name={"residenceNumber"}
                                             onChange={handleUpdateLeadChange}
                                             label={"Carnet de residencia"}
                                             value={updateLead.residenceNumber}
                                             maxLength={15}
-                                            minLength={ 15}
+                                            minLength={15}
                                             disabled={edit}
                                         />
                                     </div>
 
                                     <div className="flex items-center gap-x-2  w-full">
-                                        <PhoneIcon className="w-5 h-5"/>
+                                        <PhoneIcon className="w-5 h-5" />
                                         <Input
                                             name="phone"
                                             onChange={handleUpdateLeadChange}
@@ -322,7 +344,7 @@ export const LeadById = () => {
                                     </div>
 
                                     <div className="flex items-center gap-x-2  w-full">
-                                        <AtSymbolIcon className="w-5 h-5"/>
+                                        <AtSymbolIcon className="w-5 h-5" />
                                         <Input
                                             name="email"
                                             onChange={handleUpdateLeadChange}
@@ -332,7 +354,7 @@ export const LeadById = () => {
                                         />
                                     </div>
                                     <div className="flex items-center gap-x-2  w-full">
-                                        <CakeIcon className="w-5 h-5"/>
+                                        <CakeIcon className="w-5 h-5" />
                                         <Input
                                             name="birthdate"
                                             onChange={handleUpdateLeadChange}
@@ -343,7 +365,7 @@ export const LeadById = () => {
                                         />
                                     </div>
                                     <div className="flex items-center gap-x-2  w-full">
-                                        <MapIcon className="w-5 h-5"/>
+                                        <MapIcon className="w-5 h-5" />
                                         <Input
                                             name="address"
                                             onChange={handleUpdateLeadChange}
@@ -352,32 +374,103 @@ export const LeadById = () => {
                                             disabled={edit}
                                         />
                                     </div>
-                                    <div className="flex items-center gap-x-2  w-full">
-                                        <MapIcon className="w-5 h-5"/>
-                                        <Input
-                                            name="country"
-                                            onChange={handleUpdateLeadChange}
-                                            label="País"
-                                            value={updateLead.country}
-                                            disabled={edit}
-                                        />
-                                    </div>
+                                    {edit && <>
+                                        <div className="flex items-center gap-x-2  w-full">
+                                            <MapIcon className="w-5 h-5" />
+                                            <Input
+                                                name="country"
+                                                onChange={handleUpdateLeadChange}
+                                                label="País"
+                                                value={updateLead.country}
+                                                disabled={edit}
+                                            />
+                                        </div>
+
+                                        <div className="flex items-center gap-x-2  w-full">
+                                            <MapIcon className="w-5 h-5" />
+                                            <Input
+                                                name="department"
+                                                onChange={handleUpdateLeadChange}
+                                                label={updateLead.country === 'Honduras' ? 'Departamento' : updateLead.country === 'USA' ? 'Estado' : 'Provincia'}
+                                                value={updateLead.department}
+                                                disabled={edit}
+                                            />
+                                        </div>
+                                    </>}
+                                    {!edit && <>
+
+                                        <div className="flex items-center gap-x-2  w-full">
+                                            <MapIcon className="w-5 h-5" />
+                                            <div className="flex flex-col  w-full">
+                                                <label htmlFor="country" className="text-gray-700 text-xs">
+                                                    País
+                                                </label>
+                                                <select name="country" value={updateLead.country} onChange={handleUpdateLeadChange} className="text-sm border p-2 text-gray-700 rounded-md border-gray-300 flex-grow">
+                                                    <option value="" defaultChecked>
+                                                        Seleccione un país
+                                                    </option>
+                                                    {!countriesData.countries.find((country) => country.name === updateLead.country) ? <option value={updateLead.country} key={updateLead.country}>
+                                                        Otro
+                                                    </option> : null}
+
+                                                    {countriesData.countries.map((country) => {
+                                                        return (
+                                                            <option value={country.name} key={country.name}>
+                                                                {country.name}
+                                                            </option>
+                                                        );
+                                                    })}
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        {updateLead.country !== 'Honduras' && updateLead.country !== 'USA' && updateLead.country !== 'España' && <div className="flex items-center gap-x-2  w-full">
+                                            <MapIcon className="w-5 h-5" />
+                                            <Input
+                                                name="country"
+                                                onChange={handleUpdateLeadChange}
+                                                label={'País'}
+                                                value={updateLead.country}
+                                                disabled={edit}
+                                            />
+                                        </div>}
+                                        <div className="flex items-center gap-x-2  w-full">
+                                            <MapIcon className="w-5 h-5" />
+                                            <div className="flex flex-col  w-full">
+                                                <label htmlFor="country" className="text-gray-700 text-xs">
+                                                    {updateLead.country === 'Honduras' ? 'Departamento' : updateLead.country === 'USA' ? 'Estado' : 'Provincia'}
+                                                </label>
+                                                {(countriesData.countries.find((country) => country.name === updateLead.country) && updateLead.country !== 'Otro')? 
+                                                <select name="department" value={updateLead.department} onChange={handleUpdateLeadChange} className="text-sm border p-2 text-gray-700 rounded-md border-gray-300 flex-grow">
+                                                    <option value="" defaultChecked>
+                                                        Seleccione un departamento
+                                                    </option>
+
+                                                    {countriesData.countries.find((country) => country.name === updateLead.country)?.states.map((department) => {
+                                                        return (
+                                                            <option value={department} key={department}>
+                                                                {department}
+                                                            </option>
+                                                        );
+                                                    })}
+                                                </select>:
+                                                <Input
+                                                    name="department"
+                                                    onChange={handleUpdateLeadChange}
+                    
+                                                    value={updateLead.department}
+                                                    disabled={edit}
+                                                    />
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </>}
+
+
 
                                     <div className="flex items-center gap-x-2  w-full">
-                                        <MapIcon className="w-5 h-5"/>
-                                        <Input
-                                            name="department"
-                                            onChange={handleUpdateLeadChange}
-                                            label={updateLead.country === 'Honduras' ? 'Departamento' : updateLead.country === 'USA' ? 'Estado' : 'Provincia'}
-                                            value={updateLead.department}
-                                            disabled={edit}
-                                        />
-                                    </div>
-
-                                  
-
-                                    <div className="flex items-center gap-x-2  w-full">
-                                        <BriefcaseIcon className="w-5 h-5"/>
+                                        <BriefcaseIcon className="w-5 h-5" />
                                         <Input
                                             name="interestedIn"
                                             onChange={handleUpdateLeadChange}
@@ -389,14 +482,13 @@ export const LeadById = () => {
 
                                     <label className="text-gray-700 text-xs ml-7">Canal</label>
                                     <div className="flex items-center gap-x-2  w-full">
-                                        <MegaphoneIcon className="w-5 h-5"/>
+                                        <MegaphoneIcon className="w-5 h-5" />
                                         <select
                                             name="source"
                                             value={updateLead.source}
                                             onChange={handleUpdateLeadChange}
-                                            className={`w-full border border-gray-300 bg-gray-50 rounded-md py-[.7em] px-3 text-sm ${
-                                                edit && "bg-blue-gray-50"
-                                            } text-black`}
+                                            className={`w-full border border-gray-300 bg-gray-50 rounded-md py-[.7em] px-3 text-sm ${edit && "bg-blue-gray-50"
+                                                } text-black`}
                                             disabled={edit}
                                         >
                                             <option value="">Canal</option>
@@ -411,7 +503,7 @@ export const LeadById = () => {
                                     </div>
 
                                     <div className="flex items-center gap-x-2  w-full">
-                                        <ChatBubbleBottomCenterIcon className="w-5 h-5"/>
+                                        <ChatBubbleBottomCenterIcon className="w-5 h-5" />
                                         <Input
                                             name="comment"
                                             onChange={handleUpdateLeadChange}
@@ -422,13 +514,13 @@ export const LeadById = () => {
                                     </div>
                                     {/* Detalles laborales */}
                                     <div className="flex flex-col gap-y-2 mt-4">
-                    <span className="font-bold text-sm">
-                      Detalles laborales
-                    </span>
-                                        <hr className="w-full mb-4"/>
+                                        <span className="font-bold text-sm">
+                                            Detalles laborales
+                                        </span>
+                                        <hr className="w-full mb-4" />
 
                                         <div className="flex items-center gap-x-2  w-full">
-                                            <BriefcaseIcon className="w-5 h-5"/>
+                                            <BriefcaseIcon className="w-5 h-5" />
                                             <Input
                                                 name="workAddress"
                                                 onChange={handleUpdateLeadChange}
@@ -439,7 +531,7 @@ export const LeadById = () => {
                                         </div>
 
                                         <div className="flex items-center gap-x-2  w-full">
-                                            <UserCircleIcon className="w-5 h-5"/>
+                                            <UserCircleIcon className="w-5 h-5" />
                                             <Input
                                                 name="workPosition"
                                                 onChange={handleUpdateLeadChange}
@@ -450,7 +542,7 @@ export const LeadById = () => {
                                         </div>
 
                                         <div className="flex items-center gap-x-2  w-full">
-                                            <CurrencyDollarIcon className="w-5 h-5"/>
+                                            <CurrencyDollarIcon className="w-5 h-5" />
                                             <Input
                                                 name="salary"
                                                 onChange={handleUpdateLeadChange}
@@ -471,7 +563,7 @@ export const LeadById = () => {
                                         </div>
 
                                         <div className="flex items-center gap-x-2  w-full">
-                                            <ClockIcon className="w-5 h-5"/>
+                                            <ClockIcon className="w-5 h-5" />
                                             <Input
                                                 name="workTime"
                                                 onChange={handleUpdateLeadChange}
@@ -485,14 +577,13 @@ export const LeadById = () => {
                                             Método de pago
                                         </label>
                                         <div className="flex items-center gap-x-2  w-full">
-                                            <CreditCardIcon className="w-5 h-5"/>
+                                            <CreditCardIcon className="w-5 h-5" />
                                             <select
                                                 name="paymentMethod"
                                                 value={updateLead.paymentMethod}
                                                 onChange={handleUpdateLeadChange}
-                                                className={`w-full border border-gray-300 bg-gray-50 rounded-md py-[.7em] px-3 text-sm ${
-                                                    edit && "bg-blue-gray-50"
-                                                } text-black`}
+                                                className={`w-full border border-gray-300 bg-gray-50 rounded-md py-[.7em] px-3 text-sm ${edit && "bg-blue-gray-50"
+                                                    } text-black`}
                                                 disabled={edit}
                                             >
                                                 <option value="">Seleccionar forma de pago</option>
@@ -514,12 +605,12 @@ export const LeadById = () => {
                                                     </button>
                                                 </div>
                                                 <div className="flex flex-row-reverse">
-                          <span
-                              onClick={handleCancelEdit}
-                              className="bg-gray-500 hover:bg-red-500 cursor-pointer px-4 py-2 rounded-md  text-white"
-                          >
-                            Cancelar
-                          </span>
+                                                    <span
+                                                        onClick={handleCancelEdit}
+                                                        className="bg-gray-500 hover:bg-red-500 cursor-pointer px-4 py-2 rounded-md  text-white"
+                                                    >
+                                                        Cancelar
+                                                    </span>
                                                 </div>
                                             </div>
                                         </>
@@ -537,11 +628,11 @@ export const LeadById = () => {
                                 <h4 className="font-bold  text-gray-700 ">Detalles</h4>
                             </div>
                             <div className="flex items-center gap-2 py-2">
-                            <UserCircleIcon className="w-5 h-5"/>
+                                <UserCircleIcon className="w-5 h-5" />
                                 <div className={"w-full flex items-center gap-2"}>
-                  <span className="text-sm text-gray-600 w-[5rem]">
-                    Asesor:
-                  </span>
+                                    <span className="text-sm text-gray-600 w-[5rem]">
+                                        Asesor:
+                                    </span>
                                     <select
                                         className={`w-full border border-gray-300 rounded-md p-2 text-sm`}
                                         onChange={handleAdvisorChange}
@@ -567,28 +658,28 @@ export const LeadById = () => {
                                     <div className={"flex items-center gap-2"}>
                                         {!editAdvisors && (
                                             <button onClick={() => setEditAdvisors(!editAdvisors)}>
-                                                <PencilSquareIcon className="w-4 h-4"/>
+                                                <PencilSquareIcon className="w-4 h-4" />
                                             </button>
                                         )}
                                         {editAdvisors && (
                                             <button onClick={handleSubmitAdvisor}>
-                                                <CheckIcon className="w-4 h-4 hover:text-green-500"/>
+                                                <CheckIcon className="w-4 h-4 hover:text-green-500" />
                                             </button>
                                         )}
                                         {editAdvisors && (
                                             <button onClick={() => setEditAdvisors(!editAdvisors)}>
-                                                <XMarkIcon className="w-4 h-4"/>
+                                                <XMarkIcon className="w-4 h-4" />
                                             </button>
                                         )}
                                     </div>
                                 )}
                             </div>
                             <div className="w-full flex items-center gap-2 py-2 mb-6">
-                                <MegaphoneIcon className="w-5 h-5"/>
+                                <MegaphoneIcon className="w-5 h-5" />
                                 <div className={"w-full flex items-center gap-2"}>
-                  <span className="text-sm text-gray-600 w-[5rem]">
-                    Campaña:
-                  </span>
+                                    <span className="text-sm text-gray-600 w-[5rem]">
+                                        Campaña:
+                                    </span>
                                     <select
                                         onChange={handleCampaignChange}
                                         className={`w-full border border-gray-300 rounded-md p-2 text-sm`}
@@ -619,17 +710,17 @@ export const LeadById = () => {
                                     <div className={"flex items-center gap-2"}>
                                         {!editCampaigns && (
                                             <button onClick={() => setEditCampaigns(!editCampaigns)}>
-                                                <PencilSquareIcon className="w-4 h-4"/>
+                                                <PencilSquareIcon className="w-4 h-4" />
                                             </button>
                                         )}
                                         {editCampaigns && (
                                             <button onClick={handleSubmitCampaign}>
-                                                <CheckIcon className="w-4 h-4 hover:text-green-500"/>
+                                                <CheckIcon className="w-4 h-4 hover:text-green-500" />
                                             </button>
                                         )}
                                         {editCampaigns && (
                                             <button onClick={() => setEditCampaigns(!editCampaigns)}>
-                                                <XMarkIcon className="w-4 h-4"/>
+                                                <XMarkIcon className="w-4 h-4" />
                                             </button>
                                         )}
                                     </div>
@@ -638,52 +729,52 @@ export const LeadById = () => {
                             {/*Comments box*/}
                             <div className="w-full flex flex-col gap-y-2  ">
                                 <span className="font-bold ">Comentarios</span>
-                                <hr className="w-full mb-4"/>
+                                <hr className="w-full mb-4" />
                                 {lead.comments.length > 0 && (
                                     <div className="flex flex-col gap-y-2 py-5 max-h-[20rem] overflow-auto px-2">
-                                        {lead.comments.sort((a:{date:Date}, b:{date:Date}) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((comment:{
+                                        {lead.comments.sort((a: { date: Date }, b: { date: Date }) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((comment: {
+                                            _id: string;
+                                            comment: string;
+                                            date: Date;
+                                            userID: {
                                                 _id: string;
-                                                comment: string;
-                                                date: Date;
-                                                userID: {
-                                                    _id: string;
-                                                    name: string;
-                                                    avatar: string;
-                                                }
-                                            } )=>{
-                                                return (
-                                                    <div className="flex flex-col  gap-y-2 my-2">
-                                                        <div
-                                                            className={`w-full  flex flex-col-reverse     gap-x-2 ${comment.userID._id === user.id && 'flex-row-reverse  text-right'}`}>
-                                                            <div className={`flex ${comment.userID._id === user.id && 'flex-row-reverse'} gap-4`}>
-                                                                <Avatar src={comment.userID.avatar} size="sm"/>
-                                                                <div className={`flex flex-col max-w-md  px-5 py-2 rounded-md ${comment.userID._id === user.id ? 'bg-orange-50' : 'bg-blue-50'}`}>
-                                                                    <span className={`text-sm font-bold `}>
-                                                                        {comment.userID.name}
-                                                                    </span>
-                                                                    <span className="text-sm">
-                                                                        {comment.comment}
-                                                                    </span>
-                                                                    {comment.userID._id === user.id && (
-                                                                        <button onClick={() => deleteComment(id!, comment._id)} className="flex self-end items-center gap-x-2 text-gray-600 hover:text-red-500 text-xs mt-2">
-
-                                                                            <span>Eliminar</span>
-                                                                        </button>
-                                                                    )}
-                                                                </div>
-                                                            </div>
-                                                            <div className="flex self-center mb-4 ">
-                                                                <span className="text-xs text-gray-500 ">
-                                                                    {/*date and hour*/}
-                                                                    {new Date(comment.date).toLocaleDateString()}{" "} {new Date(comment.date).toLocaleTimeString()}
+                                                name: string;
+                                                avatar: string;
+                                            }
+                                        }) => {
+                                            return (
+                                                <div className="flex flex-col  gap-y-2 my-2">
+                                                    <div
+                                                        className={`w-full  flex flex-col-reverse     gap-x-2 ${comment.userID._id === user.id && 'flex-row-reverse  text-right'}`}>
+                                                        <div className={`flex ${comment.userID._id === user.id && 'flex-row-reverse'} gap-4`}>
+                                                            <Avatar src={comment.userID.avatar} size="sm" />
+                                                            <div className={`flex flex-col max-w-md  px-5 py-2 rounded-md ${comment.userID._id === user.id ? 'bg-orange-50' : 'bg-blue-50'}`}>
+                                                                <span className={`text-sm font-bold `}>
+                                                                    {comment.userID.name}
                                                                 </span>
+                                                                <span className="text-sm">
+                                                                    {comment.comment}
+                                                                </span>
+                                                                {comment.userID._id === user.id && (
+                                                                    <button onClick={() => deleteComment(id!, comment._id)} className="flex self-end items-center gap-x-2 text-gray-600 hover:text-red-500 text-xs mt-2">
+
+                                                                        <span>Eliminar</span>
+                                                                    </button>
+                                                                )}
                                                             </div>
                                                         </div>
-
-
+                                                        <div className="flex self-center mb-4 ">
+                                                            <span className="text-xs text-gray-500 ">
+                                                                {/*date and hour*/}
+                                                                {new Date(comment.date).toLocaleDateString()}{" "} {new Date(comment.date).toLocaleTimeString()}
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                );
-                                            }
+
+
+                                                </div>
+                                            );
+                                        }
                                         )}
                                     </div>
 
@@ -691,9 +782,9 @@ export const LeadById = () => {
 
                                 {lead.comments.length === 0 && (
                                     <div className="flex flex-col items-center gap-y-2 py-10">
-                                            <span className="text-sm text-gray-500">
-                                                No hay comentarios
-                                            </span>
+                                        <span className="text-sm text-gray-500">
+                                            No hay comentarios
+                                        </span>
                                     </div>
                                 )}
 
@@ -707,7 +798,7 @@ export const LeadById = () => {
 
                                     />
                                     <button onClick={handleCommentsSubmit}
-                                            className="bg-blue-500 px-4 py-2 rounded-md  text-white">
+                                        className="bg-blue-500 px-4 py-2 rounded-md  text-white">
                                         Enviar
                                     </button>
                                 </div>
@@ -721,32 +812,31 @@ export const LeadById = () => {
                                         {/* Cambiar banco */}
                                         {(user.role === "ADMIN" ||
                                             user.role === "BANK_MANAGER") && (
-                                            <div className="flex items-center gap-2  ">
-                                                <button
-                                                    onClick={handleOpenChangeBankModal}
-                                                    className="text-gray-700  text-sm cursor-pointer "
-                                                >
-                                                    <PencilSquareIcon className="w-4 h-4"/>
-                                                </button>
-                                            </div>
-                                        )}
+                                                <div className="flex items-center gap-2  ">
+                                                    <button
+                                                        onClick={handleOpenChangeBankModal}
+                                                        className="text-gray-700  text-sm cursor-pointer "
+                                                    >
+                                                        <PencilSquareIcon className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+                                            )}
                                     </div>
                                     {lead.bankID && (
                                         <>
                                             <div className="flex items-center gap-2 py-2 w-full">
-                                                <BuildingLibraryIcon className="w-4 h-4"/>
+                                                <BuildingLibraryIcon className="w-4 h-4" />
                                                 <span className="text-sm text-gray-600  ">Banco:</span>
-                                                <span className="text-sm">{`${lead.bankID.name} ${
-                                                    lead.status.type === "Precalificar Banco"
-                                                        ? "(Pendiente de aprobar)"
-                                                        : ""
-                                                }`}</span>
+                                                <span className="text-sm">{`${lead.bankID.name} ${lead.status.type === "Precalificar Banco"
+                                                    ? "(Pendiente de aprobar)"
+                                                    : ""
+                                                    }`}</span>
                                             </div>
                                             <div className="flex items-center gap-2 py-2 w-full">
-                                                <ChartPieIcon className="w-4 h-4"/>
+                                                <ChartPieIcon className="w-4 h-4" />
                                                 <span className="text-sm text-gray-600  ">
-                          Programa de financiamiento:
-                        </span>
+                                                    Programa de financiamiento:
+                                                </span>
                                                 <span className="text-sm">{lead.financingProgram}</span>
                                             </div>
                                         </>
@@ -754,10 +844,10 @@ export const LeadById = () => {
                                     {/* Bancos rechazados */}
                                     {lead.rejectedBanks.length > 0 && (
                                         <div className="flex items-center gap-2 py-2 w-full">
-                                            <BuildingLibraryIcon className="w-4 h-4"/>
+                                            <BuildingLibraryIcon className="w-4 h-4" />
                                             <span className="text-sm text-gray-600  ">
-                        Bancos rechazados:
-                      </span>
+                                                Bancos rechazados:
+                                            </span>
                                             <div className="flex items-center flex-wrap gap-2">
                                                 {lead.rejectedBanks.map((item: any) => {
                                                     return (
@@ -796,58 +886,58 @@ export const LeadById = () => {
                                         <>
                                             {" "}
                                             <div className="flex items-center gap-2 py-2 w-full">
-                                                <HomeIcon className="w-4 h-4"/>
+                                                <HomeIcon className="w-4 h-4" />
                                                 <span className="text-sm text-gray-600  ">
-                          Proyecto:
-                        </span>
+                                                    Proyecto:
+                                                </span>
                                                 <span className="text-sm">
-                          {lead.projectDetails.projectID.name}
-                        </span>
+                                                    {lead.projectDetails.projectID.name}
+                                                </span>
                                             </div>
                                             <div className="flex items-center gap-2 py-2 w-full">
-                                                <ChartPieIcon className="w-4 h-4"/>
+                                                <ChartPieIcon className="w-4 h-4" />
                                                 <span className="text-sm text-gray-600  ">Lote:</span>
                                                 <span className="text-sm">
-                          {lead.projectDetails.lotID.block
-                              ? `${lead.projectDetails.lotID.block} - `
-                              : ""}
+                                                    {lead.projectDetails.lotID.block
+                                                        ? `${lead.projectDetails.lotID.block} - `
+                                                        : ""}
                                                     {lead.projectDetails.lotID.lot}
-                        </span>
+                                                </span>
                                             </div>
                                             <div className="flex items-center gap-2 py-2 w-full">
-                                                <HomeIcon className="w-4 h-4"/>
+                                                <HomeIcon className="w-4 h-4" />
                                                 <span className="text-sm text-gray-600  ">Area:</span>
                                                 <span className="text-sm">
-                          {lead.projectDetails.lotID.area} varas cuadradas
-                        </span>
+                                                    {lead.projectDetails.lotID.area} varas cuadradas
+                                                </span>
                                             </div>
                                             <div className="flex items-center gap-2 py-2 w-full">
-                                                <HomeIcon className="w-4 h-4"/>
+                                                <HomeIcon className="w-4 h-4" />
                                                 <span className="text-sm text-gray-600  ">Precio:</span>
                                                 <span className="text-sm">
-                          {currencyFormatToLempiras(
-                              lead.projectDetails.lotID.price?.toString()
-                          )}
-                        </span>
+                                                    {currencyFormatToLempiras(
+                                                        lead.projectDetails.lotID.price?.toString()
+                                                    )}
+                                                </span>
                                             </div>
                                             <div className="flex items-center gap-2 py-2 w-full">
-                                                <HomeIcon className="w-4 h-4"/>
+                                                <HomeIcon className="w-4 h-4" />
                                                 <span className="text-sm text-gray-600  ">Estado:</span>
                                                 <span className="text-sm">
-                          {lead.projectDetails.lotID.status}
-                        </span>
+                                                    {lead.projectDetails.lotID.status}
+                                                </span>
                                             </div>
                                             {lead.projectDetails.lotID.status === "Reservado" && (
                                                 <div className="flex items-center gap-2 py-2 w-full">
-                                                    <HomeIcon className="w-4 h-4"/>
+                                                    <HomeIcon className="w-4 h-4" />
                                                     <span className="text-sm text-gray-600  ">
-                            Fecha de reserva:
-                          </span>
+                                                        Fecha de reserva:
+                                                    </span>
                                                     <span className="text-sm">
-                            {new Date(
-                                lead.projectDetails.lotID.reservationDate
-                            ).toLocaleDateString()}
-                          </span>
+                                                        {new Date(
+                                                            lead.projectDetails.lotID.reservationDate
+                                                        ).toLocaleDateString()}
+                                                    </span>
                                                 </div>
                                             )}
                                         </>
@@ -862,34 +952,34 @@ export const LeadById = () => {
                                         </h4>
                                     </div>
                                     <div className="flex items-center gap-2 py-2 w-full">
-                                        <HomeIcon className="w-4 h-4"/>
+                                        <HomeIcon className="w-4 h-4" />
                                         <span className="text-sm text-gray-600  ">Modelo:</span>
                                         <span className="text-sm">
-                      {lead.projectDetails.houseModel.model}
-                    </span>
+                                            {lead.projectDetails.houseModel.model}
+                                        </span>
                                     </div>
                                     <div className="flex items-center gap-2 py-2 w-full">
-                                        <HomeIcon className="w-4 h-4"/>
+                                        <HomeIcon className="w-4 h-4" />
                                         <span className="text-sm text-gray-600  ">Area:</span>
                                         <span className="text-sm">
-                      {lead.projectDetails.houseModel.area ? `${lead.projectDetails.houseModel.area} v²` : 'Abierto'}
-                    </span>
+                                            {lead.projectDetails.houseModel.area ? `${lead.projectDetails.houseModel.area} v²` : 'Abierto'}
+                                        </span>
                                     </div>
                                     <div className="flex items-center gap-2 py-2 w-full">
-                                        <HomeIcon className="w-4 h-4"/>
+                                        <HomeIcon className="w-4 h-4" />
                                         <span className="text-sm text-gray-600  ">Precio:</span>
                                         <span className="text-sm">
-                      {lead.projectDetails.houseModel.price ? formatCurrency(lead.projectDetails.houseModel.price) : 'Abierto'}
-                    </span>
+                                            {lead.projectDetails.houseModel.price ? formatCurrency(lead.projectDetails.houseModel.price) : 'Abierto'}
+                                        </span>
                                     </div>
                                     <div className="flex items-center gap-2 py-2 w-full">
-                                        <HomeIcon className="w-4 h-4"/>
+                                        <HomeIcon className="w-4 h-4" />
                                         <span className="text-sm text-gray-600  ">
-                      Precio con descuento:
-                    </span>
+                                            Precio con descuento:
+                                        </span>
                                         <span className="text-sm">
-                      {lead.projectDetails.houseModel.priceWithDiscount ? formatCurrency(lead.projectDetails.houseModel.priceWithDiscount) : 'Abierto'}
-                    </span>
+                                            {lead.projectDetails.houseModel.priceWithDiscount ? formatCurrency(lead.projectDetails.houseModel.priceWithDiscount) : 'Abierto'}
+                                        </span>
                                     </div>
                                 </>
                             )}
@@ -928,7 +1018,7 @@ export const LeadById = () => {
                             )}
                         </Card>
                         {/* timeline */}
-                        <LeadTimeline lead={lead}/>
+                        <LeadTimeline lead={lead} />
                     </div>
                 </div>
             </div>

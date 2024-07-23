@@ -5,6 +5,7 @@ import ReactECharts from "echarts-for-react";
 import { PhoneArrowDownLeftIcon, UsersIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { AppStore } from "../../redux/store";
+import { getStatusColor } from "../../utils/charts";
 
 const tabs = [
   { label: "Por Canal", key: "channel" },
@@ -54,6 +55,7 @@ function Dashboard() {
             name: item.status ?? item._id,
             type: "bar",
             data: [item.count],
+            color: getStatusColor(item.status ?? item._id),
           };
         }),
       });

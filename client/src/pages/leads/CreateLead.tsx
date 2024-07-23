@@ -61,6 +61,7 @@ export const CreateLead = () => {
         name: "",
         dni: "",
         birthdate: "",
+        genre: "",
         passport: "",
         residenceNumber: "",
         email: "",
@@ -403,11 +404,30 @@ export const CreateLead = () => {
                                 type="date"
                                 label="Fecha de nacimiento"
                             />
+
+                            <div className="flex flex-col w-full">
+                                <label htmlFor="genre" className="text-gray-700">
+                                    Género
+                                </label>
+                                <select
+                                    name="genre"
+                                    value={formData.genre}
+                                    onChange={handleInputChange}
+                                    className="border p-2 text-gray-700 rounded-md border-blue-gray-300"
+                                >
+                                    <option value="" defaultChecked>
+                                        Seleccione un género
+                                    </option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Femenino">Femenino</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div className="flex flex-col  gap-4 md:gap-2 md:flex-row items-center">
 
-                            <div className="flex flex-col flex-grow gap-2">
+                            <div className="flex flex-col flex-grow gap-2 w-full">
                                 <label htmlFor="country" className="text-gray-700">
                                     País
                                 </label>
@@ -425,7 +445,7 @@ export const CreateLead = () => {
                                     })}
                                 </select>
                                 {formData.country === "Otro" && (
-                                    <div className="flex  gap-2 ">
+                                    <div className="flex  gap-2 w-full ">
                                         <Input
                                             name="otherCountry"
                                             value={others.otherCountry}
@@ -448,7 +468,7 @@ export const CreateLead = () => {
                             {(formData.country && department.length > 0) && (
 
                                 <>
-                                    <div className="flex flex-col gap-2 flex-grow">
+                                    <div className="flex flex-col gap-2 flex-grow w-full">
                                         <label htmlFor="department" className="text-gray-700">
                                             {
                                                 formData.country === "Honduras" ? "Departamento" : formData.country === "USA" ? "Estado" : "Provincia"
