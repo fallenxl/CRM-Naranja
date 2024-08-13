@@ -11,7 +11,6 @@ interface PasswordInputProps extends React.InputHTMLAttributes<HTMLInputElement>
   className?: string;
   type?: HTMLInputTypeAttribute;
   label?: string;
-  min?: number;
   accept?: string;
   step?: number;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;

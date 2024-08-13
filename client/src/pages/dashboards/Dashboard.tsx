@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Layout } from "../Layout";
 import { getDashboardService } from "../../services/dashboard.services";
 import ReactECharts from "echarts-for-react";
-import { PhoneArrowDownLeftIcon, UsersIcon } from "@heroicons/react/24/outline";
+import { PhoneArrowDownLeftIcon, TrophyIcon, UsersIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { AppStore } from "../../redux/store";
 import { getStatusColor } from "../../utils/charts";
@@ -11,6 +11,7 @@ const tabs = [
   { label: "Por Canal", key: "channel" },
   { label: "Por País", key: "country" },
   { label: "Por Ciudad", key: "city" },
+  { label: "Por Banco", key: "banks" },
 ];
 
 function Dashboard() {
@@ -34,6 +35,7 @@ function Dashboard() {
   useEffect(() => {
     getDashboardService(interval).then((response: any) => {
       setDashboardData(response?.data);
+      console.log(response?.data);
       let dataX = response?.data?.leadsByStatus;
       if (response?.data?.leadsStatusByDate) {
         dataX = response?.data?.leadsStatusByDate;
@@ -106,7 +108,7 @@ function Dashboard() {
         series: [{
           data: ageCounts,
           type: 'bar',
-          
+
           itemStyle: {
             color: function (params: any) {
               const colorList = [
@@ -132,6 +134,9 @@ function Dashboard() {
         break;
       case "city":
         data = dashboardData?.leadsByCity || [];
+        break;
+      case "banks":
+        data = dashboardData?.leadsByBanks || [];
         break;
       default:
         break;
@@ -159,6 +164,13 @@ function Dashboard() {
         return (
           <>
             <th>Ciudad</th>
+            <th>Prospectos</th>
+          </>
+        );
+      case "banks":
+        return (
+          <>
+            <th>Banco</th>
             <th>Prospectos</th>
           </>
         );
@@ -198,120 +210,179 @@ function Dashboard() {
 
   return (
     <Layout title="Dashboard">
-      {(user.role && (user.role === 'ADMIN' || user.role === 'MANAGER')) ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 text-gray-800 w-full ">
-          <div className="flex flex-col md:flex-row items-center gap-4 w-full  col-span-4">
-            <div className="bg-white p-4 rounded-lg shadow-md max-h-[10rem] flex-grow col-span-2 w-full">
-              <h2 className="text-xl font-semibold pb-5 flex items-center justify-between">
-                Total Prospectos
-                <UsersIcon className="h-6 w-6" />
-              </h2>
-              <p className="text-3xl font-semibold">{dashboardData?.totalLeads}</p>
-              <small className="text-gray-500">Desde el inicio</small>
-            </div>
 
-            <div className="bg-white p-4 rounded-lg shadow-md  max-h-[10rem] flex-grow col-span-2 w-full">
-              <h2 className="text-xl font-semibold pb-5 flex justify-between">
-                Total pendientes de llamar
-                <PhoneArrowDownLeftIcon className="h-6 w-6" />
-              </h2>
-              <p className="text-3xl font-semibold">
-                {dashboardData?.leadsPendingCall}
-              </p>
-              <small className="text-gray-500">Desde el inicio</small>
-            </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 text-gray-800 w-full ">
+        <div className=" items-center gap-4 w-full  col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
+          <div className="bg-white p-4 rounded-lg shadow-md  flex-grow col-span-2 w-full">
+            <h2 className="text-xl font-semibold pb-5 flex items-center justify-between">
+              Total Prospectos
+              <UsersIcon className="h-6 w-6" />
+            </h2>
+            <p className="text-3xl font-semibold">{dashboardData?.totalLeads}</p>
+            <small className="text-gray-500">Desde el inicio</small>
           </div>
 
-          <div className="bg-white p-4 rounded-lg shadow-md col-span-4 md:col-span-4 lg:col-span-2  ">
-            <h2 className="text-xl font-semibold pb-2">Gráfico de Prospectos por Estado</h2>
-            <small className="text-gray-500">Filtrar por fecha y estado</small>
-            <div className="mb-4 flex flex-wrap mt-3">
-              <div className="flex w-full gap-4">
-                <div className="flex flex-col gap-2 flex-grow">
-                  <label className="mr-2">Desde:</label>
-                  <input
-                    name="startDate"
-                    onChange={handleInterval}
-                    type="date"
-                    className="border border-gray-300 p-2 rounded-md mr-4 w-full"
-                  />
-                </div>
-                <div className="flex flex-col gap-2 flex-grow">
-                  <label className="mr-2">Hasta:</label>
-                  <input
-                    name="endDate"
-                    onChange={handleInterval}
-                    type="date"
-                    className="border border-gray-300 p-2 rounded-md mr-4 w-full"
-                  />
-                </div>
+          <div className="bg-white p-4 rounded-lg shadow-md  flex-grow col-span-2 w-full">
+            <h2 className="text-xl font-semibold pb-5 flex justify-between">
+              Total pendientes de llamar
+              <PhoneArrowDownLeftIcon className="h-6 w-6" />
+            </h2>
+            <p className="text-3xl font-semibold">
+              {dashboardData?.leadsPendingCall}
+            </p>
+            <small className="text-gray-500">Desde el inicio</small>
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow-md   flex-grow col-span-2 w-full h-full">
+            <h2 className="text-xl font-semibold pb-5 flex justify-between">
+              Objetivos generales
+              <TrophyIcon className="h-6 w-6" />
+            </h2>
+            <p className={`text-2xl font-semibold flex items-center gap-3`}>
+              
+              {dashboardData?.currentGoals.generalGoals?.name ?? <span className="text-sm font-medium text-gray-500">No hay objetivos</span>}
+              {/* completed if the status is equal or more */}
+              {dashboardData?.currentGoals.generalGoalsStatus === dashboardData?.currentGoals.generalGoals?.target && <span className="text-green-500 text-sm">
+                Completado</span >}
+            </p>
+
+            {dashboardData?.currentGoals.generalGoals && (
+              <>
+                <p className="text-sm font-semibold text-gray-500">Progreso:
+                  
+                  {dashboardData?.currentGoals.generalGoalsStatus}
+                  /{dashboardData?.currentGoals.generalGoals.target}</p>
+
+                <small className="text-gray-500 text-xs">
+                  Del {new Date(dashboardData?.currentGoals.generalGoals.startDate).toLocaleDateString()} a {new Date(dashboardData?.currentGoals.generalGoals.endDate).toLocaleDateString()}
+
+                </small>
+              </>
+            )}
+          </div>
+          <div className="bg-white p-4 rounded-lg shadow-md   flex-grow col-span-2 w-full h-full">
+            <h2 className="text-xl font-semibold pb-5 flex justify-between">
+              Objetivos Individuales
+              <TrophyIcon className="h-6 w-6" />
+            </h2>
+            <p className="text-2xl font-semibold">
+              {dashboardData?.currentGoals.individualGoals?.name ?? <span className="text-sm font-medium text-gray-500">No hay objetivos</span>}
+              {/* completed if the status is equal or more */}
+              {dashboardData?.currentGoals.individualGoalsStatus >= dashboardData?.currentGoals.individualGoals?.target && <span className="text-green-500 text-sm">
+                Completado</span >}
+
+            </p>
+
+            {dashboardData?.currentGoals.individualGoals && (
+              <>
+                <p className="text-sm font-semibold text-gray-500">Progreso:
+                  
+                  {dashboardData?.currentGoals.individualGoalsStatus}
+                  /{dashboardData?.currentGoals.individualGoals.target}</p>
+                <small className="text-gray-500 text-xs">
+                  Del {new Date(dashboardData?.currentGoals.individualGoals.startDate).toLocaleDateString()} a {new Date(dashboardData?.currentGoals.individualGoals.endDate).toLocaleDateString()}
+
+                </small>
+              </>
+            )}
+          </div>
+        </div>
+
+        <div className="bg-white p-4 rounded-lg shadow-md col-span-4 md:col-span-4 lg:col-span-2  ">
+          <h2 className="text-xl font-semibold pb-2">Gráfico de Prospectos por Estado</h2>
+          <small className="text-gray-500">Filtrar por fecha y estado</small>
+          <div className="mb-4 flex flex-wrap mt-3">
+            <div className="flex w-full gap-4">
+              <div className="flex flex-col gap-2 flex-grow">
+                <label className="mr-2">Desde:</label>
+                <input
+                  name="startDate"
+                  onChange={handleInterval}
+                  type="date"
+                  className="border border-gray-300 p-2 rounded-md mr-4 w-full"
+                />
+              </div>
+              <div className="flex flex-col gap-2 flex-grow">
+                <label className="mr-2">Hasta:</label>
+                <input
+                  name="endDate"
+                  onChange={handleInterval}
+                  type="date"
+                  className="border border-gray-300 p-2 rounded-md mr-4 w-full"
+                />
               </div>
             </div>
-            {option && <ReactECharts option={option} className="text-sm" style={{ height: "330px" }} />}
-            {option?.series[0]?.data?.length === 0 && (
+          </div>
+          {option && <ReactECharts option={option} className="text-sm" style={{ height: "330px" }} />}
+          {option?.series[0]?.data?.length === 0 && (
+            <div className="text-center text-gray-500 absolute top-[60%] left-[15%] md:left-[20%]">
+              No hay datos para mostrar en el gráfico
+            </div>
+          )}
+        </div>
+
+        <div className="bg-white p-4 rounded-lg shadow-md col-span-4 md:col-span-4 lg:col-span-2">
+          <h2 className="text-xl font-semibold pb-2">Prospectos por Edad</h2>
+          <small className="text-gray-500">Se muestra la cantidad de prospectos por rango de edad</small>
+          <div className="mt-4">
+            {ageOption && <ReactECharts option={ageOption} className="text-sm h-full" style={{ height: "400px" }} />}
+            {ageOption?.series[0]?.data?.length === 0 && (
               <div className="text-center text-gray-500 absolute top-[60%] left-[15%] md:left-[20%]">
                 No hay datos para mostrar en el gráfico
               </div>
             )}
           </div>
-
-          <div className="bg-white p-4 rounded-lg shadow-md col-span-4 md:col-span-4 lg:col-span-2">
-            <h2 className="text-xl font-semibold pb-2">Prospectos por Edad</h2>
-            <small className="text-gray-500">Se muestra la cantidad de prospectos por rango de edad</small>
-            <div className="mt-4">
-              {ageOption && <ReactECharts option={ageOption} className="text-sm h-full" style={{ height: "400px" }} />}
-              {ageOption?.series[0]?.data?.length === 0 && (
-                <div className="text-center text-gray-500 absolute top-[60%] left-[15%] md:left-[20%]">
-                  No hay datos para mostrar en el gráfico
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="bg-white p-4 rounded-lg shadow-md col-span-4 md:col-span-4 lg:col-span-2">
-            <h2 className="text-xl font-semibold">Prospectos por {tabs.find(tab => tab.key === activeTab)?.label}</h2>
-            <small className="text-gray-500">Filtrar por {tabs.find(tab => tab.key === activeTab)?.label.toLowerCase()}</small>
-            <div className="flex justify-center mt-4">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.key}
-                  className={`px-4 py-2 rounded-md mr-2 ${activeTab === tab.key ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"
-                    }`}
-                  onClick={() => setActiveTab(tab.key)}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-            <div className="mt-4 overflow-auto">
-              <table className="w-full border-collapse border border-gray-300">
-                <thead>
-                  <tr className="text-left bg-gray-100">
-                    {renderTableHeaders()}
-                  </tr>
-                </thead>
-                <tbody>
-                  {renderTableData()?.sort(
-                    (a: any, b: any) => b.count - a.count
-                  ).map((item: any, index: number) => (
-                    <tr key={index} className={`border border-gray-300 ${index % 2 === 0 ? "bg-gray-100" : "bg-white"}`}>
-                      <td className="p-2">{item._id || "Sin definir"}</td>
-                      <td className="p-2">{item.count}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            
-          </div>
-
-          {renderAdvisorTable()}
         </div>
-      ) : (
+
+        <div className="bg-white p-4 rounded-lg shadow-md col-span-4 md:col-span-4 lg:col-span-2">
+          <h2 className="text-xl font-semibold">Prospectos por {tabs.find(tab => tab.key === activeTab)?.label}</h2>
+          <small className="text-gray-500">Filtrar por {tabs.find(tab => tab.key === activeTab)?.label.toLowerCase()}</small>
+          <div className="flex justify-center mt-4">
+            {tabs.map((tab) => (
+              <button
+                key={tab.key}
+                className={`px-4 py-2 rounded-md mr-2 ${activeTab === tab.key ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"
+                  }`}
+                onClick={() => setActiveTab(tab.key)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+          <div className="mt-4 overflow-auto">
+            <table className="w-full border-collapse border border-gray-300">
+              <thead>
+                <tr className="text-left bg-gray-100">
+                  {renderTableHeaders()}
+                </tr>
+              </thead>
+              <tbody>
+                {renderTableData()?.sort(
+                  (a: any, b: any) => b.count - a.count
+                ).map((item: any, index: number) => (
+                  <tr key={index} className={`border border-gray-300 ${index % 2 === 0 ? "bg-gray-100" : "bg-white"}`}>
+                    {activeTab === "banks" ? (
+                      <td className="p-2">{item._id?.name ?? "Sin definir"}</td>
+                    ) : (
+                      <td className="p-2">{item._id !== "" ? item._id : "Sin definir"}</td>
+                    )}
+                    <td className="p-2">{item.count}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        {
+          user.role === "ADMIN" &&
+          renderAdvisorTable()}
+      </div>
+      {/* ) : (
         <div className="bg-red-600 text-white font-semibold p-4 rounded-md shadow-md">
           No tienes permiso para acceder a este contenido
         </div>
-      )}
+      )} */}
     </Layout>
   );
 }

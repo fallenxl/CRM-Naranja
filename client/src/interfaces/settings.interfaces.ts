@@ -3,5 +3,6 @@ export interface ISettings {
     notificationsSound: boolean;
     bureauPrequalificationDays?: number;
     bankPrequalificationDays?: number;
-
+    generalGoals?: any[];
+    individualGoalsAdvisor?: any[];
 }

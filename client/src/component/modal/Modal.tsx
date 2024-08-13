@@ -16,7 +16,7 @@ export const Modal = ({ children }: Props) => {
           &#8203;
         </span>
 
-        <div className="w-full inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+        <div className="w-full inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl lg:max-w-4xl sm:w-full">
           {children}
         </div>
       </div>

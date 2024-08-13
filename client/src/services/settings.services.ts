@@ -21,3 +21,38 @@ export async function  updateSettings(data:{
         console.log(error);
     }
 }
+
+export async function createGoal(data:{
+    name: string,
+    description: string,
+    target: string,
+    startDate: string,
+    endDate: string,
+}, type: 'general' | 'advisor') {
+    try {
+        if(type === 'general') {
+            const response = await axios.post(Endpoints.SETTINGS_GOAL_GENERAL, data);
+            return response;
+        } else if(type === 'advisor') {
+            const response = await axios.post(Endpoints.SETTINGS_GOAL_ADVISOR, data);
+            return response;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+export async function deleteGoal(id: string, type: 'general' | 'advisor') {
+    try {
+        if(type === 'general') {
+            const response = axios.delete(`${Endpoints.SETTINGS_GOAL_GENERAL}/${id}`);
+            return response;
+        } else if(type === 'advisor') {
+            const response = axios.delete(`${Endpoints.SETTINGS_GOAL_ADVISOR}/${id}`);
+            return response;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}

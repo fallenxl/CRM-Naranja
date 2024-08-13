@@ -29,4 +29,6 @@ export const  Endpoints =  {
   REQUIREMENT: API_BASE_URL + 'requirements',
   ROLES: API_BASE_URL + 'roles',
   SETTINGS: API_BASE_URL + 'settings',
+  SETTINGS_GOAL_GENERAL: API_BASE_URL + 'settings/general-goals',
+  SETTINGS_GOAL_ADVISOR: API_BASE_URL + 'settings/individual-goals',
 }

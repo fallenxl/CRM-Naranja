@@ -9,7 +9,7 @@ export function TextArea({label, ...rest}: TextAreaProps){
             )}
             <textarea
 
-                className={`w-full max-h-[10rem] p-2 border border-gray-300 rounded-md outline-0 resize-none ${rest.className}`}
+                className={`w-full max-h-[10rem] p-2 border border-gray-300 rounded-md outline-0 resize-none  placeholder-gray-400 placeholder:text-sm first-letter ${rest.className}  `}
                 {...rest}
             />
         </div>

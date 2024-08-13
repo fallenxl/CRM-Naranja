@@ -1,22 +1,33 @@
-import {Switch} from "@material-tailwind/react";
-import {Layout} from "../Layout";
-import {useSelector} from "react-redux";
-import {AppStore} from "../../redux/store";
-import {ChangeEvent, useEffect, useState} from "react";
+import { Switch } from "@material-tailwind/react";
+import { Layout } from "../Layout";
+import { useSelector } from "react-redux";
+import { AppStore } from "../../redux/store";
+import { ChangeEvent, useEffect, useState } from "react";
 import {
     getUserSettings, updateUserSettings,
 } from "../../services/user.services";
-import {ModalRequirements} from "./ModalRequirements";
-import {getSettings, updateSettings} from "../../services/settings.services.ts";
-import {ISettings} from "../../interfaces/settings.interfaces.ts";
-import {Input} from "../../component/inputs/input.tsx";
-import {useDebounce} from "../../hooks/useDebounce.tsx";
+import { ModalRequirements } from "./ModalRequirements";
+import { getSettings, updateSettings } from "../../services/settings.services.ts";
+import { ISettings } from "../../interfaces/settings.interfaces.ts";
+import { Input } from "../../component/inputs/input.tsx";
+import { useDebounce } from "../../hooks/useDebounce.tsx";
+
+export interface IGoal {
+    _id: string;
+    name: string;
+    description: string;
+    target: number;
+    achieved: number;
+    startDate: string;
+    endDate: string;
+}
 
 export const Settings = () => {
     const user = useSelector((state: AppStore) => state.auth.user);
     const [settings, setSettings] = useState<ISettings>({
         autoAssign: false,
         notificationsSound: false,
+
     });
     useEffect(() => {
         getUserSettings(user.id).then((res) => {
@@ -28,11 +39,16 @@ export const Settings = () => {
         });
         if (user.role === "ADMIN" || user.role === "MANAGER") {
             getSettings().then((res) => {
-                setSettings({
-                    ...settings,
-                    bureauPrequalificationDays: res?.data.bureauPrequalificationDays,
-                    bankPrequalificationDays: res?.data.bankPrequalificationDays,
+                setSettings(prev => {
+
+                    return {
+                        ...prev,
+                        ...res?.data,
+                    };
                 });
+
+                console.log(res?.data);
+                console.log(settings);
             });
         }
     }, []);
@@ -45,6 +61,7 @@ export const Settings = () => {
     }, 1000)
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+
         if (e.target.name === "autoAssign" || e.target.name === "notificationsSound") {
             setSettings({
                 ...settings,
@@ -58,7 +75,7 @@ export const Settings = () => {
 
         } else if (e.target.name === "bureauPrequalificationDays" || e.target.name === "bankPrequalificationDays") {
             const trimmed = e.target.value.replace(/^0+/, '') || '0';
-            const value = parseInt(trimmed,10);
+            const value = parseInt(trimmed, 10);
             setSettings({
                 ...settings,
                 [e.target.name]: value > 0 ? trimmed : '0',
@@ -68,6 +85,7 @@ export const Settings = () => {
             })
 
         } else {
+
 
             setSettings({
                 ...settings,
@@ -85,9 +103,12 @@ export const Settings = () => {
 
     const [openModal, setOpenModal] = useState(false);
     const [requirementSelected, setRequirementSelected] = useState("");
+    const [type, setType] = useState<'requirements' | 'goals'>('requirements');
+    function handleOpenModal(type: 'requirements' | 'goals' = 'requirements', requirement: string) {
+        setType(type);
 
-    function handleOpenModal(requirement: string) {
         setRequirementSelected(requirement);
+        console.log(settings);
         setOpenModal(!openModal);
     }
 
@@ -162,6 +183,7 @@ export const Settings = () => {
 
                 )}
 
+
                 {user.role === "ADMIN" && (
                     <div className="mt-10 flex flex-col gap-6">
                         <div className="w-full border-b-2 border-gray-300 py-4">
@@ -174,7 +196,7 @@ export const Settings = () => {
                                 Requisitos primera etapa{" "}
                             </label>
                             <button
-                                onClick={() => handleOpenModal("Primera Etapa")}
+                                onClick={() => handleOpenModal('requirements', "Primera Etapa")}
                                 className="text-blue-500"
                             >
                                 Editar
@@ -185,7 +207,38 @@ export const Settings = () => {
                                 Requisitos segunda etapa{" "}
                             </label>
                             <button
-                                onClick={() => handleOpenModal("Segunda Etapa")}
+                                onClick={() => handleOpenModal('requirements', "Segunda Etapa")}
+                                className="text-blue-500"
+                            >
+                                Editar
+                            </button>
+                        </div>
+                    </div>
+                )}
+                {(user.role === "ADMIN" || user.role === "MANAGER") && (
+                    <div className="mt-10 flex flex-col gap-6">
+                        <div className="w-full border-b-2 border-gray-300 py-4">
+                            <h2 className="text-2xl font-bold text-gray-800 ">
+                                Configuración de Objetivos
+                            </h2>
+                        </div>
+                        <div className="flex justify-between h-4">
+                            <label className=" text-gray-800">
+                                Objetivo de prospectos{" "} general
+                            </label>
+                            <button
+                                onClick={() => handleOpenModal("goals", "Generales")}
+                                className="text-blue-500"
+                            >
+                                Editar
+                            </button>
+                        </div>
+                        <div className="flex justify-between h-4 mt-4">
+                            <label className=" text-gray-800">
+                                Objetivo de prospectos{" "} por asesor
+                            </label>
+                            <button
+                                onClick={() => handleOpenModal("goals", "Por Asesor")}
                                 className="text-blue-500"
                             >
                                 Editar
@@ -198,6 +251,9 @@ export const Settings = () => {
                 <ModalRequirements
                     stage={requirementSelected}
                     setOpenModal={setOpenModal}
+                    type={type}
+                 
+
                 />
             )}
         </Layout>
