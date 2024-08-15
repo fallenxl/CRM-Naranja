@@ -213,7 +213,7 @@ function Dashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 text-gray-800 w-full ">
         <div className=" items-center gap-4 w-full  col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
-          <div className="bg-white p-4 rounded-lg shadow-md  flex-grow col-span-2 w-full">
+          <div className="bg-white p-4 rounded-lg shadow-md  flex-grow col-span-1 w-full h-full">
             <h2 className="text-xl font-semibold pb-5 flex items-center justify-between">
               Total Prospectos
               <UsersIcon className="h-6 w-6" />
@@ -222,7 +222,7 @@ function Dashboard() {
             <small className="text-gray-500">Desde el inicio</small>
           </div>
 
-          <div className="bg-white p-4 rounded-lg shadow-md  flex-grow col-span-2 w-full">
+          <div className="bg-white p-4 rounded-lg shadow-md  flex-grow col-span-1 w-full h-full">
             <h2 className="text-xl font-semibold pb-5 flex justify-between">
               Total pendientes de llamar
               <PhoneArrowDownLeftIcon className="h-6 w-6" />
@@ -232,7 +232,8 @@ function Dashboard() {
             </p>
             <small className="text-gray-500">Desde el inicio</small>
           </div>
-          <div className="bg-white p-4 rounded-lg shadow-md   flex-grow col-span-2 w-full h-full">
+          {dashboardData?.currentGoals.generalGoals &&
+            <div className="bg-white p-4 rounded-lg shadow-md   flex-grow col-span-1 w-full h-full">
             <h2 className="text-xl font-semibold pb-5 flex justify-between">
               Objetivos generales
               <TrophyIcon className="h-6 w-6" />
@@ -258,8 +259,9 @@ function Dashboard() {
                 </small>
               </>
             )}
-          </div>
-          <div className="bg-white p-4 rounded-lg shadow-md   flex-grow col-span-2 w-full h-full">
+          </div>}
+        {dashboardData?.currentGoals.individualGoals && 
+         <div className="bg-white p-4 rounded-lg shadow-md   flex-grow col-span-1 w-full h-full">
             <h2 className="text-xl font-semibold pb-5 flex justify-between">
               Objetivos Individuales
               <TrophyIcon className="h-6 w-6" />
@@ -284,7 +286,7 @@ function Dashboard() {
                 </small>
               </>
             )}
-          </div>
+          </div>}
         </div>
 
         <div className="bg-white p-4 rounded-lg shadow-md col-span-4 md:col-span-4 lg:col-span-2  ">
