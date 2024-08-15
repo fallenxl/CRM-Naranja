@@ -231,6 +231,7 @@ export const Me = () => {
                                             <PencilSquareIcon className="w-5 h-5" />
                                         </div>
                                         <Avatar
+                                        className="object-contain"
                                             src={user.avatar}
                                             size="xxl"
                                         />
