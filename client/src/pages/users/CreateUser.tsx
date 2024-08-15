@@ -176,6 +176,7 @@ export const CreateUser = () => {
           {/* password */}
           <div className="relative">
             <Input
+            className="w-full"
               name="password"
               value={formData.password}
               onChange={handleInputChange}

@@ -148,4 +148,6 @@ export const deleteUser = async (id: string) => {
   } catch (error) {
     console.log(error);
   }
+
+
 };

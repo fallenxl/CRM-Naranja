@@ -25,6 +25,7 @@ export const Input = ({
   step,
   label,
   onKeyDown,
+  className,
     ...rest
 }: PasswordInputProps) => {
   const [seePassword, setSeePassword] = useState(false);
@@ -42,7 +43,7 @@ export const Input = ({
           name={name}
 
           onChange={onChange}
-          className={`w-full  px-3 py-[.7em] border border-gray-300 outline-none rounded-md  placeholder-gray-400 sm:text-sm ${rest.className}`}
+          className={`w-full  px-3 py-[.7em] border border-gray-300 outline-none rounded-md  placeholder-gray-400 sm:text-sm ${className}`}
           placeholder={placeholder}
           disabled={disabled}
           required={required}
@@ -55,12 +56,12 @@ export const Input = ({
           (seePassword ? (
             <EyeIcon
               onClick={toggleSeePassword}
-              className="w-5 h-5 absolute right-3 top-[2.4rem] text-blue-gray-400 cursor-pointer"
+              className={`w-5 h-5 absolute right-3 top-[2.8rem] text-blue-gray-400 cursor-pointer ${!label && "top-[.7rem]"} `}
             />
           ) : (
             <EyeSlashIcon
               onClick={toggleSeePassword}
-              className="w-5 h-5 absolute right-3 top-[2.4rem] text-blue-gray-400 cursor-pointer"
+              className={`w-5 h-5 absolute right-3 top-[2.8rem] text-blue-gray-400 cursor-pointer ${!label && "top-[.7rem]"} `}
             />
           ))}
       </div>

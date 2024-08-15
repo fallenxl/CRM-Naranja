@@ -7,7 +7,6 @@ export const AxiosInterceptor = () => {
     const token = getLocalStorageToken()
     const newHeaders = {
       Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
     }
     config.headers = newHeaders
     return config
