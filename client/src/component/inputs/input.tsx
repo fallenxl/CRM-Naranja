@@ -56,12 +56,12 @@ export const Input = ({
           (seePassword ? (
             <EyeIcon
               onClick={toggleSeePassword}
-              className={`w-5 h-5 absolute right-3 top-[2.8rem] text-blue-gray-400 cursor-pointer ${!label && "top-[.7rem]"} `}
+              className={`w-5 h-5 absolute right-3  text-blue-gray-400 cursor-pointer ${!label ? "top-[.7em]": "top-[2.2em]"} `}
             />
           ) : (
             <EyeSlashIcon
               onClick={toggleSeePassword}
-              className={`w-5 h-5 absolute right-3 top-[2.8rem] text-blue-gray-400 cursor-pointer ${!label && "top-[.7rem]"} `}
+              className={`w-5 h-5 absolute right-3  text-blue-gray-400 cursor-pointer ${!label ? "top-[.7em]": "top-[2.2em]"} `}
             />
           ))}
       </div>
