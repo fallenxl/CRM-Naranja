@@ -29,6 +29,12 @@ export function getStatusColor(status: string) {
         case 'reservado':
             // orange
             return '#FF9800';
+        case 'activo':
+            // green
+            return '#4CAF50';
+        case 'inactivo':
+            // red
+            return '#FF5252';
         default:
             return '#54b2ff'
     }
