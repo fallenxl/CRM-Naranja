@@ -155,7 +155,7 @@ export const UserByID = () => {
               <div className="w-full col-start-1 col-end-13 flex flex-col items-center p-4">
                 <div className="flex flex-col items-center gap-y-2 mb-5">
                   <Avatar
-                    src={`https://api.dicebear.com/5.x/initials/svg?seed=${user.name}`}
+                    src={user.avatar}
                     size="xxl"
                   />
                   <div className="flex flex-col items-center">
