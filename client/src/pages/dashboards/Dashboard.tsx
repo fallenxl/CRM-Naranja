@@ -216,6 +216,7 @@ function Dashboard() {
   const options = [
     { value: "pdf", label: "Exportar en PDF" },
     { value: "excel", label: "Exportar en Excel" },
+    { value: "csv", label: "Exportar en CSV" },
 
   ]
   return (
