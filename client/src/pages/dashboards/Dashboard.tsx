@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Layout } from "../Layout";
-import { getDashboardService } from "../../services/dashboard.services";
+import { exportDataService, getDashboardService } from "../../services/dashboard.services";
 import ReactECharts from "echarts-for-react";
-import { PhoneArrowDownLeftIcon, TrophyIcon, UsersIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon, PhoneArrowDownLeftIcon, TrophyIcon, UsersIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { AppStore } from "../../redux/store";
 import { getStatusColor } from "../../utils/charts";
@@ -208,8 +208,44 @@ function Dashboard() {
     );
   };
 
+  function handleExportData(format: string) {
+    exportDataService(format).then((response: any) => {
+      console.log(response);
+    });
+  }
+  const options = [
+    { value: "pdf", label: "Exportar en PDF" },
+    { value: "excel", label: "Exportar en Excel" },
+
+  ]
   return (
     <Layout title="Dashboard">
+      {/* <div className="flex items-center justify-end gap-4 mb-4">
+        <button className="bg-blue-500 text-white px-4 py-2 rounded-md"
+        onClick={()=> handleExportData('pdf')}
+        >Exportar en PDF</button>
+        <button className="bg-blue-500 text-white px-4 py-2 rounded-md"
+        onClick={()=> handleExportData('excel')}
+        >Exportar en Excel</button>
+      </div> */}
+      {/* Dropdown */}
+    <div className="flex items-center justify-end gap-4 mb-4">
+        <div className="relative inline-flex items-center cursor-pointer">
+          <ChevronDownIcon className="h-5 w-5 absolute right-0 mr-2" />
+          <select
+          value={""}
+            className="border border-gray-300 rounded-md text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none cursor-pointer"
+            onChange={(e) => handleExportData(e.target.value)}
+          >
+            <option value="" className="cursor-pointer" disabled >Exportar</option>
+            {options.map((option) => (
+              <option key={option.value} value={option.value} className="cursor-pointer">
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 text-gray-800 w-full ">
         <div className=" items-center gap-4 w-full  col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
