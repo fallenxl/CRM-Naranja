@@ -24,7 +24,10 @@ import { getStatusColor } from "../../utils/charts";
 interface Props {
   title: string;
   description?: string;
-  tableHead: string[];
+  tableHead: {
+    key: string;
+    value: string;
+  }[];
   tableRows: any[];
   role?: string;
   path: string;
@@ -114,6 +117,22 @@ export function Table({
       setTotalPages(totalPages);
     }
   }, [search, tableRows, currentPage, rowsPerPage]);
+
+  const [typeSort, setTypeSort] = useState<"asc" | "desc">("asc");
+
+  const handleSortColumn = (column: string) => {
+    const sorted = [...filtered].sort((a, b) => {
+      if (typeSort === "asc") {
+        return a[column] > b[column] ? 1 : -1;
+      } else {
+        return a[column] < b[column] ? 1 : -1;
+      }
+    });
+    console.log(filtered);
+    setFiltered(sorted);
+    setTypeSort(typeSort === "asc" ? "desc" : "asc");
+  }
+
   return (
     <Card className="h-full mx-auto w-full p-4 m-0 ">
       <CardHeader floated={false} shadow={false} className="rounded-none" >
@@ -159,11 +178,12 @@ export function Table({
             <tr>
               {tableHead.map((head) => (
                 <th
-                  key={head}
+                  key={head.key}
+                  onClick={() => handleSortColumn(head.key)}
                   className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 cursor-pointer hover:bg-blue-gray-50 "
                 >
                   <span className="font-bold leading-none opacity-90 flex justify-between text-sm">
-                    {head}
+                    {head.value}
                     <ChevronUpDownIcon className="w-4 h-4 inline-block ml-1" />
                   </span>
                 </th>

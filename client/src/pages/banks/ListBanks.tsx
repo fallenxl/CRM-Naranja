@@ -14,7 +14,14 @@ export const ListBanks = () => {
       setBanks(res);
     });
   }, []);
-  const tableHead = ["Nombre", "Descripción"];
+  const tableHead = [{
+    key: "name",
+    value: "Nombre del banco",
+  },
+  {
+    key: "description",
+    value: "Descripción",
+  }];
   const tableRows = banks.map((bank: any) => {
     return {
       id: bank._id,

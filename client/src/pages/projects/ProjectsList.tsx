@@ -16,7 +16,15 @@ export function ProjectsList() {
       setIsLoading(false);
     });
   }, []);
-  const tableHead = ["Nombre del Proyecto", "Descripción"];
+  const tableHead = [{
+    key: "name",
+    value: "Nombre del proyecto",
+  },
+  {
+    key: "description",
+    value: "Descripción",
+  }];
+  
   const tableRows = projects.map((project: any) => {
     return {
       id: project._id,

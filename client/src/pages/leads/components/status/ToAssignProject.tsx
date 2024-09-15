@@ -106,7 +106,7 @@ export const ToAssignProject = ({ setProjectSelected }: Props) => {
                 Seleccionar lote
               </option>
               {lots.length > 0 &&
-                lots.map((lot) => {
+                lots.sort((a, b) => parseInt(a.lot) - parseInt(b.lot)).map((lot) => {
                   return (
                     <option key={lot.lot} value={lot._id}>
                       {lot.block ? lot.block + " - " + lot.lot : lot.lot}

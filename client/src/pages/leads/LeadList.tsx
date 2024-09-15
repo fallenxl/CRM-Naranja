@@ -97,12 +97,30 @@ export function LeadList() {
   ];
 
   const tableHead = [
-    "Fecha",
-    "Nombre Completo",
-    "DNI / Pasaporte / Carne de Residencia",
-    "Teléfono",
-    "Estado",
-    "Asesor",
+    {
+      key:"date",
+      value: "Fecha",
+    },
+    {
+      key:"name",
+      value: "Nombre Completo",
+    },
+    {
+      key:"dni",
+      value: "DNI / Pasaporte / Carne de Residencia",
+    },
+    {
+      key:"phone",
+      value: "Teléfono",
+    },
+    {
+      key:"status",
+      value: "Estado",
+    },
+    {
+      key:"advisor",
+      value: "Asesor",
+    },
   ];
   const tableRows = leads.map((lead: any) => {
     return {

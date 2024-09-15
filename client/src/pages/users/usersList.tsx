@@ -24,14 +24,31 @@ export function UsersList() {
       window.location.reload();
     });
   };
-  const tableHead = [
-    "Nombre Completo",
-    "Email",
-    "Teléfono",
-    "Rol",
-    "Posición",
-    "Estado",
-  ];
+  const tableHead = [{
+    key: "name",
+    value: "Nombre",
+  },
+  {
+    key: "email",
+    value: "Correo",
+  },
+  {
+    key: "phone",
+    value: "Teléfono",
+  },
+  {
+    key: "role",
+    value: "Rol",
+  },
+  {
+    key: "position",
+    value: "Puesto",
+  },
+  {
+    key: "status",
+    value: "Estado",
+  }];
+  
   const tableRows = users.map((user: any) => {
     return {
       id: user._id,

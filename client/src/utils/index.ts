@@ -1,3 +1,4 @@
+export * from './charts';
 export * from './currencyFormat';
 export * from './localStorage.utils';
 export * from './redirects';

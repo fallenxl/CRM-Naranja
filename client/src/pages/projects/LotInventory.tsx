@@ -14,7 +14,27 @@ export function LotInventory() {
     });
   }, []);
 
-  const tableHead = ["Proyecto", "Bloque", "Lote No.", "Area v²", "Estado"];
+  const tableHead = [{
+    key: "project",
+    value: "Proyecto",
+  },
+  {
+    key: "block",
+    value: "Bloque",
+  },
+  {
+    key: "lot",
+    value: "Lote",
+  },
+  {
+    key: "area",
+    value: "Área",
+  },
+  {
+    key: "status",
+    value: "Estado",
+  }];
+  
   const tableRows = lots.map((lot: any) => {
     return {
       id: lot._id,

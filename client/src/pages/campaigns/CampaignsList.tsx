@@ -46,11 +46,26 @@ export function CampaignsList() {
   };
 
   const tableHead = [
-    "Nombre de la campaña",
-    "Descripción",
-    "Inicio",
-    "Finalización",
-    "Estado",
+    {
+      key: "name",
+      value:"Nombre de la campaña"
+    },
+    {
+      key: "description",
+      value:"Descripción"
+    },
+    {
+      key: "startDate",
+      value:"Inicio"
+    },
+    {
+      key: "endDate",
+      value:"Finalización"
+    },
+    {
+      key: "status",
+      value:"Estado"
+    },
   ];
   const tableRows = campaigns.map((campaign: any) => {
     return {
