@@ -9,6 +9,7 @@ export const channels = [
     'TV',
     'Radio',
     'Periódico',
+    'Facebook Naranja',
     'Otro'
 ]
 
