@@ -20,6 +20,7 @@ export interface CreateLeadDTO {
     address: string,
     country: string,
     department: string,
+    municipality: string,
     source: string,
     interestedIn: string,
     workAddress: string,

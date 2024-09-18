@@ -10,7 +10,8 @@ import { getStatusColor } from "../../utils/charts";
 const tabs = [
   { label: "Por Canal", key: "channel" },
   { label: "Por País", key: "country" },
-  { label: "Por Ciudad", key: "city" },
+  { label: "Por Departamento/Estado", key: "city" },
+  { label: "Por Municipio", key: "municipality" },
   { label: "Por Banco", key: "banks" },
 ];
 
@@ -35,7 +36,6 @@ function Dashboard() {
   useEffect(() => {
     getDashboardService(interval).then((response: any) => {
       setDashboardData(response?.data);
-      console.log(response?.data);
       let dataX = response?.data?.leadsByStatus;
       if (response?.data?.leadsStatusByDate) {
         dataX = response?.data?.leadsStatusByDate;
@@ -135,6 +135,9 @@ function Dashboard() {
       case "city":
         data = dashboardData?.leadsByCity || [];
         break;
+      case "municipality":
+        data = dashboardData?.leadsByMunicipality || [];
+        break;
       case "banks":
         data = dashboardData?.leadsByBanks || [];
         break;
@@ -164,6 +167,13 @@ function Dashboard() {
         return (
           <>
             <th>Ciudad</th>
+            <th>Prospectos</th>
+          </>
+        );
+      case "municipality":
+        return (
+          <>
+            <th>Municipio</th>
             <th>Prospectos</th>
           </>
         );
@@ -402,7 +412,7 @@ function Dashboard() {
                     {activeTab === "banks" ? (
                       <td className="p-2">{item._id?.name ?? "Sin definir"}</td>
                     ) : (
-                      <td className="p-2">{item._id !== "" ? item._id : "Sin definir"}</td>
+                      <td className="p-2">{item._id ? item._id : "Sin definir"}</td>
                     )}
                     <td className="p-2">{item.count}</td>
                   </tr>

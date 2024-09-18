@@ -396,6 +396,17 @@ export const LeadById = () => {
                                                 disabled={edit}
                                             />
                                         </div>
+
+                                        <div className="flex items-center gap-x-2  w-full">
+                                            <MapIcon className="w-5 h-5" />
+                                            <Input
+                                                name="municipality"
+                                                onChange={handleUpdateLeadChange}
+                                                label="Municipio"
+                                                value={updateLead.municipality}
+                                                disabled={edit}
+                                            />
+                                        </div>
                                     </>}
                                     {!edit && <>
 
@@ -465,8 +476,38 @@ export const LeadById = () => {
 
                                             </div>
                                         </div>
+
+                                        {
+                                    (updateLead.country === 'Honduras' && updateLead.department) && 
+                                    // municipalities
+                                    <div className="flex items-center gap-x-2  w-full">
+                                        <MapIcon className="w-5 h-5" />
+                                        <div className="flex flex-col  w-full">
+                                            <label htmlFor="country" className="text-gray-700 text-xs">
+                                                Municipio
+                                            </label>
+                                            <select name="municipality" value={updateLead.municipality} onChange={handleUpdateLeadChange} className="text-sm border p-2 text-gray-700 rounded-md border-gray-300 flex-grow"
+                                            disabled={edit}
+                                            >
+                                                <option value="" defaultChecked>
+                                                    Seleccione un municipio
+                                                </option>
+                                                {countriesData.countries?.find((country) => country.name === updateLead.country)?.departments?.find((department) => department.name === updateLead.department)?.municipalities?.map((municipality) => {
+                                                    return (
+                                                        <option value={municipality} key={municipality}>
+                                                            {municipality}
+                                                        </option>
+                                                    );
+                                                })}
+                                            </select>
+                                        </div>
+                                        </div>
+                                    }
+
                                     </>}
 
+
+                                   
 
 
                                     <div className="flex items-center gap-x-2  w-full">

@@ -69,7 +69,8 @@ export const CreateLead = () => {
         address: "",
         country: "",
         department: "",
-        source: "Facebook",
+        municipality: "",
+        source: "Facebook Naranja",
         interestedIn: "",
         workAddress: "",
         workPosition: "",
@@ -161,6 +162,7 @@ export const CreateLead = () => {
     }, [autoAssign]);
 
     const [department, setDepartment] = useState<string[]>([]);
+    const [municipalities, setMunicipalities] = useState<string[]>([]);
     useEffect(() => {
         if (formData.country) {
             setDepartment(
@@ -170,7 +172,13 @@ export const CreateLead = () => {
             );
         }
 
-    }, [formData.country]);
+        if(formData.country === 'Honduras' && formData.department){
+            setMunicipalities(
+                countriesData.countries[0].departments?.find((department) => department.name === formData.department)?.municipalities ?? []
+            )
+        }
+
+    }, [formData.country, formData.department]);
     const { user } = useSelector((state: AppStore) => state.auth);
 
     const [useDNI, setUseDNI] = useState<boolean>(true);
@@ -492,6 +500,30 @@ export const CreateLead = () => {
                                             })}
                                         </select>
                                     </div>
+                                    {(formData.country === "Honduras" && formData.department) && (
+                                        <div className="flex flex-col gap-2 flex-grow w-full">
+                                            <label htmlFor="department" className="text-gray-700">
+                                                Municipio
+                                            </label>
+                                            <select
+                                                name="municipality"
+                                                value={formData.municipality}
+                                                onChange={handleInputChange}
+                                                className="border p-2 text-gray-700 rounded-md border-blue-gray-300 flex-grow"
+                                            >
+                                                <option value="" defaultChecked>
+                                                    Seleccione un municipio
+                                                </option>
+                                                {municipalities.map((municipality) => {
+                                                    return (
+                                                        <option value={municipality} key={municipality}>
+                                                            {municipality}
+                                                        </option>
+                                                    );
+                                                })}
+                                            </select>
+                                        </div>
+                                    )}
                                 </>
 
                             )}
